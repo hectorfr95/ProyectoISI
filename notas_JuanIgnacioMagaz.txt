@@ -1,0 +1,16 @@
+Propósito:
+Crear commits cada cierto tiempo de cada fichero que el alumno
+esta programando durante el examen.
+Con esto podrias evitar que el alumno no tenga nada durante la mayoria
+del examen y de pronto tenga todo hecho.
+Que varios alumnos hagan el examen conjunto comparando estos commits
+y el contenido de los ficheros.
+
+Condiciones:
+Servicio que corra en un servidor en internet.
+Los clientes nos dan los repos de los alumnos para compararlos.
+Base de datos: SQLite(Alumno, repo, profe, examen, ejercicio, fecha).
+Lenguaje: Java, Framework: Spark Java https://sparkjava.com/
+Travis: Tests
+Heroku: Servidor
+Jgit: Para manejar git con java
