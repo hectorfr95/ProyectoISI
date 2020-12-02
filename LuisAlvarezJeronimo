@@ -1,0 +1,7 @@
+Se pretende crear un programa que sea capaz de hacer commits de alumnos durante un examen para, posteriormente comparar estos commits y ser capaz de verificar la autenticidad del trabajo realizado por cada alumno.
+
+Se debe utilizar una base de datos relacional, debe estar programado en java y creado en forma de aplicación web, utilizando spark.
+
+Aún no estña definido el tipo de acceso y venta a la app.
+
+Debe estar testado
