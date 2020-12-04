@@ -1,0 +1,3 @@
+Se nos pide realizar un programa en el que, mediantes los commits que realiza un alumno en un examen/práctica se trate de identificar si se ha relizado plagio o no comparando los commits realizados tanto por él como por los otros alumnos.
+
+Dicho servicio se debe implementar en un servidor web mediante Heroku, con una base de datos relacional SQLite3 para modelar las entidades que pueda haber. Además se usará el framework de Spark Java, Travis para los test, JGIT para el control de las versiones.
