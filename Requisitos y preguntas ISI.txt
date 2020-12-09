@@ -1,0 +1,24 @@
+ESTO ES UNA OPINION PERSONAL DE COMO PODRIA FUNCIONAR NUESTRO PROYECTO!
+
+Se necesitara una base de datos como la adjuntada en esquemabd.
+
+Una aplicacion con interfaz sencilla-> se necesitara saber si el alumno necesitara tener acceso o no
+
+Se necesitara realizar commit cada X segundos -> se necesitara saber si se obtiene su path de ruta de datos o los ficheros, mejor lo primero
+
+Cuidado al trabajar con esos ficheros ya que pueden contener codigo de git hub y puede haber conflictos
+
+Se accederá a esos ficheros se realizaran los commits necesarios, se añadiran los ficheros a nuestra base de datos, se añadira la ruta de path de esos ficheros
+en nuestra base de datos, en la tabla exámenes
+
+Se comparará esos ficheros con los demás encontrados en esa tabla de datos -> Posibles problemas: comparar todos os ficheros? Un alumno 1 podria tener fichero1.txt
+fichero2.txt y alumno 2 podria tener esos mismos archivos, pero no queremos comparar fichero1.txt de alumno 1 con fichero2.txt de alumno 2; se requerirá que el profesor
+pueda decidir si quiere comparar más exhaustivamente dos alumnos en especial?
+
+En la aplicacion se pedira usuario y contraseña al profesor, este accedera a sus asignaturas(print table where profesor id == X; X lo obtenemos con usuario y contraseña),
+este cuando seleccione una podrá acceder a la base de datos de los examenes que esta tiene, y dentro de un examen podrá ver los alumnos y sus ficheros, aqúi además 
+podriamos adjuntar algún mensaje de aviso si ha habido alguna copia
+
+Esquemabd:
+Profesor(usuario, contraseña, id) tiene asignaturas, estas tienen examenes con fechas y rutas de path, estos examenes tienen alumnos(id, si queremos que tenga acceso
+(usuario,contraseña)(,nombre si no tenemos usuario) )

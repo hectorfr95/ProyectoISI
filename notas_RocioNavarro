@@ -1,0 +1,39 @@
+Clase 2-12-2020
+
+TEMA:
+ 1. Examenes online, que se puedan hacer de froma remota. Pero con garantías de 
+ autenticación.
+	
+    Empresa que mantenga privacidad de los alumnos, pero con garantías para los profesores
+    Alumnos escribiendo -> Controlar la secuencia de versiones que va generando,
+    en repo local, se  va guardando versiones de los ficehros qeu se van generando.
+    El repo local, con el estado congelado de diferentes momentos para:
+	Alumno 1: Al comienzo nada, al final, en poco tiempo todo.
+	Alumno 1 y 2: Tienen el mismo examen, comparación entre ambos repos. Haces 		 
+	búsquedas para comparar commits.
+	
+Se pueden comparar por versiones o solo al final.
+Servicio en Internet -> servidor web para porfesores/universidades.
+Se dan de alta. Interfaz sencilla. 
+BBDD repos de cada alumno, a qué examen/profesor/ejercicio corresponden
+
+
+CONDICIONES: BBDD Relacional, software bien testado y servicio web.
+	Manejar repositorio: JGit
+
+PREGUNTAS:
+1. Interfaz dónde es a nosotros a quién nos dan los profesores los archivos. O son las empresas los 
+que nos los proporcionana, y así no nos encargamos de la interfaz "bonita". 
+El servicio APIRest.
+
+2. Lenguaje: requisito -> JAVA, con framwork -> APIRest (Spark JAVA)
+	https://sparkjava.com/
+	
+3. SQLite
+4. Travis (Código en GitHub). comprobación con test antiguos y nuevos.
+5. Heroku. Como servicio en la nube donde tenemos desplegada la app. Siempre funcionando.
+6. Tema commits: Commits obligatorios cada cierto tiempo. Estos commits tienen que hacerse 
+	automáticamente, porque los alumnos tienen porqué saber hacerlos.
+7. Qué hacer con los commits: cómo vamos a compararlos.
+8. Fecha de enterga: 1 de Febrero (lo más pronto).
+
