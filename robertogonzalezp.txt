@@ -1,0 +1,25 @@
+Control de ficheros a lo largo del tiempo de un examen para controlar
+los ficheros que han utilizado los alumnos y como se han modificado a lo
+largo del tiempo del examen.
+
+Que se puedan hacer consultas de los distintos repos de los alumnos para
+ver si han ido a la par, posibles plagios o copias.
+
+Herramientas de control de código (ej. PST) que distintas versiones en distintos
+instantes de tiempo sean iguales, o incluso las versiones finales.
+
+Servicio online o que se puedan dar de alta en un momento exacto (un examen) y que
+el servicio que creamos de un informe para que a posteriori los profesores puedan
+verlo mas adelante. Servicio web, una idea de como ofrecer este servicio.
+
+Sistema de información, una BBDD, con los profesores, alumnos, examen, etc... Base
+de datos relacional. Realizar tests para comprobar que todo esté bien implemantado.
+
+Lenguaje de programación, utiliar JAVA. Framework/API Rest Spark Java
+(https://sparkjava.com/) base de datos relacional sql sqlite vamos a utilizar travis
+para hacer la integración continua de nuestro servicio. Cuando haya cambios en el codigo
+ejecute los tests que tengamos definido para que lo nuevo añadido no estropee lo que teniamos.
+
+Heroku
+
+biblioteca de programacion en java para poder manejar repositorios git. (JGit)
