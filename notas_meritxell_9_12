@@ -1,0 +1,11 @@
+dos partes:
+	- instalacion en el pc del alumno. Este programa subirá los ficheros a eroku
+	- interfaz a la que accede el profesor para ver los informes
+	
+en la BD tenemos alumnos, profesores, examenes y asignaturas. Pero alumnos no estara para identificarse en el servicio web. Y se almacenará el path en el servicio  de los exámenes que será un tar con carpetas que serán los alumnos.
+
+
+debería haber un fichero en la carpeta dle alumno que lo identifique, nombre y dni. 
+
+software java que corre donde los alumnos?? JGIT, mirarlo
+sparkjava, cacho en el cliente(alumno) que sube los ficheros.
