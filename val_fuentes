@@ -1,0 +1,15 @@
+Proyecto:
+App que verifica que un alumno no se ha copiado en un examen
+Lenguaje-> java
+SQlite
+Travis-> comprobacion de tests, por si dejamos la app fallando
+Heroku-> servidor en la nube
+JGit-> tema de commit
+Base de datos relacionada
+
+Requisitos
+-Enviar mensaje de verificacion que el alumno entro con Jgit
+-En el codigo que va a entregar el primer comit debe llevar el nombre y dni del alumno
+-Dentro de la app asignar a cada alumno un numero pseudoaleatorio(dni del primer comit tmb)
+-Los commit sean con tiempo determinado por el profesor para todos por igual
+-Resultado nos muestren solo los codigos que han saltado copia.
