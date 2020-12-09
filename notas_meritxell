@@ -1,0 +1,32 @@
+- clase 2-dic-2020
+consiste en temas de evaluación online de asignaturas. Se puede copiar
+más fácilmente. Pero esto también plantea problemas éticos.
+Creamos un empresa para que garantice la ética y la no copia en los exámenes. Lo que se ha pensado es lo siguiente:
+
+Cuando el alumno escriba texto, se va a controlar la secuencia de ficheros,
+de versiones, que va generando según pase el tiempo. En un repo local de git que se crea automáticamente, se vayan guardando versiones periódicas de los ficheros en los que trabaja el alumno. O bien por demanda, que en un momento puntual el profesor indique que se almacene la versión en ese instante. 
+
+Al acabar el examen, esas versiones se procesarán para ver aspectos como lo siguiente
+	durante 1,5h un alumno no tenía nada. Y al final del examen aparecen ficheros con la solución
+	repo de un alumno y otro, y queremos ver si hay rels entre los commits
+
+buscaremos una herramienta para ayudarnos a comprobar si hay similitudes entre código de alumnos. Se pueden comparar entre las diversas versiones o directamente ya al final del examen. Esto se puede lograr con bibliotecas o herramientas ya existentes.
+
+Esto será un servicio en internet en el que los profesores subirán las versiones y generaremos un informe, por ejemlo, estos alumnos colaboraron en estas franjas de tiempo. 
+
+En qué formato lo ofrecemos? Queremos un servicio web con una interfaz sencilla. Es necesaria una BD relacional en la que se almacenan los repos de los alumnnos. Examen, alumno, ejercicio, profesor, asignatura...
+
+Todo el software se debe testar, antes inlcuso de implementar el código. Usando técnicas de JUNIT. 
+
+No tenemos claro si tendremos empresas como usuario final o profesores. Podríamos tener un formulario para los profesores, subir los repos del examen. O damos una API rest a las empresas, y por tanto la interfaz HTML5 sería casi nula. Lo más probable es esta segunda forma. 
+
+Usar Java, y un framewok o micro servicios web con una API rest: SparkJava. sparkjava.com
+Usaremos sqlite, y después sql en la red. 
+Usaremos travis para hacer la integración continua del código. Para que cuando haya cambiamos en el repo ejecute los test definidos para que lo nuevo no estropee lo anterior. 
+Heroku: servicio en la nube para desplegar la aplicación.
+
+Los commits se harán periódicamente automáticamente un programa instalado, o cuando el profesor lo ordene. El alumno no sabe lo que es un commit. Se irá comprobando si hay similitudes ya bien con lo que entregan al final o durante el examen. 
+
+La entrega es en el fehca oficial de enero(1 febrero) o incluso hasta el cierre de actas. 
+
+Usaremos jgit para java. Hay que asegurarse de que el programa está arrancado en el ordenador del alumno, y debe mandar señas periódicas al profesor. 
