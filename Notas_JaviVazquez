@@ -1,0 +1,31 @@
+Servicio Web para control anticopias en examenes online de una universidad.
+
+Idea:
+Servicio web ofrecido que dé de alta los repositorios de comprobación de plagio y saque un informe
+de la actividad de los alumnos. Implementar con interfaz sencilla, BD, alumnos, etc...
+
+Herramientas:
+- Heroku: servicio en la nube para desplegar aplicación.
+- Travis: herramienta para itegración continua del proyecto, permitiendo comprobar si se compilan bien
+	  sus partes.
+- Lenguaje Java.
+- BD relacional: sqlite.
+- Spark Java: framework para desarrollar aplicaciones web de manera ágil, sencilla y rápida.
+- Jgit: biblioteca de java para control y manejo de Git.
+
+Preguntas:
+-¿Cómo organizamos los commits de los ficheros que maneja el alumno durante la prueba?
+-¿Comparamos las modificaciones del fichero con respecto a un determinado tiempo o al final del todo?
+-¿Cómo controlamos si ha habido copia?
+- ¿Se puede controlar si dos o más alumnos coinciden en sus commits a la hora de modificar los
+  mismos archivos en la misma franja de hora,cómo?.
+- ¿Se puede comprobar si el archivo no se ha modificado durante un tiempo y al cabo de x minutos
+  aparece un commit con un archivo ya hecho,cómo?.
+- ¿Se podría controlar durante el tiempo del examen si está utilizando vías externas de 
+  comunicación en el ordenador,cómo?
+- ¿Los informes se pueden generar de manera automática con plantillas?
+- ¿Si los informes se pueden hacer con plantillas que destacar durante el desarrollo del examen,
+  es decir, que podemos tomar como actividad sospechosa?
+
+
+Fecha de entrega: 1 de Febrero 2021.
