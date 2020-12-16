@@ -30,3 +30,18 @@ Los commits se harán periódicamente automáticamente un programa instalado, o 
 La entrega es en el fehca oficial de enero(1 febrero) o incluso hasta el cierre de actas. 
 
 Usaremos jgit para java. Hay que asegurarse de que el programa está arrancado en el ordenador del alumno, y debe mandar señas periódicas al profesor. 
+
+
+---------
+notas 9-12
+dos partes:
+	- instalacion en el pc del alumno. Este programa subirá los ficheros a eroku
+	- interfaz a la que accede el profesor para ver los informes
+	
+en la BD tenemos alumnos, profesores, examenes y asignaturas. Pero alumnos no estara para identificarse en el servicio web. Y se almacenará el path en el servicio  de los exámenes que será un tar con carpetas que serán los alumnos.
+
+
+debería haber un fichero en la carpeta dle alumno que lo identifique, nombre y dni. 
+
+software java que corre donde los alumnos?? JGIT, mirarlo
+sparkjava, cacho en el cliente(alumno) que sube los ficheros.
