@@ -51,7 +51,7 @@ public class Main {
   	//DNI del alumno que está ejecutando este programa
     private static String dni;
     //nombre del fichero con el que se identifica el alumno
-    private static String fichName = "../identificacion_alumno.txt";
+    private static String fichName = "identificacion_alumno.txt";
     
     //private static Repository repo;
     private static Git git;
@@ -89,7 +89,9 @@ public class Main {
 	 * pstmt.setString(1, film); pstmt.setString(2, actor); pstmt.executeUpdate(); }
 	 * catch (SQLException e) { System.out.println(e.getMessage()); } }
 	 */
-
+    
+    //leo un fichero
+    //fuente: https://javiergarciaescobedo.es/programacion-en-java/15-ficheros/44-leer-un-fichero-de-texto-linea-a-linea
     public static void findIdfile(String fich) {
     	
         //Declarar una variable BufferedReader
@@ -115,8 +117,8 @@ public class Main {
         }
         catch (FileNotFoundException e) {
             System.out.println("Error: Fichero no encontrado");
-            dni = null;
-            nombre = null;
+            dni = "????";
+            nombre = "????";
             System.out.println(e.getMessage());
         }
         catch(Exception e) {
@@ -150,9 +152,9 @@ public class Main {
     	try {
 	    	if(fichs.equals("all")) {
 	    		//hago un commit de todo
-	    		git.add().addFilepattern("../*").call();
+	    		git.add().addFilepattern("*").call();
 	    	}else {
-	    		git.add().addFilepattern("../"+fichs).call();
+	    		git.add().addFilepattern(fichs).call();
 	    	}
 	    	git.commit().setMessage(comen).setAuthor(nombre, nombre+"@gmail.com").call();
     	}catch(GitAPIException e) {
@@ -162,6 +164,7 @@ public class Main {
     }
    
     //este metodo borra un repositorio si ya lo hubiera
+    //fuente: https://www.journaldev.com/833/java-delete-directory-folder
     public static void deleteRepo(File file) {
 		//to end the recursive loop
         if (!file.exists())
@@ -197,7 +200,8 @@ public class Main {
     public static void checkCommits(Git git) {
     	Iterable<RevCommit> logs = null;
     	try{
-    		logs = git.log().all().call();
+    		//logs = git.log().all().call();
+    		logs = git.log().addPath("identificacion_alumno.txt").call();
     	}catch(Exception e) {
     		System.out.println("An error occurred.");
 	        e.printStackTrace();
@@ -213,16 +217,17 @@ public class Main {
             System.out.println(rev.getAuthorIdent().getEmailAddress());
             System.out.println("-------------------------");
           }
+    	
     }
     public static void main(String[] args) throws ClassNotFoundException, SQLException {
     	port(getHerokuAssignedPort());
     	//busco si el fichero con el que se identifica el alumno se encuentra
-    	findIdfile(fichName);
-    	if(!(dni != null && nombre != null)) {
+    	findIdfile("../"+fichName);
+    	if(dni.equals("????") || nombre.equals("????")) {
     		System.out.println("Notifico al servidor de que un alumno no ha generado el fichero");
     		//espero 60 segundos a que el alumno cree el fichero
     		esperar(60);
-    		findIdfile(fichName);
+    		findIdfile("../"+fichName);
     	}
     	System.out.println("Notifico al servidor de que el alumno con nombre " 
 				+ nombre + " se ha conectado correctamente");
@@ -231,7 +236,12 @@ public class Main {
     	doCommit(fichName, git, "primer commit, alumno: "+nombre+" dni: "+dni, nombre);
     	//llamo al siguiente metodo para comprobr que los commits se hacen correctamente
     	checkCommits(git);
-		// Connect to SQLite sample.db database
+		
+    	
+    	
+    	
+    	
+    	// Connect to SQLite sample.db database
 		// connection will be reused by every query in this simplistic example
 		//connection = DriverManager.getConnection("jdbc:sqlite:sample.db");
 	
