@@ -35,6 +35,7 @@ import java.nio.file.Paths;
 import java.nio.file.Path;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.revwalk.RevCommit;
+import java.io.File;
 
 // This code is quite dirty. Use it just as a hello world example 
 // to learn how to use JDBC and SparkJava to upload a file, store 
@@ -145,7 +146,7 @@ public class Main {
     	}
 		 
     }
-    public static void doCommit(String fichs, Git git, String comen) {
+    public static void doCommit(String fichs, Git git, String comen, String nombre) {
     	try {
 	    	if(fichs.equals("all")) {
 	    		//hago un commit de todo
@@ -153,26 +154,34 @@ public class Main {
 	    	}else {
 	    		git.add().addFilepattern("../"+fichs).call();
 	    	}
-	    	git.commit().setMessage(comen).call();
+	    	git.commit().setMessage(comen).setAuthor(nombre, nombre+"@gmail.com").call();
     	}catch(GitAPIException e) {
     		System.out.println("An error occurred.");
 	        e.printStackTrace();
     	}
     }
    
+    //este metodo borra un repositorio si ya lo hubiera
+    public static void deleteRepo(File file) {
+		//to end the recursive loop
+        if (!file.exists())
+            return;
+        //if directory, go inside and call recursively
+        if (file.isDirectory()) {
+            for (File f : file.listFiles()) {
+                //call recursively
+            	deleteRepo(f);
+            }
+        }
+        //call delete to delete files and empty directory
+        file.delete();
+    }
+    
     public static Git createRepo() {
-    	// Create a Repository object
-    	//FileRepositoryBuilder repositoryBuilder = new FileRepositoryBuilder();
-//	    try {	
-//    		repo = FileRepositoryBuilder.create(new File("../", ".git"));
-//	    	repo.create();
-//	    	git = new Git(repo);
-//	    } catch (IOException e) {
-//	        System.out.println("An error occurred.");
-//	        e.printStackTrace();
-//	     }
+    
     	Path repoPath = Paths.get("../");
         InitCommand init = Git.init();
+        deleteRepo(new File("../.git"));
         init.setDirectory(repoPath.toFile());
         Git git2 = null;
         try{
@@ -182,7 +191,6 @@ public class Main {
 	        e.printStackTrace();
         }
         return git2;
-
     }
     
     //metodo para comprobar que los commits se vayan haciendo correctamente
@@ -220,7 +228,7 @@ public class Main {
 				+ nombre + " se ha conectado correctamente");
     	git = createRepo();
     	System.out.println("creo repositorio"+git);
-    	doCommit(fichName, git, "primer commit, alumno: "+nombre+" dni: "+dni);
+    	doCommit(fichName, git, "primer commit, alumno: "+nombre+" dni: "+dni, nombre);
     	//llamo al siguiente metodo para comprobr que los commits se hacen correctamente
     	checkCommits(git);
 		// Connect to SQLite sample.db database
