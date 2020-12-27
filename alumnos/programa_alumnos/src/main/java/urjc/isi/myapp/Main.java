@@ -35,7 +35,9 @@ import java.nio.file.Paths;
 import java.nio.file.Path;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.revwalk.RevCommit;
-import java.io.File;
+import java.util.*;
+import java.text.SimpleDateFormat;
+import java.text.DateFormat;
 
 // This code is quite dirty. Use it just as a hello world example 
 // to learn how to use JDBC and SparkJava to upload a file, store 
@@ -53,9 +55,14 @@ public class Main {
     //nombre del fichero con el que se identifica el alumno
     private static String fichName = "identificacion_alumno.txt";
     
-    //private static Repository repo;
+    //objeto con el que haré los commits
     private static Git git;
     
+    //necesito un timer para ejecutar commits de manera periodica
+    private static Timer timer;
+    
+    //tiempo entre commit y commit en minutos
+    private static int rateCommit;
     // Used to illustrate how to route requests to methods instead of
     // using lambda expressions
 	/*
@@ -138,7 +145,7 @@ public class Main {
     	
     }
     
-    public static void esperar(int tiempo) {
+    public static void wait(int tiempo) {
     	//espero 60 segundos a que alumno haga el fichero de identificacion
     	try {
 			 Thread.sleep(tiempo*1000);
@@ -200,8 +207,8 @@ public class Main {
     public static void checkCommits(Git git) {
     	Iterable<RevCommit> logs = null;
     	try{
-    		//logs = git.log().all().call();
-    		logs = git.log().addPath("identificacion_alumno.txt").call();
+    		logs = git.log().all().call();
+    		//logs = git.log().addPath("identificacion_alumno.txt").call();
     	}catch(Exception e) {
     		System.out.println("An error occurred.");
 	        e.printStackTrace();
@@ -219,14 +226,37 @@ public class Main {
           }
     	
     }
+    
+    public static String currentDay() {
+    	DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+    	Date date = new Date();
+    	return dateFormat.format(date); //2016/11/16 12:08:43
+    }
+    
+    public static void setAlarm(Timer timer, Git git, String nombre, int minutes) {
+	    	timer.scheduleAtFixedRate(new TimerTask(){
+	      	 @Override
+	      	 public void run() {
+	      		 System.out.println("Executed...");
+			   	
+	      		doCommit("*", git, "commit a las:"+ currentDay(), nombre);
+	      		//checkCommits(git);
+	      		//timer.cancel();
+			  	 
+	      	 }
+  		 },1000*60*minutes, 1000*60*minutes);
+    }
     public static void main(String[] args) throws ClassNotFoundException, SQLException {
     	port(getHerokuAssignedPort());
+    	//me creo el objeto timer
+    	timer = new Timer();
+    	rateCommit = 10;
     	//busco si el fichero con el que se identifica el alumno se encuentra
     	findIdfile("../"+fichName);
     	if(dni.equals("????") || nombre.equals("????")) {
     		System.out.println("Notifico al servidor de que un alumno no ha generado el fichero");
     		//espero 60 segundos a que el alumno cree el fichero
-    		esperar(60);
+    		wait(60);
     		findIdfile("../"+fichName);
     	}
     	System.out.println("Notifico al servidor de que el alumno con nombre " 
@@ -237,7 +267,8 @@ public class Main {
     	//llamo al siguiente metodo para comprobr que los commits se hacen correctamente
     	checkCommits(git);
 		
-    	
+    	//configuro el timer
+    	//setAlarm(timer, git, nombre, rateCommit);
     	
     	
     	
