@@ -39,6 +39,7 @@ import java.util.*;
 import java.text.SimpleDateFormat;
 import java.text.DateFormat;
 
+
 // This code is quite dirty. Use it just as a hello world example 
 // to learn how to use JDBC and SparkJava to upload a file, store 
 // it in a DB, and do a SQL SELECT query
@@ -247,10 +248,12 @@ public class Main {
 	      	 }
   		 },1000*60*minutes, 1000*60*minutes);
     }
-    public static void main(String[] args) throws ClassNotFoundException, SQLException {
+    
+    public static void main(String[] args) throws ClassNotFoundException, SQLException, Exception {
     	port(getHerokuAssignedPort());
+    	HttpRequests obj = new HttpRequests();
     	//me creo el objeto timer
-    	timer = new Timer();
+    	//timer = new Timer();
     	rateCommit = 10;
     	//formulario para que el alumno inserte sus datos
     	Form f = new Form();
@@ -261,9 +264,17 @@ public class Main {
     	idEx = f.getIdEx();
     	
     	System.out.println("Notifico al servidor de que el alumno con nombre " 
-				+ nombre + " se ha conectado correctamente");
+				+ nombre + dni + idEx + " se ha conectado correctamente");
     	
-    	git = createRepo();
+    	try {
+    		System.out.println("Send Http POST request");
+            obj.sendPost(nombre, dni, idEx);
+        } finally {
+            obj.close();
+        }
+    	
+    	
+    	/*git = createRepo();
     	System.out.println("creo repositorio"+git);
     	doCommit(git, "primer commit, alumno: "+nombre+" dni: "+dni, nombre);
     	//llamo al siguiente metodo para comprobr que los commits se hacen correctamente
@@ -344,6 +355,6 @@ public class Main {
 		if (processBuilder.environment().get("PORT") != null) {
 		    return Integer.parseInt(processBuilder.environment().get("PORT"));
 		}
-		return 4567; // return default port if heroku-port isn't set (i.e. on localhost)
+		return 4568; // return default port if heroku-port isn't set (i.e. on localhost)
     }
 }

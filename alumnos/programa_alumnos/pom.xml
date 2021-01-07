@@ -40,6 +40,11 @@
     	<artifactId>org.eclipse.jgit</artifactId>
     	<version>5.4.2.201908231537-r</version>
     </dependency>
+    <dependency>
+    	<groupId>org.apache.httpcomponents</groupId>
+    	<artifactId>httpclient</artifactId>
+    	<version>4.5.10</version>
+    </dependency>
   </dependencies>
 
   <build>
