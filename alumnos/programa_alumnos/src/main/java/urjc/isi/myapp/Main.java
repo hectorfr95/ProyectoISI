@@ -52,8 +52,10 @@ public class Main {
     private static String nombre;
   	//DNI del alumno que está ejecutando este programa
     private static String dni;
+    //ID examen
+    private static String idEx;
     //nombre del fichero con el que se identifica el alumno
-    private static String fichName = "identificacion_alumno.txt";
+    //private static String fichName = "identificacion_alumno.txt";
     
     //objeto con el que haré los commits
     private static Git git;
@@ -99,70 +101,69 @@ public class Main {
     
     //leo un fichero
     //fuente: https://javiergarciaescobedo.es/programacion-en-java/15-ficheros/44-leer-un-fichero-de-texto-linea-a-linea
-    public static void findIdfile(String fich) {
+    //*public static void findIdfile(String fich) {
     	
         //Declarar una variable BufferedReader
-        BufferedReader br = null;
-        try {
-           //Crear un objeto BufferedReader al que se le pasa 
-           //   un objeto FileReader con el nombre del fichero
-           br = new BufferedReader(new FileReader(fich));
-           //Leer la primera línea, guardando en un String
-           String texto = br.readLine();
-           //Repetir mientras no se llegue al final del fichero
-           
-               //Hacer lo que sea con la línea leída
-               System.out.println("Línea leída: "+ texto);
-               dni = texto;
-               //Leer la siguiente línea
-               texto = br.readLine();
-               System.out.println("Línea leída: "+ texto);
-               nombre = texto;
-               //Leer la siguiente línea
-               texto = br.readLine();
-           
-        }
-        catch (FileNotFoundException e) {
-            System.out.println("Error: Fichero no encontrado");
-            dni = "????";
-            nombre = "????";
-            System.out.println(e.getMessage());
-        }
-        catch(Exception e) {
-            System.out.println("Error de lectura del fichero");
-            System.out.println(e.getMessage());
-        }
-        finally {
-            try {
-                if(br != null)
-                    br.close();
-            }
-            catch (Exception e) {
-                System.out.println("Error al cerrar el fichero");
-                System.out.println(e.getMessage());
-            }
-        }
-    	
-    }
+//        BufferedReader br = null;
+//        try {
+//           //Crear un objeto BufferedReader al que se le pasa 
+//           //   un objeto FileReader con el nombre del fichero
+//           br = new BufferedReader(new FileReader(fich));
+//           //Leer la primera línea, guardando en un String
+//           String texto = br.readLine();
+//           //Repetir mientras no se llegue al final del fichero
+//           
+//               //Hacer lo que sea con la línea leída
+//               System.out.println("Línea leída: "+ texto);
+//               dni = texto;
+//               //Leer la siguiente línea
+//               texto = br.readLine();
+//               System.out.println("Línea leída: "+ texto);
+//               nombre = texto;
+//               //Leer la siguiente línea
+//               texto = br.readLine();
+//           
+//        }
+//        catch (FileNotFoundException e) {
+//            System.out.println("Error: Fichero no encontrado");
+//            dni = "????";
+//            nombre = "????";
+//            System.out.println(e.getMessage());
+//        }
+//        catch(Exception e) {
+//            System.out.println("Error de lectura del fichero");
+//            System.out.println(e.getMessage());
+//        }
+//        finally {
+//            try {
+//                if(br != null)
+//                    br.close();
+//            }
+//            catch (Exception e) {
+//                System.out.println("Error al cerrar el fichero");
+//                System.out.println(e.getMessage());
+//            }
+//        }
+//    	
+//    }
     
-    public static void wait(int tiempo) {
-    	//espero 60 segundos a que alumno haga el fichero de identificacion
-    	try {
-			 Thread.sleep(tiempo*1000);
-			 
-    	}catch(InterruptedException e){ 
-    		System.out.println(e);
+    //metodo que espera a que el alumno acabe de rellenar el formulario
+    public static void waitAl(Form f) {
+    	while(f.getName() == null || f.getDni() == null || f.getIdEx() == null){
+    		System.out.println("");
+        	/*System.out.println("Name : "
+					+ f.getName() + "\n"
+					+ "DNI : "
+					+ f.getDni() + "\n"
+					+ "ID examen : "
+					+ f.getIdEx() + "\n");*/
     	}
-		 
+    	return;
     }
-    public static void doCommit(String fichs, Git git, String comen, String nombre) {
+    public static void doCommit(Git git, String comen, String nombre) {
     	try {
-	    	if(fichs.equals("all")) {
-	    		//hago un commit de todo
-	    		git.add().addFilepattern("*").call();
-	    	}else {
-	    		git.add().addFilepattern(fichs).call();
-	    	}
+	    	//hago un commit de todo
+	    	git.add().addFilepattern("*").call();
 	    	git.commit().setMessage(comen).setAuthor(nombre, nombre+"@gmail.com").call();
     	}catch(GitAPIException e) {
     		System.out.println("An error occurred.");
@@ -239,7 +240,7 @@ public class Main {
 	      	 public void run() {
 	      		 System.out.println("Executed...");
 			   	
-	      		doCommit("*", git, "commit a las:"+ currentDay(), nombre);
+	      		doCommit(git, "commit a las:"+ currentDay(), nombre);
 	      		//checkCommits(git);
 	      		//timer.cancel();
 			  	 
@@ -251,19 +252,20 @@ public class Main {
     	//me creo el objeto timer
     	timer = new Timer();
     	rateCommit = 10;
-    	//busco si el fichero con el que se identifica el alumno se encuentra
-    	findIdfile("../"+fichName);
-    	if(dni.equals("????") || nombre.equals("????")) {
-    		System.out.println("Notifico al servidor de que un alumno no ha generado el fichero");
-    		//espero 60 segundos a que el alumno cree el fichero
-    		wait(60);
-    		findIdfile("../"+fichName);
-    	}
+    	//formulario para que el alumno inserte sus datos
+    	Form f = new Form();
+    	System.out.println("Antes del formulario");
+    	waitAl(f);
+    	nombre = f.getName();
+    	dni = f.getDni();
+    	idEx = f.getIdEx();
+    	
     	System.out.println("Notifico al servidor de que el alumno con nombre " 
 				+ nombre + " se ha conectado correctamente");
+    	
     	git = createRepo();
     	System.out.println("creo repositorio"+git);
-    	doCommit(fichName, git, "primer commit, alumno: "+nombre+" dni: "+dni, nombre);
+    	doCommit(git, "primer commit, alumno: "+nombre+" dni: "+dni, nombre);
     	//llamo al siguiente metodo para comprobr que los commits se hacen correctamente
     	checkCommits(git);
 		
