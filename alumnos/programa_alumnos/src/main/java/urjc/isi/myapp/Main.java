@@ -12,6 +12,8 @@ import java.sql.Statement;
 import java.sql.PreparedStatement;
 
 import java.util.StringTokenizer;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 import javax.servlet.MultipartConfigElement;
 
@@ -20,6 +22,8 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.FileReader;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.Status;
 import org.eclipse.jgit.api.errors.GitAPIException;
@@ -29,6 +33,7 @@ import org.eclipse.jgit.lib.Ref;
 import org.eclipse.jgit.storage.file.FileRepositoryBuilder;
 import org.eclipse.jgit.lib.Repository;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import org.eclipse.jgit.api.InitCommand;
 import java.nio.file.Paths;
@@ -38,6 +43,8 @@ import org.eclipse.jgit.revwalk.RevCommit;
 import java.util.*;
 import java.text.SimpleDateFormat;
 import java.text.DateFormat;
+
+
 
 
 // This code is quite dirty. Use it just as a hello world example 
@@ -249,12 +256,39 @@ public class Main {
   		 },1000*60*minutes, 1000*60*minutes);
     }
     
+    private static void zipFile(File fileToZip, String fileName, ZipOutputStream zipOut) throws IOException {
+        if (fileToZip.isDirectory()) {
+            if (fileName.endsWith("/")) {
+                zipOut.putNextEntry(new ZipEntry(fileName));
+                zipOut.closeEntry();
+            } else {
+                zipOut.putNextEntry(new ZipEntry(fileName + "/"));
+                zipOut.closeEntry();
+            }
+            File[] children = fileToZip.listFiles();
+            for (File childFile : children) {
+                zipFile(childFile, fileName + "/" + childFile.getName(), zipOut);
+            }
+            return;
+        }
+        FileInputStream fis = new FileInputStream(fileToZip);
+        ZipEntry zipEntry = new ZipEntry(fileName);
+        zipOut.putNextEntry(zipEntry);
+        byte[] bytes = new byte[1024];
+        int length;
+        while ((length = fis.read(bytes)) >= 0) {
+            zipOut.write(bytes, 0, length);
+        }
+        fis.close();
+    }
+    
     public static void main(String[] args) throws ClassNotFoundException, SQLException, Exception {
     	port(getHerokuAssignedPort());
     	HttpRequests obj = new HttpRequests();
     	//me creo el objeto timer
     	//timer = new Timer();
     	rateCommit = 10;
+    	//String urlExamen = "http://localhost:4567/examen";
     	//formulario para que el alumno inserte sus datos
     	Form f = new Form();
     	System.out.println("Antes del formulario");
@@ -266,20 +300,44 @@ public class Main {
     	System.out.println("Notifico al servidor de que el alumno con nombre " 
 				+ nombre + dni + idEx + " se ha conectado correctamente");
     	
+    	//POST con informacion del alumno
     	try {
     		System.out.println("Send Http POST request");
-            obj.sendPost(nombre, dni, idEx);
+            obj.sendPostAlumno(nombre, dni, idEx);
         } finally {
             obj.close();
         }
     	
     	
-    	/*git = createRepo();
+    	git = createRepo();
     	System.out.println("creo repositorio"+git);
     	doCommit(git, "primer commit, alumno: "+nombre+" dni: "+dni, nombre);
     	//llamo al siguiente metodo para comprobr que los commits se hacen correctamente
     	checkCommits(git);
 		
+    	//Recibir GET
+    	
+    	
+    	//Comprimir .git a zip 
+    	String sourceFile = "../.git/";
+        FileOutputStream fos = new FileOutputStream("../repo.zip");
+        ZipOutputStream zipOut = new ZipOutputStream(fos);
+        File fileToZip = new File(sourceFile);
+    	
+    	zipFile(fileToZip, fileToZip.getName(), zipOut);
+        zipOut.close();
+        fos.close();
+        
+        //POST enviar .ZIP
+        File file = new File("../repo.zip");
+        try {
+    		System.out.println("Send Http POST request");
+            obj.sendPostExamen(file);
+        } finally {
+            obj.close();
+        }
+        
+        
     	//configuro el timer
     	//setAlarm(timer, git, nombre, rateCommit);
     	
