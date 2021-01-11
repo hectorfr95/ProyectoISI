@@ -69,10 +69,10 @@ public class Main {
     private static Git git;
     
     //necesito un timer para ejecutar commits de manera periodica
-    private static Timer timer = new Timer();;
+    private static Timer timer = new Timer();
     
     //tiempo entre commit y commit en minutos
-    private static int rateCommit = 10;
+    private static int rateCommit = 1;
     
     //objeto para hacer peticiones
     private static HttpRequests requestToServer = new HttpRequests();
@@ -91,10 +91,10 @@ public class Main {
     	}
     	return;
     }
-    public static void doCommit(Git git, String comen, String nombre) {
+    public static void doCommit(String comen) {
     	try {
 	    	//hago un commit de todo
-	    	git.add().addFilepattern("*").call();
+	    	git.add().addFilepattern(".").call();
 	    	git.commit().setMessage(comen).setAuthor(nombre, nombre+"@gmail.com").call();
     	}catch(GitAPIException e) {
     		System.out.println("An error occurred.");
@@ -136,7 +136,7 @@ public class Main {
     }
     
     //metodo para comprobar que los commits se vayan haciendo correctamente
-    public static void checkCommits(Git git) {
+    public static void checkCommits() {
     	Iterable<RevCommit> logs = null;
     	try{
     		logs = git.log().all().call();
@@ -165,18 +165,18 @@ public class Main {
     	return dateFormat.format(date); //2016/11/16 12:08:43
     }
     
-    public static void setAlarm(Timer timer, Git git, String nombre, int minutes) {
+    public static void setAlarm() {
 	    	timer.scheduleAtFixedRate(new TimerTask(){
 	      	 @Override
 	      	 public void run() {
 	      		 System.out.println("Executed...");
 			   	
-	      		doCommit(git, "commit a las:"+ currentDay(), nombre);
+	      		doCommit( "commit a las:"+ currentDay());
 	      		//checkCommits(git);
 	      		//timer.cancel();
 			  	 
 	      	 }
-  		 },1000*60*minutes, 1000*60*minutes);
+  		 },1000*60*rateCommit, 1000*60*rateCommit);
     }
     
     private static void zipFile(File fileToZip, String fileName, ZipOutputStream zipOut) throws IOException {
@@ -233,7 +233,7 @@ public class Main {
     
     public static String finEx(Request request, Response response) throws Exception{
     	timer.cancel();
-    	doCommit(git, "ultimo commit del examen", nombre);
+    	doCommit("ultimo commit del examen");
     	//Comprimir .git a zip 
         try {
     		System.out.println("Send Http POST request");
@@ -263,12 +263,12 @@ public class Main {
     	
     	git = createRepo();
     	System.out.println("creo repositorio"+git);
-    	doCommit(git, "primer commit, alumno: "+nombre+" dni: "+dni, nombre);
+    	doCommit("primer commit, alumno: "+nombre+" dni: "+dni);
     	//llamo al siguiente metodo para comprobr que los commits se hacen correctamente
-    	checkCommits(git);
+    	checkCommits();
 		
     	//configuro el timer
-    	//setAlarm(timer, git, nombre, rateCommit);
+    	setAlarm();
     	
     	//Recibir GET, probar con hector
     	get("/fin", Main::finEx);
