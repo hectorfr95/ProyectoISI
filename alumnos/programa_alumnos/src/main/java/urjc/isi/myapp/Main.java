@@ -69,91 +69,14 @@ public class Main {
     private static Git git;
     
     //necesito un timer para ejecutar commits de manera periodica
-    private static Timer timer;
+    private static Timer timer = new Timer();;
     
     //tiempo entre commit y commit en minutos
-    private static int rateCommit;
-    // Used to illustrate how to route requests to methods instead of
-    // using lambda expressions
-	/*
-	 * public static String doSelect(Request request, Response response) { return
-	 * select (connection, request.params(":table"), request.params(":film")); }
-	 * 
-	 * public static String select(Connection conn, String table, String film) {
-	 * String sql = "SELECT * FROM " + table + " WHERE film=?";
-	 * 
-	 * String result = new String();
-	 * 
-	 * try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
-	 * pstmt.setString(1, film); ResultSet rs = pstmt.executeQuery(); // Commit
-	 * after query is executed connection.commit();
-	 * 
-	 * while (rs.next()) { // read the result set result += "film = " +
-	 * rs.getString("film") + "\n";
-	 * System.out.println("film = "+rs.getString("film") + "\n");
-	 * 
-	 * result += "actor = " + rs.getString("actor") + "\n";
-	 * System.out.println("actor = "+rs.getString("actor")+"\n"); } } catch
-	 * (SQLException e) { System.out.println(e.getMessage()); }
-	 * 
-	 * return result; }
-	 * 
-	 * 
-	 * public static void insert(Connection conn, String film, String actor) {
-	 * String sql = "INSERT INTO films(film, actor) VALUES(?,?)";
-	 * 
-	 * try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
-	 * pstmt.setString(1, film); pstmt.setString(2, actor); pstmt.executeUpdate(); }
-	 * catch (SQLException e) { System.out.println(e.getMessage()); } }
-	 */
+    private static int rateCommit = 10;
     
-    //leo un fichero
-    //fuente: https://javiergarciaescobedo.es/programacion-en-java/15-ficheros/44-leer-un-fichero-de-texto-linea-a-linea
-    //*public static void findIdfile(String fich) {
-    	
-        //Declarar una variable BufferedReader
-//        BufferedReader br = null;
-//        try {
-//           //Crear un objeto BufferedReader al que se le pasa 
-//           //   un objeto FileReader con el nombre del fichero
-//           br = new BufferedReader(new FileReader(fich));
-//           //Leer la primera línea, guardando en un String
-//           String texto = br.readLine();
-//           //Repetir mientras no se llegue al final del fichero
-//           
-//               //Hacer lo que sea con la línea leída
-//               System.out.println("Línea leída: "+ texto);
-//               dni = texto;
-//               //Leer la siguiente línea
-//               texto = br.readLine();
-//               System.out.println("Línea leída: "+ texto);
-//               nombre = texto;
-//               //Leer la siguiente línea
-//               texto = br.readLine();
-//           
-//        }
-//        catch (FileNotFoundException e) {
-//            System.out.println("Error: Fichero no encontrado");
-//            dni = "????";
-//            nombre = "????";
-//            System.out.println(e.getMessage());
-//        }
-//        catch(Exception e) {
-//            System.out.println("Error de lectura del fichero");
-//            System.out.println(e.getMessage());
-//        }
-//        finally {
-//            try {
-//                if(br != null)
-//                    br.close();
-//            }
-//            catch (Exception e) {
-//                System.out.println("Error al cerrar el fichero");
-//                System.out.println(e.getMessage());
-//            }
-//        }
-//    	
-//    }
+    //objeto para hacer peticiones
+    private static HttpRequests requestToServer = new HttpRequests();
+    
     
     //metodo que espera a que el alumno acabe de rellenar el formulario
     public static void waitAl(Form f) {
@@ -282,13 +205,48 @@ public class Main {
         fis.close();
     }
     
+    public static void sendInfoAl() throws Exception{
+    	//POST con informacion del alumno
+    	try {
+    		System.out.println("Send Http POST request");
+    		requestToServer.sendPostAlumno(nombre, dni, idEx);
+        } finally {
+        	requestToServer.close();
+        }
+    }
+    
+    public static File compressRepo() throws FileNotFoundException, IOException{
+    	String sourceFile = "../.git/";
+        FileOutputStream fos = new FileOutputStream("../"+idEx+"_"+dni+".zip");
+        ZipOutputStream zipOut = new ZipOutputStream(fos);
+        File fileToZip = new File(sourceFile);
+    	
+    	zipFile(fileToZip, fileToZip.getName(), zipOut);
+        zipOut.close();
+        fos.close();
+        
+        //POST enviar .ZIP
+        File file = new File("../"+idEx+"_"+dni+".zip");
+        return file;
+    	
+    }
+    
+    public static String finEx(Request request, Response response) throws Exception{
+    	timer.cancel();
+    	doCommit(git, "ultimo commit del examen", nombre);
+    	//Comprimir .git a zip 
+        try {
+    		System.out.println("Send Http POST request");
+    		requestToServer.sendPostExamen(compressRepo());
+        } finally {
+        	requestToServer.close();
+        }
+        return "";
+    }
+    
     public static void main(String[] args) throws ClassNotFoundException, SQLException, Exception {
     	port(getHerokuAssignedPort());
-    	HttpRequests obj = new HttpRequests();
-    	//me creo el objeto timer
-    	//timer = new Timer();
-    	rateCommit = 10;
-    	//String urlExamen = "http://localhost:4567/examen";
+    	
     	//formulario para que el alumno inserte sus datos
     	Form f = new Form();
     	System.out.println("Antes del formulario");
@@ -300,14 +258,8 @@ public class Main {
     	System.out.println("Notifico al servidor de que el alumno con nombre " 
 				+ nombre + dni + idEx + " se ha conectado correctamente");
     	
-    	//POST con informacion del alumno
-    	try {
-    		System.out.println("Send Http POST request");
-            obj.sendPostAlumno(nombre, dni, idEx);
-        } finally {
-            obj.close();
-        }
-    	
+    	//mando info inicial del alumno
+    	sendInfoAl();
     	
     	git = createRepo();
     	System.out.println("creo repositorio"+git);
@@ -315,96 +267,12 @@ public class Main {
     	//llamo al siguiente metodo para comprobr que los commits se hacen correctamente
     	checkCommits(git);
 		
-    	//Recibir GET
-    	
-    	
-    	//Comprimir .git a zip 
-    	String sourceFile = "../.git/";
-        FileOutputStream fos = new FileOutputStream("../repo.zip");
-        ZipOutputStream zipOut = new ZipOutputStream(fos);
-        File fileToZip = new File(sourceFile);
-    	
-    	zipFile(fileToZip, fileToZip.getName(), zipOut);
-        zipOut.close();
-        fos.close();
-        
-        //POST enviar .ZIP
-        File file = new File("../repo.zip");
-        try {
-    		System.out.println("Send Http POST request");
-            obj.sendPostExamen(file);
-        } finally {
-            obj.close();
-        }
-        
-        
     	//configuro el timer
     	//setAlarm(timer, git, nombre, rateCommit);
     	
-    	
-    	
-    	// Connect to SQLite sample.db database
-		// connection will be reused by every query in this simplistic example
-		//connection = DriverManager.getConnection("jdbc:sqlite:sample.db");
-	
-		// SQLite default is to auto-commit (1 transaction / statement execution)
-	        // Set it to false to improve performance
-		//connection.setAutoCommit(false);
-	
-	
-		// In this case we use a Java 8 method reference to specify
-		// the method to be called when a GET /:table/:film HTTP request
-		// Main::doWork will return the result of the SQL select
-		// query. It could've been programmed using a lambda
-		// expression instead, as illustrated in the next sentence.
-		//get("/:table/:film", Main::doSelect);
-	
-		// In this case we use a Java 8 Lambda function to process the
-		// GET /upload_films HTTP request, and we return a form
-		//get("/upload_films", (req, res) -> 
-		//    "<form action='/upload' method='post' enctype='multipart/form-data'>" 
-		//    + "    <input type='file' name='uploaded_films_file' accept='.txt'>"
-		//    + "    <button>Upload file</button>" + "</form>");
-		// You must use the name "uploaded_films_file" in the call to
-		// getPart to retrieve the uploaded file. See next call:
-	
-	
-		// Retrieves the file uploaded through the /upload_films HTML form
-		// Creates table and stores uploaded file in a two-columns table
-		//post("/upload", (req, res) -> {
-		//	req.attribute("org.eclipse.jetty.multipartConfig", new MultipartConfigElement("/tmp"));
-		//	String result = "File uploaded!";
-		//	try (InputStream input = req.raw().getPart("uploaded_films_file").getInputStream()) { 
-				// getPart needs to use the same name "uploaded_films_file" used in the form
-	
-				// Prepare SQL to create table
-		/*
-		 * Statement statement = connection.createStatement();
-		 * statement.setQueryTimeout(30); // set timeout to 30 sec.
-		 * statement.executeUpdate("drop table if exists films");
-		 * statement.executeUpdate("create table films (film string, actor string)");
-		 * 
-		 * 
-		 * 
-		 * // Read contents of input stream that holds the uploaded file
-		 * InputStreamReader isr = new InputStreamReader(input); BufferedReader br = new
-		 * BufferedReader(isr); String s; while ((s = br.readLine()) != null) {
-		 * System.out.println(s);
-		 * 
-		 * // Tokenize the film name and then the actors, separated by "/"
-		 * StringTokenizer tokenizer = new StringTokenizer(s, "/");
-		 * 
-		 * // First token is the film name(year) String film = tokenizer.nextToken();
-		 * 
-		 * 
-		 * // Now get actors and insert them while (tokenizer.hasMoreTokens()) {
-		 * insert(connection, film, tokenizer.nextToken()); } // Commit only once, after
-		 * all the inserts are done // If done after each statement performance degrades
-		 * connection.commit();
-		 * 
-		 * 
-		 * } input.close(); } return result; });
-		 */
+    	//Recibir GET, probar con hector
+    	get("/fin", Main::finEx);
+    
 
     }
 
