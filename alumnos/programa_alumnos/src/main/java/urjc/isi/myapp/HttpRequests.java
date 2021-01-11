@@ -31,32 +31,32 @@ public class HttpRequests {
         httpClient.close();
     }
 
-	public void sendGet() throws Exception {
-
-        HttpGet request = new HttpGet("https://www.google.com/search?q=mkyong");
-
-        // add request headers
-        request.addHeader("custom-key", "mkyong");
-        request.addHeader(HttpHeaders.USER_AGENT, "Googlebot");
-
-        try (CloseableHttpResponse response = httpClient.execute(request)) {
-
-            // Get HttpResponse Status
-            System.out.println(response.getStatusLine().toString());
-
-            HttpEntity entity = response.getEntity();
-            Header headers = entity.getContentType();
-            System.out.println(headers);
-
-            if (entity != null) {
-                // return it as a String
-                String result = EntityUtils.toString(entity);
-                System.out.println(result);
-            }
-
-        }
-
-    }
+//	public void sendGet() throws Exception {
+//
+//        HttpGet request = new HttpGet("https://www.google.com/search?q=mkyong");
+//
+//        // add request headers
+//        request.addHeader("custom-key", "mkyong");
+//        request.addHeader(HttpHeaders.USER_AGENT, "Googlebot");
+//
+//        try (CloseableHttpResponse response = httpClient.execute(request)) {
+//
+//            // Get HttpResponse Status
+//            System.out.println(response.getStatusLine().toString());
+//
+//            HttpEntity entity = response.getEntity();
+//            Header headers = entity.getContentType();
+//            System.out.println(headers);
+//
+//            if (entity != null) {
+//                // return it as a String
+//                String result = EntityUtils.toString(entity);
+//                System.out.println(result);
+//            }
+//
+//        }
+//
+//    }
 
     public void sendPostAlumno(String nombre, String dni, String idex) throws Exception {
     	System.out.println(nombre+dni+idex);
