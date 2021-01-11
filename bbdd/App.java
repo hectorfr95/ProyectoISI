@@ -78,6 +78,8 @@ public class App
 			//Añadido
 			examen examenObject = new examen(id_examen, "fecha", "asig", path);
 			examenDao.save(examenObject);
+			String path_commit = examenDao.pathCommits(id_examen);
+			System.out.println("Este es el path" + path_commit);
 			//-Añadido
 			
 			return result;
@@ -87,15 +89,16 @@ public class App
 	    }
 		
 //		get("/alumnos", (req, res) -> 
-//		"<form action='/examinar' method='post'>"
-//		+ "<fieldset>"
-//		+ "<p>INTRODUZCA LOS DATOS:</p>\n"
-//		+ "<p>Nombre: <input type='text' name='nombre_alumno' required='true'></p>\n"
-//		+ "<p>Apellidos: <input type='text' name='apellido_alumno' required='true'></p>\n"
-//		+ "<p>ID de examen: <input type='text' name='id_examen_alumno' required='true'></p>\n"
-//		+ "<input type=\"submit\" value=\"Comenzar examen\">"
-//	    + "</fieldset>" + "</form>");
-//		
+//			String result = "<form action='/examinar' method='post'>"
+//			+ "<fieldset>"
+//			+ "<p>INTRODUZCA LOS DATOS:</p>\n"
+//			+ "<p>Nombre: <input type='text' name='nombre_alumno' required='true'></p>\n"
+//			+ "<p>Apellidos: <input type='text' name='apellido_alumno' required='true'></p>\n"
+//			+ "<p>ID de examen: <input type='text' name='id_examen_alumno' required='true'></p>\n"
+//			+ "<input type=\"submit\" value=\"Comenzar examen\"></fieldset></form>";
+//			
+//			return result;
+//		);
 //		
 //		
 //		

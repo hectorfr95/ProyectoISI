@@ -81,6 +81,5 @@ public class alumno {
 		return true;
 	}
 
-	
-
 }
+

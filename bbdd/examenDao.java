@@ -52,8 +52,10 @@ public class examenDao {
     	String Path = null;
     	
         try {
-            PreparedStatement ps = c.prepareStatement("select * from Examenes");
-            ResultSet rs = ps.executeQuery(String.valueOf(idExamen));
+        	String query = "SELECT * from Examenes WHERE idExamen = " + idExamen;
+            PreparedStatement ps = c.prepareStatement(query);
+
+            ResultSet rs = ps.executeQuery();
 
             while(rs.next()) {
                 Path = rs.getString("Path");

@@ -49,13 +49,15 @@ public class alumnoDao {
     }
  
     public String[] IpPuerto(int idAlumno) {
-    	String nombre, ip = null;
+    	String nombre = null;
+    	String ip = null;
     	int puerto = 0;
     	
         try {
-            PreparedStatement ps = c.prepareStatement("select * from Alumnos");
+        	String query = "SELECT * from Alumnos WHERE idAlumno = " + idAlumno;
+            PreparedStatement ps = c.prepareStatement(query);
             
-            ResultSet rs = ps.executeQuery(String.valueOf(idAlumno));
+            ResultSet rs = ps.executeQuery();
 
             while(rs.next()) {
             	nombre = rs.getString("nombre");
@@ -71,8 +73,7 @@ public class alumnoDao {
         }
     }
 
-    
-    
+  
     public void save(alumno alumno) {
         try {
             PreparedStatement ps = c.prepareStatement("insert into Examenes(idAlumno, nombre , puerto, ip) VALUES(?,?,?,?)");

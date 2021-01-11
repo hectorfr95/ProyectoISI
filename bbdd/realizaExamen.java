@@ -7,7 +7,7 @@ public class realizaExamen {
 
 	public realizaExamen(int idExamen, int idAlumno) {
 		this.idExamen = idExamen;
-		this idAlumno = idAlumno;
+		this.idAlumno = idAlumno;
 	}
 	
 	public int getIdExamen() {

@@ -23,39 +23,41 @@ public class realizaExamenDao {
         }
     }
     
-    public String ExamenesAlumno(int idAlumno) {
-    	String Examen = null;
+    public int ExamenesAlumno(int idAlumno) {
+    	int idExamen = 0;
     	
         try {
-            PreparedStatement ps = c.prepareStatement("select * from RealizaExamen");
-            ResultSet rs = ps.executeQuery(String.valueOf(idAlumno));
+        	String query = "SELECT * from RealizaExamen WHERE idAlumno = " + idAlumno;
+            PreparedStatement ps = c.prepareStatement(query);
+            ResultSet rs = ps.executeQuery();
 
             while(rs.next()) {
-                Path = rs.getString("idExamen");
+                idExamen = rs.getInt("idExamen");
             }
 
         } catch (SQLException e) {
             throw new RuntimeException(e);
         } finally {
-            return Examen;
+            return idExamen;
         }
     }
     
-    public String AlumnosExamen(int idExamen) {
-    	String Alumno = null;
+    public int AlumnosExamen(int idExamen) {
+    	int idAlumno = 0;
     	
         try {
-            PreparedStatement ps = c.prepareStatement("select * from RealizaExamen");
-            ResultSet rs = ps.executeQuery(String.valueOf(idExamen));
+        	String query = "SELECT * from RealizaExamen WHERE idExamen = " + idExamen;
+            PreparedStatement ps = c.prepareStatement(query);
+            ResultSet rs = ps.executeQuery();
 
             while(rs.next()) {
-                Path = rs.getString("idAlumno");
+            	idAlumno = rs.getInt("idAlumno");
             }
 
         } catch (SQLException e) {
             throw new RuntimeException(e);
         } finally {
-            return Alumno;
+            return idAlumno;
         }
     }
     
@@ -63,7 +65,7 @@ public class realizaExamenDao {
         try {
             PreparedStatement ps = c.prepareStatement("insert into RealizaExamen(idExamen, idAlumno) VALUES(?,?)");
             ps.setInt(1, realizaExamen.getIdExamen());
-            ps.setString(2, realizaExamen.getIdAlumno());
+            ps.setInt(2, realizaExamen.getIdAlumno());
             ps.execute();
 
             c.commit();
@@ -77,6 +79,10 @@ public class realizaExamenDao {
             c.close();
         } catch (SQLException e) {
             throw new RuntimeException(e);
+        }
+    }
+}
+
         }
     }
 }
