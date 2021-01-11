@@ -47,17 +47,18 @@ public class alumnoDao {
             return allAlumnos;
         }
     }
-    
+ 
     public String[] IpPuerto(int idAlumno) {
-    	String ip = null;
-    	Integer puerto = null;
+    	String nombre, ip = null;
+    	int puerto = 0;
     	
         try {
             PreparedStatement ps = c.prepareStatement("select * from Alumnos");
-
-            ResultSet rs = ps.executeQuery();
+            
+            ResultSet rs = ps.executeQuery(String.valueOf(idAlumno));
 
             while(rs.next()) {
+            	nombre = rs.getString("nombre");
                 ip = rs.getString("Ip");
                 puerto = rs.getInt("puerto");
             }
@@ -65,8 +66,8 @@ public class alumnoDao {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         } finally {
-        	String[] ethernet_alumno = {String.valueOf(puerto), ip};
-            return [ethernet_alumno;
+        	String[] alumno = {String.valueOf(idAlumno),nombre ,String.valueOf(puerto), ip};
+            return alumno;
         }
     }
 
