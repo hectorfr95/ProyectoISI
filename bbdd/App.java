@@ -55,9 +55,17 @@ public class App
 			req.queryParams("idex");
 			System.out.println(result);
 			cosa = result;
+			String dni = req.queryParams("dni");
+			String nombre = req.queryParams("nombre");
+			String idex = req.queryParams("idex");
+			String ip = req.ip();
+			
+			alumno alumnoObject = new alumno(dni,nombre, 4568, ip);
+			alumnoDao.save(alumnoObject);
 			
 			return result;
 		});
+		
 		
 		get("/cosa", (req, res) -> 
 			"<h1> El examen con ID "+ cosa + "</h1>"

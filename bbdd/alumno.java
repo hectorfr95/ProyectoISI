@@ -2,12 +2,12 @@ package urjc.isi.servidor;
 
 
 public class alumno {
-	private int idAlumno;
+	private String idAlumno;
 	private String Nombre;
 	private int puerto;
 	private String ip;
 	
-	public alumno(int idAlumno, String Nombre, int puerto, String ip) {
+	public alumno(String idAlumno, String Nombre, int puerto, String ip) {
 		this.idAlumno = idAlumno;
 		this.Nombre = Nombre;
 		this.puerto = puerto;
@@ -15,7 +15,7 @@ public class alumno {
 	}
 	
 	
-	public int getIdAlumno() {
+	public String getIdAlumno() {
 		return idAlumno;
 	}
 	

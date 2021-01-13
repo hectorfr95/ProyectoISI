@@ -61,6 +61,25 @@ public class realizaExamenDao {
         }
     }
     
+    
+    public String pathCommits(int idExamen) {
+    	String Path = null;
+    	
+        try {
+            PreparedStatement ps = c.prepareStatement("select * from RealizaExamen");
+            ResultSet rs = ps.executeQuery(String.valueOf(idExamen));
+
+            while(rs.next()) {
+                Path = rs.getString("Path");
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } finally {
+            return Path;
+        }
+    }
+    
     public void save(realizaExamen realizaExamen) {
         try {
             PreparedStatement ps = c.prepareStatement("insert into RealizaExamen(idExamen, idAlumno) VALUES(?,?)");
@@ -83,6 +102,3 @@ public class realizaExamenDao {
     }
 }
 
-        }
-    }
-}

@@ -6,13 +6,11 @@ public class examen {
 	private int idExamen;
 	private String Fecha;
 	private String Asignatura;
-	private String Path;
 
-	public examen(int idExamen, String Fecha, String Asignatura, String Path) {
+	public examen(int idExamen, String Fecha, String Asignatura) {
 		this.idExamen = idExamen;
 		this.Fecha = Fecha;
 		this.Asignatura = Asignatura;
-		this.Path = Path;
 	}
 
 	public int getIdExamen() {
@@ -39,16 +37,7 @@ public class examen {
 		Asignatura = asignatura;
 	}
 
-	public String getPath() {
-		return Path;
-	}
-
-	public void setPath(String path) {
-		Path = path;
-	}
-
 	
-
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -68,11 +57,6 @@ public class examen {
 				return false;
 		} else if (!Fecha.equals(other.Fecha))
 			return false;
-		if (Path == null) {
-			if (other.Path != null)
-				return false;
-		} else if (!Path.equals(other.Path))
-			return false;
 		if (idExamen != other.idExamen)
 			return false;
 		return true;
@@ -84,8 +68,8 @@ public class examen {
 		int result = 1;
 		result = prime * result + ((Asignatura == null) ? 0 : Asignatura.hashCode());
 		result = prime * result + ((Fecha == null) ? 0 : Fecha.hashCode());
-		result = prime * result + ((Path == null) ? 0 : Path.hashCode());
 		result = prime * result + idExamen;
 		return result;
 	}
 }
+

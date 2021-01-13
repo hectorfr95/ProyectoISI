@@ -34,7 +34,7 @@ public class alumnoDao {
             ResultSet rs = ps.executeQuery();
 
             while(rs.next()) {
-                int idAlumno = rs.getInt("idAlumno");
+                String idAlumno = rs.getString("idAlumno");
                 String nombre = rs.getString("nombre");
                 int puerto = rs.getInt("puerto");
                 String ip = rs.getString("ip");
@@ -48,7 +48,7 @@ public class alumnoDao {
         }
     }
  
-    public String[] IpPuerto(int idAlumno) {
+    public String[] IpPuerto(String idAlumno) {
     	String nombre = null;
     	String ip = null;
     	int puerto = 0;
@@ -68,7 +68,7 @@ public class alumnoDao {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         } finally {
-        	String[] alumno = {String.valueOf(idAlumno),nombre ,String.valueOf(puerto), ip};
+        	String[] alumno = {idAlumno,nombre ,String.valueOf(puerto), ip};
             return alumno;
         }
     }
@@ -77,7 +77,7 @@ public class alumnoDao {
     public void save(alumno alumno) {
         try {
             PreparedStatement ps = c.prepareStatement("insert into Examenes(idAlumno, nombre , puerto, ip) VALUES(?,?,?,?)");
-            ps.setInt(1, alumno.getIdAlumno());
+            ps.setString(1, alumno.getIdAlumno());
             ps.setString(2, alumno.getNombre());
             ps.setInt(3, alumno.getPuerto());
             ps.setString(4, alumno.getIp());
