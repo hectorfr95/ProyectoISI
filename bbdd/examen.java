@@ -37,7 +37,16 @@ public class examen {
 		Asignatura = asignatura;
 	}
 
-	
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((Asignatura == null) ? 0 : Asignatura.hashCode());
+		result = prime * result + ((Fecha == null) ? 0 : Fecha.hashCode());
+		result = prime * result + idExamen;
+		return result;
+	}
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -62,14 +71,4 @@ public class examen {
 		return true;
 	}
 
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((Asignatura == null) ? 0 : Asignatura.hashCode());
-		result = prime * result + ((Fecha == null) ? 0 : Fecha.hashCode());
-		result = prime * result + idExamen;
-		return result;
-	}
 }
-

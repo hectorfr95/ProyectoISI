@@ -9,6 +9,7 @@ public class examenDao {
 	
 	private static Connection c;
 
+	// Con este método creamos la conexión con la bbdd.
     public examenDao() {
         try {
             if(c!=null) return;
@@ -25,7 +26,8 @@ public class examenDao {
             throw new RuntimeException(e);
         }
     }
-
+    
+    // Con este método vamos a poder obtener todos exámenes de la tabla Exámen.
     public List<examen> all() {
 
         List<examen> allExamenes = new ArrayList<examen>();
@@ -49,24 +51,7 @@ public class examenDao {
         }
     }
     
-    public String pathCommits(int idExamen) {
-    	String Path = null;
-    	
-        try {
-            PreparedStatement ps = c.prepareStatement("select * from Examenes");
-            ResultSet rs = ps.executeQuery(String.valueOf(idExamen));
-
-            while(rs.next()) {
-                Path = rs.getString("Path");
-            }
-
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        } finally {
-            return Path;
-        }
-    }
-
+    // Con este método insertamos el objeto examen recibido en la tabla de nuestra bbdd Examenes.
     public void save(examen examen) {
         try {
             PreparedStatement ps = c.prepareStatement("insert into Examenes(idExamen, Fecha , Asignatura) VALUES(?,?,?)");
@@ -81,6 +66,7 @@ public class examenDao {
         }
     }
 
+    // Cerramos la conexión con la bbdd
     public void close() {
         try {
             c.close();
@@ -89,4 +75,3 @@ public class examenDao {
         }
     }
 }
-

@@ -9,6 +9,7 @@ public class alumnoDao {
 	
 	private static Connection c;
 
+	// Con este método creamos la conexión con la bbdd.
     public alumnoDao() {
         try {
             if(c!=null) return;
@@ -17,13 +18,14 @@ public class alumnoDao {
             c.setAutoCommit(false);
 
 //            c.prepareStatement("drop table if exists Alumnos").execute();
-//            c.prepareStatement("create table Alumnos (idAlumno integer, nombre varchar(100), puerto integer, ip varchar(100))").execute();
+//            c.prepareStatement("create table Alumnos (idAlumno varchar(200), nombre varchar(100), puerto integer, ip varchar(100))").execute();
             c.commit();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
 
+    // Con este método vamos a poder obtener todos alumnos de la tabla Alumnos.
     public List<alumno> all() {
 
         List<alumno> allAlumnos = new ArrayList<alumno>();
@@ -48,7 +50,9 @@ public class alumnoDao {
         }
     }
  
-    public String[] IpPuerto(String idAlumno) {
+    // Con este método vamos a poder obtener todos los atributos de la entidad
+    // Alumnos, al recibir el idAlumno.
+    public String[] getAtributosAlumno(String idAlumno) {
     	String nombre = null;
     	String ip = null;
     	int puerto = 0;
@@ -68,12 +72,12 @@ public class alumnoDao {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         } finally {
-        	String[] alumno = {idAlumno,nombre ,String.valueOf(puerto), ip};
+        	String[] alumno = {idAlumno, nombre ,String.valueOf(puerto), ip};
             return alumno;
         }
     }
 
-  
+    // Con este método insertamos el objeto alumno recibido en la tabla de nuestra bbdd Alumnos.
     public void save(alumno alumno) {
         try {
             PreparedStatement ps = c.prepareStatement("insert into Examenes(idAlumno, nombre , puerto, ip) VALUES(?,?,?,?)");
@@ -89,6 +93,7 @@ public class alumnoDao {
         }
     }
 
+    // Cerramos la conexión con la bbdd
     public void close() {
         try {
             c.close();
