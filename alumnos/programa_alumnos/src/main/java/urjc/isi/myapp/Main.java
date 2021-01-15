@@ -125,7 +125,7 @@ public class Main {
     
     	Path repoPath = Paths.get("../examen/");
         InitCommand init = Git.init();
-        deleteRepo(new File("../examen/.git"));
+        deleteRepo(new File("../examen/"));
         init.setDirectory(repoPath.toFile());
         Git git2 = null;
         try{
@@ -282,11 +282,11 @@ public class Main {
 
     }
     static int getHerokuAssignedPort() {
-	ProcessBuilder processBuilder = new ProcessBuilder();
-	if (processBuilder.environment().get("PORT") != null) {
-	    return Integer.parseInt(processBuilder.environment().get("PORT"));
-	}
-	return 4567; // return default port if heroku-port isn't set (i.e. on localhost)
+    	ProcessBuilder processBuilder = new ProcessBuilder();
+		if (processBuilder.environment().get("PORT") != null) {
+		    return Integer.parseInt(processBuilder.environment().get("PORT"));
+		}
+		return 4568; // return default port if heroku-port isn't set (i.e. on localhost)
     }
 
 
