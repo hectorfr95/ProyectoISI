@@ -121,9 +121,9 @@ public class Main {
     
     public static Git createRepo() {
     
-    	Path repoPath = Paths.get("../");
+    	Path repoPath = Paths.get("../examen/");
         InitCommand init = Git.init();
-        deleteRepo(new File("../.git"));
+        deleteRepo(new File("../examen/.git"));
         init.setDirectory(repoPath.toFile());
         Git git2 = null;
         try{
@@ -216,7 +216,7 @@ public class Main {
     }
     
     public static File compressRepo() throws FileNotFoundException, IOException{
-    	String sourceFile = "../.git/";
+    	String sourceFile = "../examen/.git/";
         FileOutputStream fos = new FileOutputStream("../"+idEx+"_"+dni+".zip");
         ZipOutputStream zipOut = new ZipOutputStream(fos);
         File fileToZip = new File(sourceFile);
