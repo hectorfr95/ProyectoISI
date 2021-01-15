@@ -5,10 +5,14 @@ import static spark.Spark.*;
 //import spark.Response;
 import urjc.isi.servidor.App;
 
+
 //import java.sql.Connection;
 //import java.sql.DriverManager;
 //import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
 //import java.sql.Statement;
 //import java.sql.PreparedStatement;
 import java.util.Random;
@@ -90,7 +94,11 @@ public class App
 		    + "</form>";
 			
 			//Añadido
-			examen examenObject = new examen(id_examen, "fecha", asignatura);
+			Date fecha = new Date();
+			long lnMilisegundos = fecha.getTime();
+			java.sql.Date sqlDate = new java.sql.Date(lnMilisegundos);
+			
+			examen examenObject = new examen(id_examen, sqlDate, asignatura);
 			examenDao.save(examenObject);
 			//-Añadido
 			
