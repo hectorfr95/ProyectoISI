@@ -62,6 +62,8 @@ public class Main {
     private static String dni;
     //ID examen
     private static String idEx;
+    //Puerto del alumno
+    private static int puerto;
     //nombre del fichero con el que se identifica el alumno
     //private static String fichName = "identificacion_alumno.txt";
     
@@ -205,11 +207,12 @@ public class Main {
         fis.close();
     }
     
-    public static void sendInfoAl() throws Exception{
+    public static void sendInfoAl(String puerto) throws Exception{
     	//POST con informacion del alumno
+    	
     	try {
     		System.out.println("Send Http POST request");
-    		requestToServer.sendPostAlumno(nombre, dni, idEx);
+    		requestToServer.sendPostAlumno(nombre, dni, idEx, puerto);
         } finally {
         	requestToServer.close();
         }
@@ -237,11 +240,20 @@ public class Main {
     	//Comprimir .git a zip 
         try {
     		System.out.println("Send Http POST request");
-    		requestToServer.sendPostExamen(compressRepo());
+    		requestToServer.sendPostExamen(compressRepo(), nombre, dni, idEx);
         } finally {
         	requestToServer.close();
         }
         return "";
+    }
+    
+    static int getHerokuAssignedPort() {
+		ProcessBuilder processBuilder = new ProcessBuilder();
+		if (processBuilder.environment().get("PORT") != null) {
+			puerto = Integer.parseInt(processBuilder.environment().get("PORT"));
+		}
+		//return 4568; // return default port if heroku-port isn't set (i.e. on localhost)
+		return puerto;
     }
     
     public static void main(String[] args) throws ClassNotFoundException, SQLException, Exception {
@@ -255,11 +267,13 @@ public class Main {
     	dni = f.getDni();
     	idEx = f.getIdEx();
     	
+    	String puertoStr = Integer.toString(puerto);
+    	
     	System.out.println("Notifico al servidor de que el alumno con nombre " 
 				+ nombre + dni + idEx + " se ha conectado correctamente");
     	
     	//mando info inicial del alumno
-    	sendInfoAl();
+    	sendInfoAl(puertoStr);
     	
     	git = createRepo();
     	System.out.println("creo repositorio"+git);
@@ -276,11 +290,4 @@ public class Main {
 
     }
 
-    static int getHerokuAssignedPort() {
-		ProcessBuilder processBuilder = new ProcessBuilder();
-		if (processBuilder.environment().get("PORT") != null) {
-		    return Integer.parseInt(processBuilder.environment().get("PORT"));
-		}
-		return 4568; // return default port if heroku-port isn't set (i.e. on localhost)
-    }
 }

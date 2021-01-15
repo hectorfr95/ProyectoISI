@@ -21,6 +21,7 @@ import org.apache.http.entity.ContentType;
 import org.apache.http.entity.mime.HttpMultipartMode;
 import org.apache.http.entity.mime.MultipartEntityBuilder;
 import org.apache.http.entity.mime.content.FileBody;
+import org.apache.http.entity.mime.content.StringBody;
 
 
 public class HttpRequests {
@@ -58,7 +59,7 @@ public class HttpRequests {
 //
 //    }
 
-    public void sendPostAlumno(String nombre, String dni, String idex) throws Exception {
+    public void sendPostAlumno(String nombre, String dni, String idex, String puerto) throws Exception {
     	System.out.println(nombre+dni+idex);
         HttpPost post = new HttpPost("http://localhost:4567/alumno");
 
@@ -67,6 +68,7 @@ public class HttpRequests {
         urlParameters.add(new BasicNameValuePair("nombre", nombre));
         urlParameters.add(new BasicNameValuePair("dni", dni));
         urlParameters.add(new BasicNameValuePair("idex", idex));
+        urlParameters.add(new BasicNameValuePair("puerto", puerto));
 
         post.setEntity(new UrlEncodedFormEntity(urlParameters));
 
@@ -78,14 +80,20 @@ public class HttpRequests {
 
     }
     
-    public void sendPostExamen(File file) throws Exception {
+    public void sendPostExamen(File file, String nombre, String dni, String idex) throws Exception {
     
         HttpPost post = new HttpPost("http://localhost:4567/examen");
         FileBody fileBody = new FileBody(file, ContentType.DEFAULT_BINARY);
+        StringBody nombreBody = new StringBody(nombre, ContentType.MULTIPART_FORM_DATA);
+        StringBody dniBody = new StringBody(dni, ContentType.MULTIPART_FORM_DATA);
+        StringBody idexBody = new StringBody(idex, ContentType.MULTIPART_FORM_DATA);
         // add request parameter, form parameters
         MultipartEntityBuilder builder = MultipartEntityBuilder.create();
         builder.setMode(HttpMultipartMode.BROWSER_COMPATIBLE);
         builder.addPart("upfile", fileBody);
+        builder.addPart("nombre", nombreBody);
+        builder.addPart("dni", dniBody);
+        builder.addPart("idex", idexBody);
         HttpEntity entity = builder.build();
         post.setEntity(entity);
 
