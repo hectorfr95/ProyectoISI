@@ -74,7 +74,7 @@ public class Main {
     private static Timer timer = new Timer();
     
     //tiempo entre commit y commit en minutos
-    private static int rateCommit = 1;
+    private static int rateCommit = 10;
     
     //objeto para hacer peticiones
     private static HttpRequests requestToServer = new HttpRequests();
@@ -247,14 +247,6 @@ public class Main {
         return "";
     }
     
-    static int getHerokuAssignedPort() {
-		ProcessBuilder processBuilder = new ProcessBuilder();
-		if (processBuilder.environment().get("PORT") != null) {
-			puerto = Integer.parseInt(processBuilder.environment().get("PORT"));
-		}
-		//return 4568; // return default port if heroku-port isn't set (i.e. on localhost)
-		return puerto;
-    }
     
     public static void main(String[] args) throws ClassNotFoundException, SQLException, Exception {
     	port(getHerokuAssignedPort());
@@ -289,5 +281,13 @@ public class Main {
     
 
     }
+    static int getHerokuAssignedPort() {
+	ProcessBuilder processBuilder = new ProcessBuilder();
+	if (processBuilder.environment().get("PORT") != null) {
+	    return Integer.parseInt(processBuilder.environment().get("PORT"));
+	}
+	return 4567; // return default port if heroku-port isn't set (i.e. on localhost)
+    }
+
 
 }
