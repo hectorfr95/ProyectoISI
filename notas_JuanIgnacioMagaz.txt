@@ -14,3 +14,13 @@ Lenguaje: Java, Framework: Spark Java https://sparkjava.com/
 Travis: Tests
 Heroku: Servidor
 Jgit: Para manejar git con java
+
+-- DIA 2
+
+Comparar todos los ficheros del mismo instante de tiempo, en este caso serán los commits,
+de distintos alumnos.
+
+Herramienta que se instala en cada una de las maquinas de los alumnos:
+Esta herramienta será la encargada de hacer los commits y subirlos al servidor.
+
+El software del servidor será el encargado de procesar los commits y compararlos.

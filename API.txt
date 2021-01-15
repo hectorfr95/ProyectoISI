@@ -1,0 +1,15 @@
+Conexión alumno-servidor --> POST /alumno
+	campos:
+		nombre
+		dni
+		idex
+		puerto
+		
+Conexión servidor-alumno --> GET /fin
+
+Conexión alumno-servidor --> POST /examen
+	campos:
+		nombre
+		dni
+		idex
+		examen(zip)

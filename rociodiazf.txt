@@ -1,0 +1,42 @@
+PROYECTO FINAL
+
+Fecha 2-12-2020
+
+ENUNCIADO:
+Montamos una empresa para dar garantías a los profes que el alumnos ha tenido difícil copiar. Guardamos los ficheros para posteriormente comparalos
+Cuando el alumno está escribiendo texto: los fichero que se van generando a la medida que va pasando el tiempo. Se vayan guardando versiones. O bajo demanda. Todos los fichero que maneje en el examen. ¿de la carpeta de examen? 
+
+Ver si hay relaciones entre los commits de los dos alumnos. A la hora lo mismo. Comunicandose por canales. 
+
+Herramientas, detección de parecidos entre fichero. Para que nos ayuden a checkear copias.
+
+La idea es: un servicio que esté corriendo en internet. Para universidades o profesores individuales. Que nos den los repos para que nosotros ejecutemos las herramientas y le devolvamos un informe. Detectar que aquí podría haber un problema. Alumnos que colaboran… etc. Formato en el que vamos a ofrecer este servicio. Servicio web. Sencillo. Que interfaz vamos a ofrecer. 
+
+Bases de datos repos de diferentes alumnos, de que profesores… examen alumnas profe asignatura, ejercicio.
+
+Requisitos sin libertades (no funcional): internet, base de datos Relacional, buenos test, lenguaje JAVA. 
+
+Servidor web: por definir. Que interfaz gráfica: nada. No app web. SOLO PROPORCIONAMOS UNA APIREST. Como mucho una interfaz sencilla para hacer prueba.
+
+SPARK JAVA --> https://sparkjava.com/
+
+Usaremos SQLite y postSQL en la red.
+
+Travis para la integración continua del producto.
+
+Heroku --> servicio en la nube para desplegar el servicio. Siempre haya algo funcionando en la red. Cuando se hacen commit se hacen los test para no dejar la app sin funcionamiento.
+
+Commits: los tiene que ir haciendo un programa por debajo cuando el profe diga sin que el alumno lo sepa. Hay que saber el tiempo.
+No está claro que es lo que vamos a comparar. Si hay conjuntos que se parecen demasiado se tomará como copia.
+
+¿¿¿Hacer Diff entre ficheros. Ramas???? 
+
+Dia de entrega del proyecto final: El día del examen es el último día. O algun dia despúes. 1 febrero. El día mas pronto en el que haríamos la evaluación final. 
+
+
+Fecha 14-Dic-2020
+
+DIAGRAMA ER
+
+No me interesa saber mucho de las asignaturas. Relación entre exámenes y profes. Asignatura un atributo más de los exámenes. solo necesito el path, saber donde lo tengo archivado. ¿Merecen los alumnos reflejados en una entidad? 
+
