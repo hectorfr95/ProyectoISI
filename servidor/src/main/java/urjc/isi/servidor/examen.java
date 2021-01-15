@@ -1,42 +1,40 @@
 package urjc.isi.servidor;
 
+import java.sql.Date;
+
 
 public class examen {
 	
 	private int idExamen;
-	private String Fecha;
+	private Date Fecha;
 	private String Asignatura;
-
-	public examen(int idExamen, String Fecha, String Asignatura) {
+	
+	
+	public examen(int idExamen, Date fecha, String asignatura) {
+		
 		this.idExamen = idExamen;
-		this.Fecha = Fecha;
-		this.Asignatura = Asignatura;
+		this.Fecha = fecha;
+		this.Asignatura = asignatura;
 	}
-
+	
 	public int getIdExamen() {
 		return idExamen;
 	}
-
 	public void setIdExamen(int idExamen) {
 		this.idExamen = idExamen;
 	}
-
-	public String getFecha() {
+	public Date getFecha() {
 		return Fecha;
 	}
-
-	public void setFecha(String fecha) {
+	public void setFecha(Date fecha) {
 		Fecha = fecha;
 	}
-
 	public String getAsignatura() {
 		return Asignatura;
 	}
-
 	public void setAsignatura(String asignatura) {
 		Asignatura = asignatura;
 	}
-
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -46,7 +44,6 @@ public class examen {
 		result = prime * result + idExamen;
 		return result;
 	}
-
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -71,4 +68,5 @@ public class examen {
 		return true;
 	}
 
+	
 }
