@@ -52,7 +52,7 @@ public class alumnoDao {
  
     // Con este método vamos a poder obtener todos los atributos de la entidad
     // Alumnos, al recibir el idAlumno.
-    public String[] getAtributosAlumno(String idAlumno) {
+    public alumno getAtributosAlumno(String idAlumno) {
     	String nombre = null;
     	String ip = null;
     	int puerto = 0;
@@ -72,7 +72,7 @@ public class alumnoDao {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         } finally {
-        	String[] alumno = {idAlumno, nombre ,String.valueOf(puerto), ip};
+        	alumno alumno = new alumno(idAlumno, nombre , puerto, ip);
             return alumno;
         }
     }

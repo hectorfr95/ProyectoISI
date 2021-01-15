@@ -53,7 +53,7 @@ public class examenDao {
     
     public Date getFecha(int idExamen) {
     	Date fecha = null;
-    	
+
         try {
         	String query = "SELECT * from Examenes WHERE idExamen = " + idExamen;
             PreparedStatement ps = c.prepareStatement(query);

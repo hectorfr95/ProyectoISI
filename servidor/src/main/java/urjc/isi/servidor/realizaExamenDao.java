@@ -1,6 +1,8 @@
 package urjc.isi.servidor;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class realizaExamenDao {
 	
@@ -22,6 +24,28 @@ public class realizaExamenDao {
         }
     }
     
+    public List<realizaExamen> all() {
+
+        List<realizaExamen> allRealiza = new ArrayList<realizaExamen>();
+
+        try {
+            PreparedStatement ps = c.prepareStatement("select * from RealizaExamen");
+
+            ResultSet rs = ps.executeQuery();
+
+            while(rs.next()) {
+                int idExamen = rs.getInt("idExamen");
+                String idAlumno = rs.getString("idAlumno");
+                String path = rs.getString("Path");
+                allRealiza.add(new realizaExamen(idExamen, idAlumno, path));
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } finally {
+            return allRealiza;
+        }
+    }
 //    // Con este método vamos a obtener los idExamen de todos los examenes que haya realizado
 //    // el alumno con este id.
 //    public int ExamenesAlumno(String idAlumno) {
