@@ -278,7 +278,7 @@ public class Main {
     	
     	//Recibir GET, probar con hector
     	get("/fin", Main::finEx);
-    
+    	System.exit(0);
 
     }
     static int getHerokuAssignedPort() {
