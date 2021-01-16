@@ -6,9 +6,10 @@ public class realizaExamen {
 	private String idAlumno;
 	private String Path;
 	
-	public realizaExamen(int idExamen, String idAlumno) {
+	public realizaExamen(int idExamen, String idAlumno, String path) {
 		this.idExamen = idExamen;
 		this.idAlumno = idAlumno;
+		this.Path = path; 
 	}
 	
 	public int getIdExamen() {

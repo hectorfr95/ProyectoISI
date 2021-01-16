@@ -39,7 +39,7 @@ public class examenDao {
 
             while(rs.next()) {
                 int idExamen = rs.getInt("idExamen");
-                String Fecha = rs.getString("Fecha");
+                Date Fecha = rs.getDate("Fecha");
                 String Asignatura = rs.getString("Asignatura");
                 allExamenes.add(new examen(idExamen, Fecha, Asignatura));
             }
@@ -51,12 +51,33 @@ public class examenDao {
         }
     }
     
+    public Date getFecha(int idExamen) {
+    	Date fecha = null;
+
+        try {
+        	String query = "SELECT * from Examenes WHERE idExamen = " + idExamen;
+            PreparedStatement ps = c.prepareStatement(query);
+            
+            ResultSet rs = ps.executeQuery();
+
+            while(rs.next()) {
+            	fecha = rs.getDate("Fecha");
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } finally {
+            return fecha;
+        }
+    }
+    
     // Con este método insertamos el objeto examen recibido en la tabla de nuestra bbdd Examenes.
     public void save(examen examen) {
         try {
             PreparedStatement ps = c.prepareStatement("insert into Examenes(idExamen, Fecha , Asignatura) VALUES(?,?,?)");
             ps.setInt(1, examen.getIdExamen());
-            ps.setString(2, examen.getFecha());
+    		System.out.println("sql.Date insert: "+  examen.getFecha());
+            ps.setDate(2, examen.getFecha());
             ps.setString(3, examen.getAsignatura());
             ps.execute();
 
@@ -64,6 +85,7 @@ public class examenDao {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+        
     }
 
     // Cerramos la conexión con la bbdd

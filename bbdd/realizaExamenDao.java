@@ -1,9 +1,11 @@
 package urjc.isi.servidor;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class realizaExamenDao {
-
+	
 	private static Connection c;
 
 	// Con este método creamos la conexión con la bbdd.
@@ -21,54 +23,75 @@ public class realizaExamenDao {
             throw new RuntimeException(e);
         }
     }
+    
+    public List<realizaExamen> all() {
 
-   // Con este método vamos a obtener los idExamen de todos los examenes que haya realizado
-   // el alumno con este id.
-   public int ExamenesAlumno(String idAlumno) {
-   	int idExamen = 0;
+        List<realizaExamen> allRealiza = new ArrayList<realizaExamen>();
 
-       try {
-       	String query = "SELECT * from RealizaExamen WHERE idAlumno = " + idAlumno;
-           PreparedStatement ps = c.prepareStatement(query);
-           ResultSet rs = ps.executeQuery();
+        try {
+            PreparedStatement ps = c.prepareStatement("select * from RealizaExamen");
 
-           while(rs.next()) {
-               idExamen = rs.getInt("idExamen");
-           }
+            ResultSet rs = ps.executeQuery();
 
-       } catch (SQLException e) {
-           throw new RuntimeException(e);
-       } finally {
-           return idExamen;
-       }
-   }
+            while(rs.next()) {
+                int idExamen = rs.getInt("idExamen");
+                String idAlumno = rs.getString("idAlumno");
+                String path = rs.getString("Path");
+                allRealiza.add(new realizaExamen(idExamen, idAlumno, path));
+            }
 
-   // Con este método vamos a obtener los idAlumno de todos los alumnos que hayan realizado
-   // el examen con este id.
-   public List <AlumnosExamen> all(int idExamen) {
-	   List<AlumnosExamen> allAlumnos = new ArrayList<AlumnosExamen>();
-
-       try {
-       	String query = "SELECT * from RealizaExamen WHERE idExamen = " + idExamen;
-           PreparedStatement ps = c.prepareStatement(query);
-           ResultSet rs = ps.executeQuery();
-
-           while(rs.next()) {
-           	String idAlumno = rs.getString("idAlumno");
-			allAlumnos.add(new alumno(idAlumno));
-           }
-
-       } catch (SQLException e) {
-           throw new RuntimeException(e);
-       } finally {
-           return allAlumnos;
-       }
-   }
-
-    // Con este método obtenemos el Path, dado el idExamen
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } finally {
+            return allRealiza;
+        }
+    }
+//    // Con este método vamos a obtener los idExamen de todos los examenes que haya realizado
+//    // el alumno con este id.
+//    public int ExamenesAlumno(String idAlumno) {
+//    	int idExamen = 0;
+//    	
+//        try {
+//        	String query = "SELECT * from RealizaExamen WHERE idAlumno = " + idAlumno;
+//            PreparedStatement ps = c.prepareStatement(query);
+//            ResultSet rs = ps.executeQuery();
+//
+//            while(rs.next()) {
+//                idExamen = rs.getInt("idExamen");
+//            }
+//
+//        } catch (SQLException e) {
+//            throw new RuntimeException(e);
+//        } finally {
+//            return idExamen;
+//        }
+//    }
+    
+//    // Con este método vamos a obtener los idAlumno de todos los alumnos que hayan realizado
+//    // el examen con este id.
+//    public String AlumnosExamen(int idExamen) {
+//    	String idAlumno = null;
+//    	
+//        try {
+//        	String query = "SELECT * from RealizaExamen WHERE idExamen = " + idExamen;
+//            PreparedStatement ps = c.prepareStatement(query);
+//            ResultSet rs = ps.executeQuery();
+//
+//            while(rs.next()) {
+//            	idAlumno = rs.getString("idAlumno");
+//            }
+//
+//        } catch (SQLException e) {
+//            throw new RuntimeException(e);
+//        } finally {
+//            return idAlumno;
+//        }
+//    }
+//    
+    // Con este método obtenemos el Path, dado el idExamen 
     public String pathCommits(int idExamen) {
     	String Path = null;
-
+    	
         try {
             PreparedStatement ps = c.prepareStatement("select * from RealizaExamen");
             ResultSet rs = ps.executeQuery(String.valueOf(idExamen));
@@ -83,7 +106,7 @@ public class realizaExamenDao {
             return Path;
         }
     }
-
+    
     // Con este método insertamos el objeto realizaExamen recibido en la tabla de nuestra bbdd RealizaExamenes.
     public void save(realizaExamen realizaExamen) {
         try {
@@ -98,8 +121,8 @@ public class realizaExamenDao {
             throw new RuntimeException(e);
         }
     }
-
-    // Cerramos la conexión con la bbdd
+    
+    // Cerramos la conexión con la bbdd    
     public void close() {
         try {
             c.close();
