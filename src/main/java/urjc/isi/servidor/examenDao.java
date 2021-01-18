@@ -1,5 +1,6 @@
 package urjc.isi.servidor;
 
+import java.net.URI;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,15 +15,16 @@ public class examenDao {
         try {
             if(c!=null) return;
 
-            c = DriverManager.getConnection("jdbc:sqlite:proyecto.db");
+            c = DriverManager.getConnection("jdbc:postgresql::proyecto.db");
+//            c = DriverManager.getConnection("jdbc:sqlite:proyecto.db");
             c.setAutoCommit(false);
+            
 
             //c.prepareStatement("drop table if exists Examenes").execute();
             //c.prepareStatement("create table Examenes (idExamen integer, Fecha varchar(100), Asignatura varchar(100), Path varchar(100))").execute();
             
             c.commit();
         } catch (SQLException e) {
-            System.out.println("HOLA");
             throw new RuntimeException(e);
         }
     }
