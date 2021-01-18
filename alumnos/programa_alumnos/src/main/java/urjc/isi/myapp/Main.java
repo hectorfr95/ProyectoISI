@@ -244,6 +244,7 @@ public class Main {
         } finally {
         	requestToServer.close();
         }
+      //System.exit(0);
         return "";
     }
     
@@ -278,7 +279,6 @@ public class Main {
     	
     	//Recibir GET, probar con hector
     	get("/fin", Main::finEx);
-    	System.exit(0);
 
     }
     static int getHerokuAssignedPort() {
