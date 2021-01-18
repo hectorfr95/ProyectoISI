@@ -15,7 +15,7 @@ public class examenDao {
         try {
             if(c!=null) return;
 
-            c = DriverManager.getConnection("jdbc:postgresql::proyecto.db");
+            c = DriverManager.getConnection("jdbc:postgresql:proyecto.db");
 //            c = DriverManager.getConnection("jdbc:sqlite:proyecto.db");
             c.setAutoCommit(false);
             
