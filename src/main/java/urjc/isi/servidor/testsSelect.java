@@ -94,8 +94,22 @@ public class testsSelect {
     	 List<realizaExamen> all_realiza_examenes = Arrays.asList(re_examen_juanito, re_examen_dani);
          when(dao.all()).thenReturn(all_realiza_examenes);
    
-         String path =  dao.pathCommits(1802);
-         assertEquals(path, all_realiza_examenes.get(1).getPath());
+         List<String> paths  =  dao.pathCommits(1802);
+         assertEquals(paths, all_realiza_examenes.get(1).getPath());
+    }
+    
+    public void AllRealizaEx_2() {
+        
+    	realizaExamen re_examen_juanito = new realizaExamen(1010, "1234567", "Path") ;
+    	realizaExamen re_examen_dani = new realizaExamen(1802, "7654321", "Path_2") ;
+    	realizaExamen re_examen_pepe = new realizaExamen(1802, "58965478", "Path_3") ;
+    	realizaExamenDao dao = mock(realizaExamenDao.class);
+    	
+    	 List<realizaExamen> all_realiza_examenes = Arrays.asList(re_examen_juanito, re_examen_dani,re_examen_pepe);
+         when(dao.all()).thenReturn(all_realiza_examenes);
+   
+         List<String> paths  =  dao.pathCommits(1802);
+         assertEquals(paths, Arrays.asList(all_realiza_examenes.get(2).getPath(),all_realiza_examenes.get(1).getPath()));
     }
     
 }

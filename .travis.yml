@@ -1,0 +1,27 @@
+language: java
+deploy:
+  on:
+    branch: main
+  skip_cleanup: true
+  provider: heroku
+  app: servidor-hectorfr95
+  api_key:
+    secure: OqHSqQklVSNyjFi3/GcE5Yg8+k/8WuMxgU/+qwmW/ckooRHI3h7JqmO5wPvvFIPUs3lrnM0ZphMNBmzOiUBDrjcRnJlRBBjm9hrX36Tq8RwhKBD/F7Vf2hzoKpNdaVfb30mS1g6mHJyeDqnLcYzfY86p3oIF+KCgUPGHIjTHcdRjP9Zt8Eza1Y0cbWN1GcgtlJLMCILWErCmsEpSnSRPzs2toLpXUHQu6KNfxiB7c0VBxv9uQPWAe7f84Ozoa+5zVR6RPnhLgua1iO6McotSaeAInWM1PaFwLlt8OWcLG5FCmveu285NbLUPtLCk+YsmLhdDCNLvPLiWxl2lJ4+hvLF/96/XY7SEdu6pJPq4KKu3k11ALnK/KtayWvR30gy0U1LjKeFH+c2HQPypuVGXGVauykWz9yE50Ys8eYpAJPZgMnDcwEHFPAI0l/hbdVrVijei6v87U+vdQJN83YO/JrAkggZHA6KvUNcrVm0WcT11+3iFD5ceRsq0aR51Pwmzzc9UF34ieggRGzARo2j02QbyCmOwAO6fFNvMQUEkRF/u5mu5T6nVU0WgPf3QGm80WX0vknb4WmzGThYFC5NhXS9mcMTOoA+MSaocg+cPcOiPSFqbtRY0qx4h0UjVRhv20XlXjJuIaw7A2Lln0atBW9TvkJlwGOBeibKTWju5Zrw=
+notifications:
+  email:
+    recipients:
+    - r.navarro.2016@alumnos.urjc.es
+    - a.hernandezs.2016@alumnos.urjc.es
+    - razvan.copaceanu19@gmail.com
+    - r.gil.2017@alumnos.urjc.es
+    - jm.ruizc.2017@alumnos.urjc.es
+    - r.gonzalezperez@alumnos.urjc.es
+    - m.diazc.2016@alumnos.urjc.es
+    - l.alvarezj.2016@alumnos.urjc.es
+    - ji.magaz.2016@alumnos.urjc.es
+    - hf.marquez@alumnos.urjc.es
+    - d.rodriguezpo.2016@alumnos.urjc.es
+    - j.casamaypr.2016@alumnos.urjc.es
+    - j.vazquezm@alumnos.urjc.es
+    on_success: always
+    on_failure: always
