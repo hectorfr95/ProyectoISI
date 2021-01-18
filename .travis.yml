@@ -1,0 +1,25 @@
+language: java
+deploy:
+  on:
+    branch: main
+  skip_cleanup: true
+  provider: heroku
+  app: servidor-hectorfr95
+notifications:
+  email:
+    recipients:
+      - r.navarro.2016@alumnos.urjc.es
+      - a.hernandezs.2016@alumnos.urjc.es
+      - razvan.copaceanu19@gmail.com
+      - r.gil.2017@alumnos.urjc.es
+      - jm.ruizc.2017@alumnos.urjc.es
+      - r.gonzalezperez@alumnos.urjc.es
+      - m.diazc.2016@alumnos.urjc.es
+      - l.alvarezj.2016@alumnos.urjc.es
+      - ji.magaz.2016@alumnos.urjc.es
+      - hf.marquez@alumnos.urjc.es
+      - d.rodriguezpo.2016@alumnos.urjc.es
+      - j.casamaypr.2016@alumnos.urjc.es
+      - j.vazquezm@alumnos.urjc.es
+    on_success: always # default: change
+    on_failure: always # default: always
