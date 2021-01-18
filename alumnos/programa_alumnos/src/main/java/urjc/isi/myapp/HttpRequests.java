@@ -83,25 +83,43 @@ public class HttpRequests {
     public void sendPostExamen(File file, String nombre, String dni, String idex) throws Exception {
     
         HttpPost post = new HttpPost("http://localhost:4567/examen");
-        FileBody fileBody = new FileBody(file, ContentType.DEFAULT_BINARY);
-        StringBody nombreBody = new StringBody(nombre, ContentType.MULTIPART_FORM_DATA);
-        StringBody dniBody = new StringBody(dni, ContentType.MULTIPART_FORM_DATA);
-        StringBody idexBody = new StringBody(idex, ContentType.MULTIPART_FORM_DATA);
-        // add request parameter, form parameters
-        MultipartEntityBuilder builder = MultipartEntityBuilder.create();
-        builder.setMode(HttpMultipartMode.BROWSER_COMPATIBLE);
-        builder.addPart("upfile", fileBody);
-        builder.addPart("nombre", nombreBody);
-        builder.addPart("dni", dniBody);
-        builder.addPart("idex", idexBody);
-        HttpEntity entity = builder.build();
-        post.setEntity(entity);
+        FileBody fileBody = new FileBody(file);
+        
+        StringBody nombreBody = new StringBody(nombre, ContentType.TEXT_PLAIN);
+        StringBody dniBody = new StringBody(dni, ContentType.TEXT_PLAIN);
+        StringBody idexBody = new StringBody(idex, ContentType.TEXT_PLAIN);
 
+        HttpEntity reqEntity = MultipartEntityBuilder.create()
+                .addPart("nombre", nombreBody)
+                .addPart("dni", dniBody)
+                .addPart("idex", idexBody)
+                .addPart("file", fileBody)
+                .build();
+
+        
+        
+//        StringBody nombreBody = new StringBody(nombre, ContentType.TEXT_PLAIN);
+//        StringBody dniBody = new StringBody(dni, ContentType.TEXT_PLAIN);
+//        StringBody idexBody = new StringBody(idex, ContentType.TEXT_PLAIN);
+        // add request parameter, form parameters
+//        MultipartEntityBuilder builder = MultipartEntityBuilder.create();
+//        builder.setMode(HttpMultipartMode.BROWSER_COMPATIBLE);
+//        builder.addPart("upfile", fileBody);
+//        builder.addPart("nombre", nombreBody);
+//        builder.addPart("dni", dniBody);
+//        builder.addPart("idex", idexBody);
+//        System.out.println("id del examen en el server: "+idex);
+//        System.out.println("id del examen en el server: "+idexBody);
+//        HttpEntity entity = builder.build();
+        post.setEntity(reqEntity);
+        System.out.println("id del examen en el server: "+idex);
+        System.out.println("id del examen en el server: "+reqEntity.toString());
         try (CloseableHttpClient httpClient = HttpClients.createDefault();
              CloseableHttpResponse response = httpClient.execute(post)) {
 
-            System.out.println(EntityUtils.toString(response.getEntity()));
+            System.out.println("--------------"+EntityUtils.toString(response.getEntity()));
         }
+
 
     }
 }
