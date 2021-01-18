@@ -2,3 +2,4 @@ alumnos/examen/
 alumnos/programa_alumnos/.gitignore
 alumnos/.gitignore
 /.metadata/
+/target/
