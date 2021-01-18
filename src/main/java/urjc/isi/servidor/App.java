@@ -47,9 +47,7 @@ public class App
 			+ "<p>INTRODUZCA LOS DATOS:</p>\n"
 			+ "<p>Asignatura</p>\n"
 			+ "<input type='text' name='asignatura' required='true'>"
-			+ "<p>ID_Examen</p>\n"
-			+ "<input type='text' name='id_Examen' required='true'>"
-		    + "<input type=\"submit\" value=\"Comenzar examen\">"
+			+ "<input type=\"submit\" value=\"Comenzar examen\">"	  
 		    + "</fieldset>" 
 		    + "</form>";
 			
@@ -85,7 +83,7 @@ public class App
 			String path = req.uri();
 			String aux = path.substring(1,path.length());
 			//Añadido
-			int id_examen = Integer.parseInt(req.queryParams("id_Examen"));
+			int id_examen = Math.abs(rnd.nextInt());
 			String asignatura = req.queryParams("asignatura");
 			//-Añadido
 			String result ="<h1> El examen con ID "+id_examen+" se ha iniciado con el numero generado: "+ aux + "</h1>"
@@ -93,14 +91,16 @@ public class App
 		    + "<input type=\"submit\" value=\"Finalizar examen\">"	    
 		    + "</form>";
 			
+		
 			//Añadido
 			Date fecha = new Date();
 			long lnMilisegundos = fecha.getTime();
 			java.sql.Date sqlDate = new java.sql.Date(lnMilisegundos);
-			
+				
 			examen examenObject = new examen(id_examen, sqlDate, asignatura);
 			examenDao.save(examenObject);
 			//-Añadido
+				
 			
 			return result;
 		});
