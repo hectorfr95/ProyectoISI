@@ -13,13 +13,13 @@ public class realizaExamenDao {
         try {
             if(c!=null) return;
 
-            c = DriverManager.getConnection("jdbc:postgresql:proyecto.db");
-//          c = DriverManager.getConnection("jdbc:sqlite:proyecto.db");
-            c.setAutoCommit(false);
+//            c = DriverManager.getConnection("jdbc:postgresql:proyecto.db");
+            	c = DriverManager.getConnection("jdbc:sqlite:proyecto.db");
+            	c.setAutoCommit(false);
 
 //            c.prepareStatement("drop table if exists RealizaExamen").execute();
 //            c.prepareStatement("create table RealizaExamen (idExamen integer, idAlumno integer))").execute();
-            c.commit();
+            	c.commit();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

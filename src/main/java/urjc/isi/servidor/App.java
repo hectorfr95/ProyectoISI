@@ -23,6 +23,7 @@ import javax.servlet.MultipartConfigElement;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.net.URISyntaxException;
 
 
 public class App 
@@ -30,7 +31,7 @@ public class App
 	static String cosa = null;
 
 	public static void main(String[] args) throws 
-	ClassNotFoundException, SQLException {
+	ClassNotFoundException, SQLException, URISyntaxException {
 		port(getHerokuAssignedPort());
 		
 		examenDao examenDao = new examenDao();
