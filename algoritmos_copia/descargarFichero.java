@@ -1,3 +1,5 @@
+//Código con utilidad para poder descargar ficheros del servidor. Queda comentarlo con el grupo del servidor para conseguir integrarlo
+
 public static void main(String[] args) {
     //setPort(4567);
     get("/hello", (request, responce) -> getFile(request,responce));
