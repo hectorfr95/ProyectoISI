@@ -6,8 +6,8 @@ public class UltimoPath {
 	
 	//Funcion que saca la longitud necesaria para guardar los paths de los ultimos modificados(reutilizo codigo)
 	public static int longArray() {
-		String sCarp = System.getProperty("user.dir");//Obtenemos la carpeta actual desde donde ejecutamos el c骴igo(de la carpeta del proyecto)
-		File carpeta = new File(sCarp); //Con este File obtenemos informaci髇 de la carpeta
+		String sCarp = System.getProperty("user.dir");//Obtenemos la carpeta actual desde donde ejecutamos el c贸digo(de la carpeta del proyecto)
+		File carpeta = new File(sCarp); //Con este File obtenemos informaci贸n de la carpeta
 		File[] listado = carpeta.listFiles();//Asi nos devuelven objetos file y podemos sacar mas info de ellos
 
 		int longi=0;
@@ -35,8 +35,8 @@ public class UltimoPath {
 		
 		int longi=longArray();
 			
-		String sCarp = System.getProperty("user.dir");//Obtenemos la carpeta actual desde donde ejecutamos el c骴igo(de la carpeta del proyecto)
-		File carpeta = new File(sCarp); //Con este File obtenemos informaci髇 de la carpeta
+		String sCarp = System.getProperty("user.dir");//Obtenemos la carpeta actual desde donde ejecutamos el c贸digo(de la carpeta del proyecto)
+		File carpeta = new File(sCarp); //Con este File obtenemos informaci贸n de la carpeta
 		File[] listado = carpeta.listFiles();//Asi nos devuelven objetos file y podemos sacar mas info de ellos
 		pathUltimos = new String[listado.length];//Inicializo el array para que no salga error de NullPointerException
 		long aux;
@@ -79,7 +79,10 @@ public class UltimoPath {
 				}
 				
 			}
-			pathUltimos[idx]=listado[indaux].getAbsolutePath();//No ponemos idx++ porque en la carpeta actual no reitera m醩
+			pathUltimos[idx]=listado[indaux].getAbsolutePath();//No ponemos idx++ porque en la carpeta actual no reitera m谩s
+		}
+		for(int i=0;i<longi;i++){
+			System.out.println(pathUltimos[i]);
 		}
 	}
 
