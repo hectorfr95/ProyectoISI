@@ -6,8 +6,8 @@ public class GuardarPaths {
 	
 	public static void listarCarp() {
 		
-		String sCarp = System.getProperty("user.dir");//Obtenemos la carpeta actual desde donde ejecutamos el código(de la carpeta del proyecto)
-		File carpeta = new File(sCarp); //Con este File obtenemos información de la carpeta
+		String sCarp = System.getProperty("user.dir");//Obtenemos la carpeta actual desde donde ejecutamos el cÃ³digo(de la carpeta del proyecto)
+		File carpeta = new File(sCarp); //Con este File obtenemos informaciÃ³n de la carpeta
 		String[] listado = carpeta.list();
 		arrayPaths = new String[listado.length];//Inicializo el array para que no salga error de NullPointerException
 		
@@ -19,9 +19,6 @@ public class GuardarPaths {
 				File f = new File(listado[i]);
 				arrayPaths[i]=f.getAbsolutePath();
 			}
-		}
-		for(int i=0; i<listado.length;i++) {
-			System.out.println(arrayPaths[i]);
 		}
 	}
 
