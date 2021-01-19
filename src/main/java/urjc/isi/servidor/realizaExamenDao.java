@@ -12,20 +12,24 @@ public class realizaExamenDao {
 
 	// Con este método creamos la conexión con la bbdd.
     public realizaExamenDao() throws URISyntaxException {
+	URI dbUri = null;
         try {
             if(c!=null) return;
 
-            URI dbUri = new URI(System.getenv("DATABASE_URL"));
-        	String username = dbUri.getUserInfo().split(":")[0];
-        	String password = dbUri.getUserInfo().split(":")[1];
-        	String dbUrl = "jdbc:postgresql://" + dbUri.getHost() + dbUri.getPath();
-        	c = DriverManager.getConnection(dbUrl, username, password);
-//       	c = DriverManager.getConnection("jdbc:sqlite:proyecto.db");
-            	c.setAutoCommit(false);
+            
+            String username = "pnppwxvdpozvck";
+            String password = "7528b8d1e443547a70ea96ca4d16af0d75debdda07550ceb861e0d597818873e";
+	        String host = "ec2-52-205-145-201.compute-1.amazonaws.com";
+	        String port = "5432";
+	        String database = "dh952nv6jujp8";
+            String dbUrl = "jdbc:postgresql://" + host + ":" + port + "/" + database;
+            
+        	c = DriverManager.getConnection(dbUrl,username,password);
+            c.setAutoCommit(false);
 
-//            c.prepareStatement("drop table if exists RealizaExamen").execute();
-//            c.prepareStatement("create table RealizaExamen (idExamen integer, idAlumno integer))").execute();
-            	c.commit();
+            c.prepareStatement("drop table if exists RealizaExamen").execute();
+		    c.prepareStatement("CREATE TABLE RealizaExamen (idExamen INTEGER NOT NULL,idAlumno varchar(50) NOT NULL,Path varchar(50),FOREIGN KEY(idExamen) REFERENCES Examenes(IdExamen),FOREIGN KEY(idAlumno) REFERENCES Alumnos(idAlumno),PRIMARY KEY(idExamen,idAlumno))").execute();
+            c.commit();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

@@ -16,17 +16,20 @@ public class alumnoDao {
         try {
             if(c!=null) return;
 
-            URI dbUri = new URI(System.getenv("DATABASE_URL"));
-        	String username = dbUri.getUserInfo().split(":")[0];
-        	String password = dbUri.getUserInfo().split(":")[1];
-        	String dbUrl = "jdbc:postgresql://" + dbUri.getHost() + dbUri.getPath();
-        	c = DriverManager.getConnection(dbUrl, username, password);
-//           	c = DriverManager.getConnection("jdbc:sqlite:proyecto.db");
-            	c.setAutoCommit(false);
+            String username = "pnppwxvdpozvck";
+            String password = "7528b8d1e443547a70ea96ca4d16af0d75debdda07550ceb861e0d597818873e";
+	        String host = "ec2-52-205-145-201.compute-1.amazonaws.com";
+	        String port = "5432";
+	        String database = "dh952nv6jujp8";
+            String dbUrl = "jdbc:postgresql://" + host + ":" + port + "/" + database;
+            
+        	c = DriverManager.getConnection(dbUrl,username,password);
+            c.setAutoCommit(false);
 
-//            c.prepareStatement("drop table if exists Alumnos").execute();
-//            c.prepareStatement("create table Alumnos (idAlumno varchar(200), nombre varchar(100), puerto integer, ip varchar(100))").execute();
-            	c.commit();
+            c.prepareStatement("drop table if exists Alumnos").execute();
+            c.prepareStatement("CREATE TABLE Alumnos (idAlumno	VARCHAR(50) NOT NULL UNIQUE,Nombre	VARCHAR(50) NOT NULL,Puerto	INTEGER,IP	VARCHAR(50),PRIMARY KEY(idAlumno))").execute();
+	
+            c.commit();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
