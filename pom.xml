@@ -80,7 +80,7 @@
           <appName>servidor-hectorfr95</appName>
           <processTypes>
             <!-- Tell Heroku how to launch your application -->
-            <web>java -cp ./target/myapp-1.0-jar-with-dependencies.jar urjc.isi.servidor.App</web>
+            <web>java -cp ./target/servidor-1.0-jar-with-dependencies.jar urjc.isi.servidor.App</web>
           </processTypes>
         </configuration>
       </plugin>
