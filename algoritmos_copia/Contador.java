@@ -7,7 +7,7 @@ import java.util.StringTokenizer;
 
 // Contar nº de palabras por commit
 
-public class Comparar {
+public class Contador {
 	
 	public static int contador(String fichero) throws FileNotFoundException, IOException{ //contador(String file)
 		FileReader fr;
@@ -27,26 +27,37 @@ public class Comparar {
 			}
 			bf.close();
 		} else { //
-			System.out.println("No existe el fichero "); //
+			throw new FileNotFoundException("El file no existe"); //
 		} //
 		
 		return contador;
 	}
 	
 	public static void main(String[] args) throws IOException {
-		int counter1;
-		int counter2;
+		int counter[] = new int[15];
+		int i;
+		
+		String dircarpeta = "/home/juanmanuel/Descargas/02-JUnit-code/Proyecto";
+		File carpeta = new File(dircarpeta);
+		String[] listado = carpeta.list();
+		
+		for (i = 0; i < listado.length; i++){
+			System.out.println(listado[i]);
+		}
 	
-		counter1 = contador("texto.txt");	//counter = contador("/home/juanmanuel/Descargas/02-JUnit-code/Proyecto/texto.txt");
-		
-		counter2 = contador("textito.txt"); 
-		
-		if(counter1 != 0){
-			System.out.println(counter1);
+		for (i = 0; i < listado.length; i++){
+			counter[i] = contador(listado[i]);	//counter = contador("/home/juanmanuel/Descargas/02-JUnit-code/Proyecto/texto.txt");
 		}
 		
-		if(counter2 != 0){
-			System.out.println(counter2);
-		}
+		for (i = 0; i < counter.length; i++){
+			if(counter[i] != 0){
+				System.out.println(counter[i]);
+			}
+		 }
 	}
 }
+
+/*
+ * En el programa principal hacer un bucle for, llamando 2 veces al contador pasando a cada uno un distinto array con los ficheros
+ */
+ 
