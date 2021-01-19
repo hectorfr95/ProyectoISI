@@ -77,10 +77,10 @@
         <version>0.4.4</version>
         <configuration>
           <jdkVersion>1.8</jdkVersion>
-          <appName>myapp-NOMBRE_DE_USUARIO</appName>
+          <appName>servidor-hectorfr95</appName>
           <processTypes>
             <!-- Tell Heroku how to launch your application -->
-            <web>java -cp ./target/myapp-1.0-jar-with-dependencies.jar urjc.isi.myapp.Main</web>
+            <web>java -cp ./target/myapp-1.0-jar-with-dependencies.jar urjc.isi.servidor.App</web>
           </processTypes>
         </configuration>
       </plugin>
