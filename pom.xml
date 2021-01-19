@@ -7,7 +7,7 @@
 
   <groupId>urjc.isi</groupId>
   <artifactId>servidor</artifactId>
-  <version>1.0</version>
+  <version>0.0.1-SNAPSHOT</version>
 
   <dependencies>
     <dependency>
@@ -66,7 +66,7 @@
           </descriptorRefs>
           <archive>
             <manifest>
-              <mainClass>App</mainClass>
+              <mainClass>Main</mainClass>
             </manifest>
           </archive>
         </configuration>
