@@ -1,5 +1,7 @@
 package urjc.isi.servidor;
 
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -10,12 +12,16 @@ public class alumnoDao {
 	private static Connection c;
 
 	// Con este método creamos la conexión con la bbdd.
-    public alumnoDao() {
+    public alumnoDao() throws URISyntaxException {
         try {
             if(c!=null) return;
 
-//            c = DriverManager.getConnection("jdbc:postgresql:proyecto.db");
-            	c = DriverManager.getConnection("jdbc:sqlite:proyecto.db");
+            URI dbUri = new URI(System.getenv("DATABASE_URL"));
+        	String username = dbUri.getUserInfo().split(":")[0];
+        	String password = dbUri.getUserInfo().split(":")[1];
+        	String dbUrl = "jdbc:postgresql://" + dbUri.getHost() + dbUri.getPath();
+        	c = DriverManager.getConnection(dbUrl, username, password);
+//           	c = DriverManager.getConnection("jdbc:sqlite:proyecto.db");
             	c.setAutoCommit(false);
 
 //            c.prepareStatement("drop table if exists Alumnos").execute();
