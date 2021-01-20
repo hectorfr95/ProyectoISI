@@ -22,7 +22,7 @@ public class realizaExamenDao {
 	        String host = "ec2-52-205-61-60.compute-1.amazonaws.com" ;
 	        String port = "5432";
 	        String database = "d98u000ha04vq1";
-            String dbUrl = "postgres://hvnsnqrcgvkpmm:261562231d1878781c02c5f80320c074d746bcaa1ee237a3a9e906d59492a566@ec2-52-205-61-60.compute-1.amazonaws.com:5432/d98u000ha04vq1";
+           	String dbUrl = "jdbc:postgresql://" + host + ":" + port + "/" + database;
             
         	c = DriverManager.getConnection(dbUrl,username,password);
             c.setAutoCommit(false);
