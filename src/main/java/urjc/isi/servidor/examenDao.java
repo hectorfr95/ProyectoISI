@@ -16,11 +16,11 @@ public class examenDao {
         try {
             if(c!=null) return;
 
-            String username = "hvnsnqrcgvkpmm";
-            String password = "261562231d1878781c02c5f80320c074d746bcaa1ee237a3a9e906d59492a566";
-	        String host = "ec2-52-205-61-60.compute-1.amazonaws.com" ;
+           	String username = "zjneprefjjssts";
+           	String password = "64fc1cd6795ea1b910b9e75de9d4111b1854fbec0ab81e03f8a959bc188eb0bf";
+	        String host = "ec2-100-25-231-126.compute-1.amazonaws.com" ;
 	        String port = "5432";
-	        String database = "d98u000ha04vq1";
+	        String database = "dci0nthq9t7r3v";
 		String dbUrl = "jdbc:postgresql://" + host + ":" + port + "/" + database;
             
             
