@@ -81,44 +81,29 @@ public class HttpRequests {
     }
     
     public void sendPostExamen(File file, String nombre, String dni, String idex) throws Exception {
-    
+    	CloseableHttpClient httpClient = HttpClients.createDefault();
         HttpPost post = new HttpPost("http://localhost:4567/examen");
-        FileBody fileBody = new FileBody(file);
+               
+       
+       //  add request parameter, form parameters
+        MultipartEntityBuilder builder = MultipartEntityBuilder.create();
+        builder.addBinaryBody("file", file, ContentType.APPLICATION_OCTET_STREAM, "file.ext");
+        builder.addTextBody("nombre", nombre);
+        builder.addTextBody("dni", dni);
+        builder.addTextBody("idex", idex);
         
-        StringBody nombreBody = new StringBody(nombre, ContentType.TEXT_PLAIN);
-        StringBody dniBody = new StringBody(dni, ContentType.TEXT_PLAIN);
-        StringBody idexBody = new StringBody(idex, ContentType.TEXT_PLAIN);
-
-        HttpEntity reqEntity = MultipartEntityBuilder.create()
-                .addPart("nombre", nombreBody)
-                .addPart("dni", dniBody)
-                .addPart("idex", idexBody)
-                .addPart("file", fileBody)
-                .build();
-
-        
-        
-//        StringBody nombreBody = new StringBody(nombre, ContentType.TEXT_PLAIN);
-//        StringBody dniBody = new StringBody(dni, ContentType.TEXT_PLAIN);
-//        StringBody idexBody = new StringBody(idex, ContentType.TEXT_PLAIN);
-        // add request parameter, form parameters
-//        MultipartEntityBuilder builder = MultipartEntityBuilder.create();
-//        builder.setMode(HttpMultipartMode.BROWSER_COMPATIBLE);
-//        builder.addPart("upfile", fileBody);
-//        builder.addPart("nombre", nombreBody);
-//        builder.addPart("dni", dniBody);
-//        builder.addPart("idex", idexBody);
-//        System.out.println("id del examen en el server: "+idex);
-//        System.out.println("id del examen en el server: "+idexBody);
-//        HttpEntity entity = builder.build();
-        post.setEntity(reqEntity);
         System.out.println("id del examen en el server: "+idex);
-        System.out.println("id del examen en el server: "+reqEntity.toString());
-        try (CloseableHttpClient httpClient = HttpClients.createDefault();
-             CloseableHttpResponse response = httpClient.execute(post)) {
-
-            System.out.println("--------------"+EntityUtils.toString(response.getEntity()));
-        }
+       
+        HttpEntity entity = builder.build();
+        post.setEntity(entity);
+        
+        CloseableHttpResponse response = httpClient.execute(post);
+        httpClient.close();
+        
+        //HttpEntity reqEntity = response.getEntity();
+        //System.out.println("ToString:" + EntityUtils.toString(reqEntity));
+        //System.out.println("--------------"+EntityUtils.toString(response.getEntity()));
+        
 
 
     }
