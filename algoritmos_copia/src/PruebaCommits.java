@@ -1,5 +1,3 @@
-package urjc.isi.pruebaCommits;
-
 /*
  * Esta clase es para probar el buen funcionamiento de objetos tipo AccessCommits
  */
