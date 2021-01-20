@@ -16,12 +16,12 @@ public class examenDao {
         try {
             if(c!=null) return;
 
-            String username = "yaaaxjmixpfybt";
-            String password = "85f576abb87479453ec379a2b68dc7695af7ca2188f1b93c2d6ca6f72a2aa71c";
-	        String host = "ec2-52-2-6-71.compute-1.amazonaws.com";
+            String username = "hvnsnqrcgvkpmm";
+            String password = "261562231d1878781c02c5f80320c074d746bcaa1ee237a3a9e906d59492a566";
+	        String host = "ec2-52-205-61-60.compute-1.amazonaws.com" ;
 	        String port = "5432";
-	        String database = "d52kb40627alpm";
-            String dbUrl = "jdbc:postgresql://" + host + ":" + port + "/" + database;
+	        String database = "d98u000ha04vq1";
+            String dbUrl = "postgres://hvnsnqrcgvkpmm:261562231d1878781c02c5f80320c074d746bcaa1ee237a3a9e906d59492a566@ec2-52-205-61-60.compute-1.amazonaws.com:5432/d98u000ha04vq1";
             
         	c = DriverManager.getConnection(dbUrl,username,password);
             c.setAutoCommit(false);
