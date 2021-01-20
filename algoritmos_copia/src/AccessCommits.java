@@ -1,4 +1,3 @@
-package urjc.isi.pruebaCommits;
 
 /*
  * Con esta clase creamos un objeto que tiene un método, que accede a un path (directorio .git) y del que lista
