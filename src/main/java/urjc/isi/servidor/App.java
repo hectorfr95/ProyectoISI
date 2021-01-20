@@ -42,22 +42,15 @@ public class App
 
 		Random rnd = new Random();
 		
-		get("/", (req, res) -> {
-			String result = "<form method=\"get\" action=\"/profesor\">"
-			+ "<p>Profesor</p>\n"
-			+ "<button type=\"summit\" value=\"profesor\">"	  
-		    + "</form>";
-			
-			return result;
-		});
+		redirect.get("/", "/profesor");
 
 		get("/profesor", (req, res) -> {
 			int random = rnd.nextInt()*(-1);
 			String result = "<form action='/"+random+  "' method='post'>"
 			+ "<fieldset>"
 			+ "<p>INTRODUZCA LOS DATOS:</p>\n"
-			+ "<p>Asignatura</p>\n"
-			+ "<input type='text' name='asignatura' required='true'>"
+			+ "<p>Asignatura</p>"
+			+ "<input type='text' name='asignatura' required='true'>\n"
 			+ "<input type=\"submit\" value=\"Comenzar examen\">"	  
 		    + "</fieldset>" 
 		    + "</form>";
