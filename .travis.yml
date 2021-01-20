@@ -23,5 +23,6 @@ notifications:
     - d.rodriguezpo.2016@alumnos.urjc.es
     - j.casamaypr.2016@alumnos.urjc.es
     - j.vazquezm@alumnos.urjc.es
+    - cobosjob@gmail.com
     on_success: always
     on_failure: always
