@@ -37,10 +37,20 @@ public class App
 		examenDao examenDao = new examenDao();
 		alumnoDao alumnoDao = new alumnoDao();
 		realizaExamenDao realizaExamenDao = new realizaExamenDao();
+		
 	//	int examen=0;//Si es 0 el examen esta finalizado, 1 está activo.
 
 		Random rnd = new Random();
 		
+		get("/", (req, res) -> {
+			String result = "<form method=\"get\" action=\"/profesor\">"
+			+ "<p>Profesor</p>\n"
+			+ "<button type=\"summit\" value=\"profesor\">"	  
+		    + "</form>";
+			
+			return result;
+		});
+
 		get("/profesor", (req, res) -> {
 			int random = rnd.nextInt()*(-1);
 			String result = "<form action='/"+random+  "' method='post'>"
@@ -56,7 +66,6 @@ public class App
 		});
 		
 		post("/alumno", (req, res) -> {
-			
 			String result = req.queryParams("nombre")+ " " +
 			req.queryParams("dni")+ " " +
 			req.queryParams("idex");
@@ -81,6 +90,7 @@ public class App
 		
 		
 		post("/:random", (req, res) -> { // Revisar si es get o post
+			System.out.println(req.queryParams("asignatura"));
 			String path = req.uri();
 			String aux = path.substring(1,path.length());
 			//Añadido
@@ -88,7 +98,7 @@ public class App
 			String asignatura = req.queryParams("asignatura");
 			//-Añadido
 			String result ="<h1> El examen con ID "+id_examen+" se ha iniciado con el numero generado: "+ aux + "</h1>"
-			+ "<form action='/finalizar' method='post'>"		
+			+ "<form action='/' method='post'>"		
 		    + "<input type=\"submit\" value=\"Finalizar examen\">"	    
 		    + "</form>";
 			
