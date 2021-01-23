@@ -2,23 +2,29 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipInputStream;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
+
+
+
+
 public class Principal {
 	
 	private static final String ARCHIVO_ZIP = "https://wordpress.org/latest.zip";
 	private static final String RUTA_SALIDA = "/home/juanmanuel/Escritorio/prueba";
-	private static final String DIRECTORIO = "/home/juanmanuel/Escritorio/prueba";
+	private static final String DIRECTORIO = "/home/juanmanuel/Escritorio/prueba/gits";
 	
 	public static void CrearDirectorio (String args){
         File directorio = new File(args);
+        
         if (!directorio.exists()) {
             if (directorio.mkdirs()) {
                 System.out.println("Directorio creado\n");
@@ -102,19 +108,31 @@ public class Principal {
 		}
 	}
 	
+
+	
     public static void main(String[] args) throws Exception{
 		CrearDirectorio(DIRECTORIO);
         EjecutarWget();
         String path = RUTA_SALIDA;
         String[] files = ObtenerFich(path);
+        
 		if (files != null) {
 			int size = files.length;
             for (int i = 0; i < size; i++) {
 				System.out.println(files[i]);
                 List listaArchivos;
                 String ARCHIVO_ZIP = files[i];
-                Descomprimir(ARCHIVO_ZIP,RUTA_SALIDA);
-            }
+                Descomprimir(ARCHIVO_ZIP,DIRECTORIO);
+				
+				File carpeta = new File(DIRECTORIO);
+				String[] listado = carpeta.list();
+				
+				for (i = 0; i < listado.length; i++){
+					System.out.println(listado[i]);
+					String DIRECTORIO2 = DIRECTORIO.concat("/" + listado[i]);
+				}
+
+			}
 		}
     }
 }
