@@ -28,7 +28,7 @@ import java.net.URISyntaxException;
 
 public class App
 {
-	static String cosa = null;
+	private static httprequest requestToClient = new httprequest();
 
 	public static void main(String[] args) throws
 	ClassNotFoundException, SQLException, URISyntaxException {
@@ -38,9 +38,7 @@ public class App
 		alumnoDao alumnoDao = new alumnoDao();
 		realizaExamenDao realizaExamenDao = new realizaExamenDao();
 
-	//	int examen=0;//Si es 0 el examen esta finalizado, 1 está activo.
-
-	Random rnd = new Random();
+	
 
 	redirect.get("/", "/profesor");
 
@@ -60,27 +58,24 @@ public class App
 	});
 
 	post("/alumno", (req, res) -> {
-		String result = req.queryParams("nombre")+ " " +
-		req.queryParams("dni")+ " " +
-		req.queryParams("idex");
-		System.out.println(result);
-		cosa = result;
+		
 		String dni = req.queryParams("dni");
 		String nombre = req.queryParams("nombre");
 		int id_ex = Integer.parseInt(req.queryParams("idex"));
-		String ip = req.ip();
-
-		alumno alumnoObject = new alumno(dni,nombre, 4568, ip);
+		String ip = req.ip(); //IP de la petición
+		int port = req.port(); //PUERTO de la petición
+		
+		
+		
+		alumno alumnoObject = new alumno(dni,nombre, port, ip);
 		alumnoDao.save(alumnoObject);
 		realizaExamen realizaExamenObject = new realizaExamen(id_ex,dni, null);
 		realizaExamenDao.save(realizaExamenObject);
-		return result;
+		return null;
 	});
 
 
-	get("/cosa", (req, res) ->
-		"<h1> El examen con ID "+ cosa + "</h1>"
-	);
+	
 
 
 	post("/profesor", (req, res) -> { // Revisar si es get o post
@@ -110,15 +105,24 @@ public class App
 
 		return result;
 	});
-
+	
+	get("/prueba", (req, res) -> {	//URL DE PRUEBA PARA HACER GET /profesor	
+		requestToClient.sendGetprueba();
+		return "EXITO";
+	});
+	
 	get("/:random", (req, res) -> {
 		//COMPROBAR SI EL RECURSO :RANDOM SE ENCUENTRA EN LA BD, SI NO ES ASI, DEVOLVER 404 NOT FOUND
-
+		
+		//BUCLE QUE RECORRA LOS ALUMNOS DEL ID DE EXAMEN HACIENDO GET IP+PUERTO/fin
+		// requestToClient.sendGetAlumno(ip, puerto);
+		
 		String result = "<h1>Examen con id "+req.params(":random")+" finalizado!</h1>"
 				+"<h2>Espera unos minutos hasta que se genere el informe de copias.</h2>";
 
 		return result;
 	});
+	
 
 		}
 
