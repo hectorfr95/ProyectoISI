@@ -12,11 +12,11 @@ public class PruebaCommits {
 	public static void main(String[] args) throws NoHeadException, IOException, GitAPIException {
 		
 		//Creo un objeto de tipo accessCommits
-		AccessCommits accessCommits = new AccessCommits();
+		//AccessCommits accessCommits = new AccessCommits();
 		
 		//Llamo al metodo de ese objeto que lista los commits de un directorio
 		//Se le pasa al metodo una ruta de ejemplo
-		accessCommits.listCommits("/introducir-ruta/.git");
+		//accessCommits.listCommits("/introducir-ruta/.git");
 		
 		
 		
