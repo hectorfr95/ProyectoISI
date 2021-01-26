@@ -15,8 +15,6 @@ public class GitDiff {
 	public static void main(String[] args) throws FileNotFoundException {
 
 		
-		//String text1 = "This is a simple test";
-		//String text2 = "This is a test";
 		
 		String sample1 = "Some text here for the testing example."  
 				+ System.lineSeparator() + System.lineSeparator() +"Another text for doing some testing to the functionality."
