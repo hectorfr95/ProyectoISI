@@ -1,3 +1,8 @@
+/*
+*En esta clase se realiza el trabajo de descargar un fichero .zip dado un path, descomprimir el fichero, acceder a los directorios que contiene (.git) y listar los commits
+*de dicho directorio
+*/
+
 package urjc.isi.pruebaCommits;
 
 import java.io.BufferedReader;
@@ -19,9 +24,11 @@ import java.util.zip.ZipInputStream;
 
 
 public class Principal {
-	
+	//path de donde bajar el .zip
 	private static final String ARCHIVO_ZIP = "https://wordpress.org/latest.zip";
+	//path donde se crea un directorio en el que se coloca el .zip
 	private static final String RUTA_SALIDA = "/home/razvan/Escritorio/prueba";
+	//path en el que se introduce el contenido del .zip
 	private static final String DIRECTORIO = "/home/razvan/Escritorio/prueba/gits";
 	
 	public static void CrearDirectorio (String args){
@@ -36,6 +43,7 @@ public class Principal {
         }
     }
     
+	//Método para poder conseguir un fichero desde un path de la web
     public static void EjecutarWget(){
 		try {
 			String[] cmd = {"wget","-P",RUTA_SALIDA,ARCHIVO_ZIP};
@@ -71,6 +79,7 @@ public class Principal {
             return arr_res;
         }
         
+	//Método para descomprimir el fichero .zip 
     public static void Descomprimir(String ficheroZip, String directorioSalida) throws Exception {
 		
 		final int TAM_BUFFER = 4096;
@@ -132,6 +141,7 @@ public class Principal {
 				for (i = 0; i < listado.length; i++){
 					System.out.println(listado[i]);
 					String DIRECTORIO2 = DIRECTORIO.concat("/" + listado[i]);
+					//Se llama al método que lista los commits del directorio .git
 					AccessCommits accessCommits = new AccessCommits();
 					accessCommits.listCommits(DIRECTORIO2);
 				}
