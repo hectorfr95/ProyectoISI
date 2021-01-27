@@ -1,3 +1,7 @@
+/*
+ * Clase que contiene un método que compara strings de ficheros mediante funciones de JGit 	
+ */
+
 package urjc.isi.pruebasJGit;
 
 import java.io.ByteArrayOutputStream;
@@ -13,7 +17,8 @@ import org.eclipse.jgit.diff.RawText;
 import org.eclipse.jgit.diff.RawTextComparator;
 
 public class StringDiff {
-
+	
+	//Recibe dos parámetros, el contenido de un fichero pasado y el contenido actual
 	public void compare(byte[] fileContentOld, byte[] fileContentNew) {
 		try {
 
