@@ -50,7 +50,7 @@ public class Contador {
 		for (i = 0; i < counter1.length; i++){
 			if((counter1[i] != 0) && (counter2[i] != 0)){
 				System.out.println("\nEl examen 1 tiene en su commit"+ " "+ (i+1)+ ": "+ counter1[i]+ " "+ "palabras");
-				System.out.println("Y el examen 2 tiene en su commit"+ " "+ (i+1)+ ": "+ counter1[i]+ " "+ "palabras");
+				System.out.println("Y el examen 2 tiene en su commit"+ " "+ (i+1)+ ": "+ counter2[i]+ " "+ "palabras");
 			}
 		 }
 	}
