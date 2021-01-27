@@ -17,3 +17,34 @@ if (!treeWalk.next()) {
 }
 ObjectId objectId = treeWalk.getObjectId(0);
 ObjectLoader loader = repository.open(objectId);
+
+private String fetchBlob(String revSpec, String path) throws MissingObjectException, IncorrectObjectTypeException,
+        IOException {
+
+    // Resolve the revision specification
+    final ObjectId id = this.repo.resolve(revSpec);
+
+    // Makes it simpler to release the allocated resources in one go
+    ObjectReader reader = this.repo.newObjectReader();
+
+    try {
+        // Get the commit object for that revision
+        RevWalk walk = new RevWalk(reader);
+        RevCommit commit = walk.parseCommit(id);
+
+        // Get the revision's file tree
+        RevTree tree = commit.getTree();
+        // .. and narrow it down to the single file's path
+        TreeWalk treewalk = TreeWalk.forPath(reader, path, tree);
+
+        if (treewalk != null) {
+            // use the blob id to read the file's data
+            byte[] data = reader.open(treewalk.getObjectId(0)).getBytes();
+            return new String(data, "utf-8");
+        } else {
+            return "";
+        }
+    } finally {
+        reader.close();
+    }
+}
