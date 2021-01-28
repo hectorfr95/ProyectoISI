@@ -29,7 +29,7 @@ public class httprequest {
 
     public void sendGetprueba() throws Exception {
 
-        HttpGet request = new HttpGet("http://servidor-hectorfr95.herokuapp.com/profesor");
+        HttpGet request = new HttpGet("http://localhost:4567/profesor");
 
         // add request headers
        // request.addHeader("custom-key", "mkyong");
@@ -55,7 +55,8 @@ public class httprequest {
     }
     
     public void sendGetAlumno(String ip, int puerto) throws Exception {
-    	String url = "http://" + ip +":"+puerto+"/fin";
+    	String url = "http://"+ip+":"+puerto+"/fin";
+    	System.out.println(url);
         HttpGet request = new HttpGet(url);
 
         // add request headers
@@ -69,7 +70,6 @@ public class httprequest {
 
             HttpEntity entity = response.getEntity();
             Header headers = entity.getContentType();
-            System.out.println(headers);
 
             if (entity != null) {
                 // return it as a String

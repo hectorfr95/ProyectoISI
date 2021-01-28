@@ -12,6 +12,7 @@ public class realizaExamen {
 		this.Path = path; 
 	}
 	
+	
 	public int getIdExamen() {
 		return idExamen;
 	}
