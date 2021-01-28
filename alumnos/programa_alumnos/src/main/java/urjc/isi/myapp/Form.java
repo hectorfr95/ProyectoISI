@@ -148,6 +148,11 @@ public class Form extends JFrame implements ActionListener {
 	public void actionPerformed(ActionEvent e){ 
 		if (e.getSource() == sub) { 
 			//if (term.isSelected()) { 
+			if (tname.getText().equals("") || tdni.getText().equals("") || tid.getText().equals("")) {
+				res.setText("Rellene correctamente los campos"); 
+
+			} else {
+	
 				String data1; 
 				String data 
 					= "Name : "
@@ -163,6 +168,7 @@ public class Form extends JFrame implements ActionListener {
 				nombreAl = tname.getText();
 				dniAl = tdni.getText();
 				idExAl = tid.getText();
+			}
 			/*} 
 			else { 
 				tout.setText(""); 
@@ -170,9 +176,8 @@ public class Form extends JFrame implements ActionListener {
 				res.setText("Please accept the"
 							+ " terms & conditions.."); 
 			} */
-		} 
-	
-		else if (e.getSource() == reset) { 
+					
+		} else if (e.getSource() == reset) { 
 			String def = ""; 
 			tname.setText(def); 
 			tdni.setText(def); 
