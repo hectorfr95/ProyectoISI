@@ -27,10 +27,15 @@ import org.apache.http.entity.mime.content.StringBody;
 public class HttpRequests {
 
 	public final CloseableHttpClient httpClient = HttpClients.createDefault();
+	public String url;
 	
 	public void close() throws IOException {
         httpClient.close();
     }
+	
+	public HttpRequests(String url) {
+		this.url = url;
+	}
 
 //	public void sendGet() throws Exception {
 //
@@ -61,7 +66,7 @@ public class HttpRequests {
 
     public void sendPostAlumno(String nombre, String dni, String idex, String puerto) throws Exception {
     	System.out.println(nombre+dni+idex);
-        HttpPost post = new HttpPost("https://servidor-proyecto1.herokuapp.com/alumno");// aqui habria que poner https://servidor-hectorfr95.herokuapp.com/alumno
+        HttpPost post = new HttpPost(url+"/alumno");// aqui habria que poner https://servidor-hectorfr95.herokuapp.com/alumno
 
         // add request parameter, form parameters
         List<NameValuePair> urlParameters = new ArrayList<>();
@@ -77,12 +82,13 @@ public class HttpRequests {
 
             System.out.println(EntityUtils.toString(response.getEntity()));
         }
+        httpClient.close();
 
     }
     
     public void sendPostExamen(File file, String nombre, String dni, String idex) throws Exception {
     	CloseableHttpClient httpClient = HttpClients.createDefault();
-        HttpPost post = new HttpPost("https://servidor-proyecto1.herokuapp.com/examen");// aqui habria que poner https://servidor-hectorfr95.herokuapp.com/examen
+        HttpPost post = new HttpPost(url+"/examen");// aqui habria que poner https://servidor-hectorfr95.herokuapp.com/examen
                
        
        //  add request parameter, form parameters

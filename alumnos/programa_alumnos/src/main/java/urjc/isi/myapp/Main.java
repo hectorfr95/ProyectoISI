@@ -76,8 +76,11 @@ public class Main {
     //tiempo entre commit y commit en minutos
     private static int rateCommit = 10;
     
+    //url a la que hacemos las peticiones:
+    private static String url = "http://localhost:4567";//"https://servidor-proyecto1.herokuapp.com";
+    
     //objeto para hacer peticiones
-    private static HttpRequests requestToServer = new HttpRequests();
+    private static HttpRequests requestToServer = new HttpRequests(url);
     
     
     //metodo que espera a que el alumno acabe de rellenar el formulario
