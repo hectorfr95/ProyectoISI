@@ -35,13 +35,13 @@ public class examenDao {
     }
     
     // Este método cierra las conexiones con la bbdd, para que no surjan bloqueos.
-    public void cerrarConexion(Connection conn, PreparedStatement ps, ResultSet rs) throws SQLException {
+    public void cerrarConexion(PreparedStatement ps, ResultSet rs) throws SQLException {
     	
     	if(rs != null) {
     		rs.close();
     	}
         ps.close();
-        conn.close();
+        c.close();
     }
     
     // Con este método vamos a poder obtener todos exámenes de la tabla Exámen.
@@ -61,7 +61,7 @@ public class examenDao {
                 String Asignatura = rs.getString("Asignatura");
                 allExamenes.add(new examen(idExamen, Fecha, Asignatura));
             }
-            cerrarConexion(c, ps, rs);
+            cerrarConexion(ps, rs);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         } finally {
@@ -83,7 +83,7 @@ public class examenDao {
             	
             	asignatura = rs.getString("Asignatura");
             }
-            cerrarConexion(c, ps, rs);
+            cerrarConexion(ps, rs);
 
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -108,7 +108,7 @@ public class examenDao {
             	if(idex == idExamen)
             		aux=1;
             }
-            cerrarConexion(c, ps, rs);
+            cerrarConexion(ps, rs);
             
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -131,7 +131,7 @@ public class examenDao {
             while(rs.next()) {
             	fecha = rs.getDate("Fecha");
             }
-            cerrarConexion(c, ps, rs);
+            cerrarConexion(ps, rs);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         } finally {
@@ -153,7 +153,7 @@ public class examenDao {
             System.out.println("sql.Date insert: "+  examen.getFecha());
             ps.execute();
             c.commit();
-            cerrarConexion(c, ps, null);
+            cerrarConexion(ps, null);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

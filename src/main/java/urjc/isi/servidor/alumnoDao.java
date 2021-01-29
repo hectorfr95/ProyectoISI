@@ -36,7 +36,7 @@ public class alumnoDao {
     }
     
     // Este método cierra las conexiones con la bbdd, para que no surjan bloqueos.
-    public void cerrarConexion(Connection conn, PreparedStatement ps, ResultSet rs) throws SQLException {
+    public void cerrarConexion(PreparedStatement ps, ResultSet rs) throws SQLException {
     	
     	if(rs != null) {
     		rs.close();
@@ -63,7 +63,7 @@ public class alumnoDao {
                 String ip = rs.getString("ip");
                 allAlumnos.add(new alumno(idAlumno, nombre, puerto, ip));
             }
-            cerrarConexion(c, ps, rs);
+            cerrarConexion(ps, rs);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         } finally {
@@ -89,7 +89,7 @@ public class alumnoDao {
                 ip = rs.getString("Ip");
                 puerto = rs.getInt("puerto");
             }
-            cerrarConexion(c, ps, rs);
+            cerrarConexion(ps, rs);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         } finally {
@@ -116,7 +116,7 @@ public class alumnoDao {
             System.out.println("sql.IP: "+  alumno.getIp());
             System.out.println("sql.PUERTO: "+  alumno.getPuerto());
             c.commit();
-            cerrarConexion(c, ps, null);
+            cerrarConexion(ps, null);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

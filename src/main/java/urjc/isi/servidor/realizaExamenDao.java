@@ -34,13 +34,13 @@ public class realizaExamenDao {
     }
     
     // Este método cierra las conexiones con la bbdd, para que no surjan bloqueos.
-    public void cerrarConexion(Connection conn, PreparedStatement ps, ResultSet rs) throws SQLException {
+    public void cerrarConexion(PreparedStatement ps, ResultSet rs) throws SQLException {
     	
     	if(rs != null) {
     		rs.close();
     	}
         ps.close();
-        conn.close();
+        c.close();
     }
     
     // Lista de todos los examenes
@@ -59,9 +59,9 @@ public class realizaExamenDao {
                 String idAlumno = rs.getString("idAlumno");
                 String ip = rs.getString("IP");
                 int puerto = rs.getInt("Puerto");
-                allFinalExamen.add(new finalexamen(idExamen_, idAlumno,ip, puerto));
+                allFinalExamen.add(new finalexamen(idex, idAlumno,ip, puerto));
             }
-            cerrarConexion(c, ps, rs);
+            cerrarConexion(ps, rs);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         } finally {
@@ -85,7 +85,7 @@ public class realizaExamenDao {
                 String path = rs.getString("Path");
                 allRealiza.add(new realizaExamen(idExamen, idAlumno, path));
             }
-            cerrarConexion(c, ps, rs);
+            cerrarConexion(ps, rs);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         } finally {
@@ -109,7 +109,7 @@ public class realizaExamenDao {
             while(rs.next()) {
             	idAlumnos.add(rs.getString("idAlumno"));
             }
-            cerrarConexion(c, ps, rs);
+            cerrarConexion(ps, rs);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         } finally {
@@ -129,7 +129,7 @@ public class realizaExamenDao {
             while(rs.next()) {
                 Paths.add(rs.getString("Path"));
             }
-            cerrarConexion(c, ps, rs);
+            cerrarConexion(ps, rs);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         } finally {
@@ -145,7 +145,7 @@ public class realizaExamenDao {
             PreparedStatement ps = c.prepareStatement("UPDATE RealizaExamen SET Path = '1' WHERE [idExamen] = "+id_examen+" AND [idAlumno] = '"+id_alumno+"'");
             ps.execute();
             c.commit();
-            cerrarConexion(c, ps, null);
+            cerrarConexion(ps, null);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -163,7 +163,7 @@ public class realizaExamenDao {
             ps.setString(3, realizaExamen.getPath());
             ps.execute();
             c.commit();
-            cerrarConexion(c, ps, null);
+            cerrarConexion(ps, null);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
