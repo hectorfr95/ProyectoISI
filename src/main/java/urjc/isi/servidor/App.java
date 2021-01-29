@@ -311,9 +311,19 @@ public class App
 
 		return result;
 	});
+	get("/fin/:random", (req, res) -> {
+		int id_examen = Integer.parseInt(req.params(":random"));
+		System.out.println("*******************************************************************");
+		System.out.println("get recibido con: "+id_examen);
+		//hacer aqui la consulta a la base de datos: 
+		//devolver 0 si no se ha acabado el examen, devolver 1 si se ha acabado
+		//ahora ya no haría falta guardar el puerto e ip
+		return "0";
+	});
 	
-		
 	}
+	
+	
 
 	static int getHerokuAssignedPort() {
 		ProcessBuilder processBuilder = new ProcessBuilder();
