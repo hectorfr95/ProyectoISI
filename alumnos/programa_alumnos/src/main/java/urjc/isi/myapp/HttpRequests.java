@@ -37,32 +37,25 @@ public class HttpRequests {
 		this.url = url;
 	}
 
-//	public void sendGet() throws Exception {
-//
-//        HttpGet request = new HttpGet("https://www.google.com/search?q=mkyong");
-//
-//        // add request headers
-//        request.addHeader("custom-key", "mkyong");
-//        request.addHeader(HttpHeaders.USER_AGENT, "Googlebot");
-//
-//        try (CloseableHttpResponse response = httpClient.execute(request)) {
-//
-//            // Get HttpResponse Status
-//            System.out.println(response.getStatusLine().toString());
-//
-//            HttpEntity entity = response.getEntity();
-//            Header headers = entity.getContentType();
-//            System.out.println(headers);
-//
-//            if (entity != null) {
-//                // return it as a String
-//                String result = EntityUtils.toString(entity);
-//                System.out.println(result);
-//            }
-//
-//        }
-//
-//    }
+	public int sendGet(String idEx) throws Exception {
+
+        HttpGet request = new HttpGet(url+"/fin/"+idEx);
+        int cod ;
+
+        // add request headers
+        //request.addHeader("custom-key", "mkyong");
+        //request.addHeader(HttpHeaders.USER_AGENT, "Googlebot");
+
+        try (CloseableHttpClient httpClient = HttpClients.createDefault();
+        	CloseableHttpResponse response = httpClient.execute(request)) {
+        	cod = Integer.parseInt(EntityUtils.toString(response.getEntity()));
+        	//System.out.println("en alumno"+cod);
+        	httpClient.close();
+        	return cod;
+        }
+       
+
+    }
 
     public void sendPostAlumno(String nombre, String dni, String idex, String puerto) throws Exception {
     	System.out.println(nombre+dni+idex);
@@ -86,7 +79,7 @@ public class HttpRequests {
 
     }
     
-    public void sendPostExamen(File file, String nombre, String dni, String idex) throws Exception {
+    public void sendPostExamen(File file, String nombre, String dni, String idEx) throws Exception {
     	CloseableHttpClient httpClient = HttpClients.createDefault();
         HttpPost post = new HttpPost(url+"/examen");// aqui habria que poner https://servidor-hectorfr95.herokuapp.com/examen
                
@@ -96,9 +89,9 @@ public class HttpRequests {
         builder.addBinaryBody("file", file, ContentType.APPLICATION_OCTET_STREAM, "file.ext");
         builder.addTextBody("nombre", nombre);
         builder.addTextBody("dni", dni);
-        builder.addTextBody("idex", idex);
+        builder.addTextBody("idex", idEx);
         
-        System.out.println("id del examen en el server: "+idex);
+        System.out.println("id del examen en el server: "+idEx);
        
         HttpEntity entity = builder.build();
         post.setEntity(entity);

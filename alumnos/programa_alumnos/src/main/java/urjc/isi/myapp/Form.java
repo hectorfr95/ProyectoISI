@@ -106,7 +106,7 @@ public class Form extends JFrame implements ActionListener {
 	
 		tmail = new JTextField(); 
 		tmail.setFont(new Font("Arial", Font.PLAIN, 15)); 
-		tmail.setSize(150, 20); 
+		tmail.setSize(200, 20); 
 		tmail.setLocation(220, 320); 
 		c.add(tmail); 
 		

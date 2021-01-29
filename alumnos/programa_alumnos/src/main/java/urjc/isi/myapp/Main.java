@@ -82,6 +82,12 @@ public class Main {
     //objeto para hacer peticiones
     private static HttpRequests requestToServer = new HttpRequests(url);
     
+    //timer para hacer consultas periodicas al server:
+    private static Timer periodicRequests = new Timer();
+    
+  //tiempo entre consulta y consulta en minutos
+    private static int rateRequest = 1;
+    
     
     //metodo que espera a que el alumno acabe de rellenar el formulario
     public static void waitAl(Form f) {
@@ -172,17 +178,34 @@ public class Main {
     }
     
     public static void setAlarm() {
-	    	timer.scheduleAtFixedRate(new TimerTask(){
-	      	 @Override
-	      	 public void run() {
+	    timer.scheduleAtFixedRate(new TimerTask(){
+		    @Override
+		  	public void run() {
 	      		 System.out.println("Executed...");
-			   	
-	      		doCommit( "commit a las:"+ currentDay());
-	      		//checkCommits(git);
-	      		//timer.cancel();
-			  	 
-	      	 }
+	      		 doCommit( "commit a las:"+ currentDay());
+		      		//checkCommits(git);
+		      		//timer.cancel();
+		     }
   		 },1000*60*rateCommit, 1000*60*rateCommit);
+    }
+    
+    public static void setPeriodicRequests(){
+    	periodicRequests.scheduleAtFixedRate(new TimerTask(){
+		    @Override
+		  	public void run() {
+	      		System.out.println("------envio peticion al server.");
+	      		try {	
+	      			if(requestToServer.sendGet(idEx) == 1) {
+	      				finEx();
+	      			}else {
+	      				System.out.println("ha llegado un 0");
+	      			}
+	      		}catch(Exception e) {
+	      			System.out.println("An error occurred.");
+	    	        e.printStackTrace();
+	      		}
+		     }
+  		 },1000*60*rateRequest, 1000*60*rateRequest);
     }
     
     private static void zipFile(File fileToZip, String fileName, ZipOutputStream zipOut) throws IOException {
@@ -238,8 +261,9 @@ public class Main {
     	
     }
     
-    public static String finEx(Request request, Response response) throws Exception{
+    public static void finEx(/*Request request, Response response*/) throws Exception{
     	timer.cancel();
+    	periodicRequests.cancel();
     	doCommit("ultimo commit del examen");
     	//Comprimir .git a zip 
         try {
@@ -248,8 +272,8 @@ public class Main {
         } finally {
         	requestToServer.close();
         }
-      //System.exit(0);
-        return "";
+      System.exit(0);
+       // return "";
     }
     
     
@@ -279,11 +303,14 @@ public class Main {
     	//llamo al siguiente metodo para comprobr que los commits se hacen correctamente
     	checkCommits();
 		
-    	//configuro el timer
+    	//configuro el timer de los commits
     	setAlarm();
     	
+    	//configuro el timer de consultas periodicas al server
+    	setPeriodicRequests();
+    	
     	//Recibir GET, probar con hector
-    	get("/fin", Main::finEx);
+    	//get("/fin", Main::finEx);
 
     }
     static int getHerokuAssignedPort() {
