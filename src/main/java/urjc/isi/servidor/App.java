@@ -149,14 +149,38 @@ public class App
 		File uploadDir = new File("upload/");
 		uploadDir.mkdir(); // create the upload directory if it doesn't exist
 		staticFiles.externalLocation("upload");
-
+		staticFiles.location("/views"); // Static files
 		examenDao examenDao = new examenDao();
 		realizaExamenDao realizaExamenDao = new realizaExamenDao();
 		alumnoDao alumnoDao = new alumnoDao();
 		
+
 		redirect.get("/", "/profesor");
+		get("/favicon.ico", (req, res) -> {
+			return null;
+		});
+		get("/views/css/style.css", (req, res) -> {
+			return render("views/css/style.css", settings);			
+		});
 		
-		get("/profesor", (req, res) -> {		
+		get("/profesor", (req, res) -> {
+			String result;
+			List<examen> allExamenes = new ArrayList<examen>();
+			allExamenes = examenDao.all();
+			if(allExamenes.size()==0)
+			{
+				result = "<p style='text-align: center; font-weight: bold;'>No hay Examenes registrados</p>"; 
+			}
+			else {
+				result = "<p style='text-align: center; font-weight: bold;font-size: 20px;'>Examenes en la BD:</p>";
+				
+			
+			for (int i=0;i<allExamenes.size();i++) {
+			      
+				result = result + "&nbsp &nbsp <strong>"+(i+1)+" - <u>ID:</u></strong> "+allExamenes.get(i).getIdExamen()+" <u style='font-weight: bold;'>ASIGNATURA:</u> "+allExamenes.get(i).getAsignatura()+"<br>";
+			    }
+			}
+			set("bloque_bd", result);
 			return render("views/index.html", settings);
 		});
 		
@@ -177,23 +201,8 @@ public class App
 			System.out.println("POST recibido para iniciar examen de la asignatura "+asignatura+" con ID: "+id_examen);
 			System.out.println("*******************************************************************");
 			
-			List<examen> allExamenes = new ArrayList<examen>();
-			allExamenes = examenDao.all();
-			
-			
-			//hay que cambiar la parte de localhost por https://servidor-hectorfr95.herokuapp.com/ en el html
-			String result ="<h1> Examen de la asignatura <strong style='color:red'>"+ asignatura + "</strong> creado con <u>exito</u></h1>"					 
-						+"<h2>Se ha generado el examen en la url <a href='http://localhost:4567/"+id_examen+"'>"+id_examen+"</a></h2>"
-						+"<h3>Examenes de la base de datos:<h3>";
-			
-			
-			for (int i=0;i<allExamenes.size();i++) {
-			      
-				result = result + "&nbsp &nbsp"+(i+1)+"- <u>ID:</u> "+allExamenes.get(i).getIdExamen()+" <u>ASIGNATURA:</u> "+allExamenes.get(i).getAsignatura()+"<br>";
-			    }
-			
-		
-			return result;
+			res.redirect("http://servidor-proyecto1.herokuapp.com/"+id_examen);
+			return null;
 		});
 		
 		
@@ -247,35 +256,41 @@ public class App
 	});
 
 	get("/:random", (req, res) -> {
-		int id_examen = Integer.parseInt(req.params(":random"));
+		int id_examen=0;
+		try {
+			id_examen = Integer.parseInt(req.params(":random"));
+		//COMPROBAR SI EL RECURSO :RANDOM SE ENCUENTRA EN LA BD, SI NO ES ASI, DEVOLVER 404 NOT FOUND
+		}catch (NumberFormatException e) {
+			return render("views/404.html", settings);
+        }
 		//COMPROBAR SI EL RECURSO :RANDOM SE ENCUENTRA EN LA BD, SI NO ES ASI, DEVOLVER 404 NOT FOUND
 		try {
 			if(examenDao.comprobar_examen(id_examen)==0)			
-				halt(404, "404 NOT FOUND");
+				return render("views/404.html", settings);
 			
 		}catch (NumberFormatException e) {
-			halt(404, "404 NOT FOUND");
+			return render("views/404.html", settings);
         }
+
 		
 		String asignatura = examenDao.getAsignatura(id_examen);
-		
-		//hay que cambiar la parte de localhost por https://servidor-hectorfr95.herokuapp.com/ en el html
-		String result = "<h1>Examen iniciado con id <strong style='color:red'>"+id_examen+ "</strong> de la asignatura <strong style='color:red'>"+asignatura+"</strong></h1>"
-				+"<form action='http://localhost:4567/"+id_examen+"/finalizar' method='post'>"
-				+ "<input type=\"submit\" value=\"Finalizar examen\">"
-				+ "</form><br>";
-
-		return result;
+		String result = "Examen iniciado con id <strong style='color:red'> "+ id_examen + "</strong><br><br> <strong style='color:red'> "+asignatura+ "</strong>";
+		set("titulo", result);
+		set("id", req.params(":random"));
+		return render("views/random.html", settings);
 	});
 	post("/:random/finalizar", (req, res) -> {
-		int id_examen = Integer.parseInt(req.params(":random"));
-		//COMPROBAR SI EL RECURSO :RANDOM SE ENCUENTRA EN LA BD, SI NO ES ASI, DEVOLVER 404 NOT FOUND
+		int id_examen=0;
 		try {
-			if(examenDao.comprobar_examen(id_examen)==0)			
-				halt(404, "404 NOT FOUND");
+			id_examen = Integer.parseInt(req.params(":random"));
+		//COMPROBAR SI EL RECURSO :RANDOM SE ENCUENTRA EN LA BD, SI NO ES ASI, DEVOLVER 404 NOT FOUND
 		}catch (NumberFormatException e) {
 			halt(404, "404 NOT FOUND");
         }
+		
+			if(examenDao.comprobar_examen(id_examen)==0)			
+				halt(404, "404 NOT FOUND");
+		
 		
 		List<finalexamen> allFinalExamen = new ArrayList<finalexamen>();
 		allFinalExamen = realizaExamenDao.alumnos_examen(Integer.parseInt(req.params(":random")));
@@ -283,7 +298,7 @@ public class App
 		for (int i=0;i<allFinalExamen.size();i++) {
 			String ip_alumno=allFinalExamen.get(i).getIp();
 			int puerto_alumno=allFinalExamen.get(i).getPuerto();
-			requestToClient.sendGetAlumno(ip_alumno, 4568);
+			requestToClient.sendGetAlumno(ip_alumno, puerto_alumno);
 			}
 		
 		

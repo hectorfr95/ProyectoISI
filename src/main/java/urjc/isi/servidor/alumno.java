@@ -7,6 +7,13 @@ public class alumno {
 	private int puerto;
 	private String ip;
 	
+	public alumno(String idAlumno) {
+		this.idAlumno = idAlumno;
+		this.Nombre = null;
+		this.puerto = 0;
+		this.ip = null;
+   	 }
+    
 	public alumno(String idAlumno, String Nombre, int puerto, String ip) {
 		this.idAlumno = idAlumno;
 		this.Nombre = Nombre;
