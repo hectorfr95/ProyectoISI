@@ -64,8 +64,8 @@ public class Main {
     private static String idEx;
     //Puerto del alumno
     private static int puerto;
-    //nombre del fichero con el que se identifica el alumno
-    //private static String fichName = "identificacion_alumno.txt";
+    //mail dl alumno, necesario solo para rellenar un campo en los commits
+    private static String mail;
     
     //objeto con el que haré los commits
     private static Git git;
@@ -82,7 +82,8 @@ public class Main {
     
     //metodo que espera a que el alumno acabe de rellenar el formulario
     public static void waitAl(Form f) {
-    	while(f.getName() == null || f.getDni() == null || f.getIdEx() == null){
+    	while(f.getName() == null || f.getDni() == null 
+    			|| f.getIdEx() == null || f.getMail() == null){
     		System.out.println("");
         	/*System.out.println("Name : "
 					+ f.getName() + "\n"
@@ -97,7 +98,7 @@ public class Main {
     	try {
 	    	//hago un commit de todo
 	    	git.add().addFilepattern(".").call();
-	    	git.commit().setMessage(comen).setAuthor(nombre, nombre+"@gmail.com").call();
+	    	git.commit().setMessage(comen).setAuthor(nombre, mail).call();
     	}catch(GitAPIException e) {
     		System.out.println("An error occurred.");
 	        e.printStackTrace();
@@ -259,6 +260,7 @@ public class Main {
     	nombre = f.getName();
     	dni = f.getDni();
     	idEx = f.getIdEx();
+    	mail = f.getMail();
     	
     	String puertoStr = Integer.toString(puerto);
     	

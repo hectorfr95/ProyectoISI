@@ -23,6 +23,9 @@ public class Form extends JFrame implements ActionListener {
 	private JLabel id; 
 	private JTextField tid; 
 	
+	private JLabel mail; 
+	private JTextField tmail; 
+	
 	
 	//botones de envio 
 	private JButton sub; 
@@ -35,12 +38,14 @@ public class Form extends JFrame implements ActionListener {
 	private String nombreAl;
 	private String dniAl;
 	private String idExAl;
+	private String mailAl;
 
 	public Form() {
 		//inicalizo las variables a null
 		nombreAl = null;
-		String dniAl = null;
-		String idExAl = null;
+		dniAl = null;
+		idExAl = null;
+		mailAl = null;
 		
 		setTitle("Identification Form"); 
 		setBounds(300, 90, 900, 600); 
@@ -93,6 +98,18 @@ public class Form extends JFrame implements ActionListener {
 		tid.setLocation(220, 280); 
 		c.add(tid); 
 		
+		mail = new JLabel("eMail"); 
+		mail.setFont(new Font("Arial", Font.PLAIN, 20)); 
+		mail.setSize(150, 20); 
+		mail.setLocation(100, 320); 
+		c.add(mail); 
+	
+		tmail = new JTextField(); 
+		tmail.setFont(new Font("Arial", Font.PLAIN, 15)); 
+		tmail.setSize(150, 20); 
+		tmail.setLocation(220, 320); 
+		c.add(tmail); 
+		
 	
 		sub = new JButton("Enviar"); 
 		sub.setFont(new Font("Arial", Font.PLAIN, 15)); 
@@ -141,6 +158,9 @@ public class Form extends JFrame implements ActionListener {
 	public String getIdEx(){
 		return idExAl;
 	}
+	public String getMail(){
+		return mailAl;
+	}
 	
 	// method actionPerformed() 
 	// to get the action performed 
@@ -148,19 +168,20 @@ public class Form extends JFrame implements ActionListener {
 	public void actionPerformed(ActionEvent e){ 
 		if (e.getSource() == sub) { 
 			//if (term.isSelected()) { 
-			if (tname.getText().equals("") || tdni.getText().equals("") || tid.getText().equals("")) {
+			if (tname.getText().equals("") || tdni.getText().equals("") 
+					|| tid.getText().equals("") || tmail.getText().equals("")) {
 				res.setText("Rellene correctamente los campos"); 
 
 			} else {
-	
-				String data1; 
 				String data 
 					= "Name : "
 					+ tname.getText() + "\n"
 					+ "DNI : "
 					+ tdni.getText() + "\n"
 					+ "ID examen : "
-					+ tid.getText() + "\n"; 
+					+ tid.getText() + "\n"
+					+ "Mail : "
+					+ tmail.getText() + "\n"; 
 				
 				tout.setText(data);
 				tout.setEditable(false); 
@@ -168,6 +189,7 @@ public class Form extends JFrame implements ActionListener {
 				nombreAl = tname.getText();
 				dniAl = tdni.getText();
 				idExAl = tid.getText();
+				mailAl = tmail.getText();
 			}
 			/*} 
 			else { 
