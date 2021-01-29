@@ -79,7 +79,33 @@ public class Main {
     //objeto para hacer peticiones
     private static HttpRequests requestToServer = new HttpRequests();
     
-    
+    public static void setName(String s) {
+    	nombre = s;
+    }
+    public static void setDNI(String s) {
+    	dni = s;
+    }
+    public static void setidEx(String s) {
+    	idEx = s;
+    }
+    public static void setgit(Git g) {
+    	git = g;
+    }
+    public static String getName() {
+    	return nombre;
+    }
+    public static String getDNI() {
+    	return dni;
+    }
+    public static String getidEx() {
+    	return idEx;
+    }
+    public static Git getGit() {
+    	return git;
+    }
+    public static Timer getTimer() {
+    	return timer;
+    }
     //metodo que espera a que el alumno acabe de rellenar el formulario
     public static void waitAl(Form f) {
     	while(f.getName() == null || f.getDni() == null || f.getIdEx() == null){
@@ -154,7 +180,7 @@ public class Main {
             System.out.print(rev.getFullMessage());
             System.out.println();
             System.out.println(rev.getId().getName());
-            System.out.print(rev.getAuthorIdent().getName());
+            System.out.println(rev.getAuthorIdent().getName());
             System.out.println(rev.getAuthorIdent().getEmailAddress());
             System.out.println("-------------------------");
           }
