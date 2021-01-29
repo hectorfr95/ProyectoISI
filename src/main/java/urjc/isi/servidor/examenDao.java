@@ -11,10 +11,10 @@ public class examenDao {
 	private static Connection c;
 	
     // Este método abre la conexion con la bbdd
-    public void abrirConexion(Connection conn) throws SQLException {
+    public void abrirConexion() throws SQLException {
     	
-        conn = DriverManager.getConnection("jdbc:sqlite:proyecto.db");
-        conn.setAutoCommit(false);
+        c = DriverManager.getConnection("jdbc:sqlite:proyecto.db");
+        c.setAutoCommit(false);
     }
 
 	// Con este método creamos la conexión con la bbdd.
@@ -22,7 +22,7 @@ public class examenDao {
     public examenDao() throws URISyntaxException {
         try {
             if(c!=null) return;
-            abrirConexion(c);
+            abrirConexion();
             
             c.prepareStatement("drop table if exists Examenes").execute();
             c.prepareStatement("CREATE TABLE Examenes (IdExamen	INTEGER NOT NULL UNIQUE,Fecha	DATE NOT NULL,Asignatura VARCHAR(50) NOT NULL,PRIMARY KEY(IdExamen))").execute();
@@ -50,7 +50,7 @@ public class examenDao {
         List<examen> allExamenes = new ArrayList<examen>();
 
         try {
-        	abrirConexion(c);
+        	abrirConexion();
         	// Query sql
             PreparedStatement ps = c.prepareStatement("select * from Examenes");
 
@@ -73,7 +73,7 @@ public class examenDao {
     public String getAsignatura(int idExamen) {
     	String asignatura=null;
     	try {
-    		abrirConexion(c);
+    		abrirConexion();
         	// Query sql
         	String query = "select * from Examenes Where idExamen=" + idExamen;
             PreparedStatement ps = c.prepareStatement(query);
@@ -97,7 +97,7 @@ public class examenDao {
     public int comprobar_examen(int idExamen) {
     	int aux=0;
         try {
-        	abrirConexion(c);
+        	abrirConexion();
         	// Query sql
         	String query = "SELECT * from Examenes WHERE idExamen = " + idExamen;
             PreparedStatement ps = c.prepareStatement(query);
@@ -122,7 +122,7 @@ public class examenDao {
     	Date fecha = null;
 
         try {
-        	abrirConexion(c);
+        	abrirConexion();
         	// Query sql
         	String query = "SELECT * from Examenes WHERE idExamen = " + idExamen;
             PreparedStatement ps = c.prepareStatement(query);
@@ -142,7 +142,7 @@ public class examenDao {
     // Con este método insertamos el objeto examen recibido en la tabla de nuestra bbdd Examenes.
     public void save(examen examen) {
         try {
-        	abrirConexion(c);
+        	abrirConexion();
         	// Query sql
             PreparedStatement ps = c.prepareStatement("insert into Examenes(idExamen, Fecha , Asignatura) VALUES(?,?,?)");
             ps.setInt(1, examen.getIdExamen());    		

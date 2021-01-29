@@ -1,4 +1,4 @@
-age urjc.isi.servidor;
+package urjc.isi.servidor;
 
 
 import java.net.URISyntaxException;
@@ -12,10 +12,10 @@ public class alumnoDao {
 	private static Connection c;
 	
     // Este método abre la conexion con la bbdd
-    public void abrirConexion(Connection conn) throws SQLException {
+    public void abrirConexion() throws SQLException {
     	
-        conn = DriverManager.getConnection("jdbc:sqlite:proyecto.db");
-        conn.setAutoCommit(false);
+        c = DriverManager.getConnection("jdbc:sqlite:proyecto.db");
+        c.setAutoCommit(false);
     }
 
 	// Con este método creamos la conexión con la bbdd
@@ -23,7 +23,7 @@ public class alumnoDao {
     public alumnoDao() throws URISyntaxException {
         try {
             if(c!=null) return;
-            abrirConexion(c);
+        	abrirConexion();
 
             c.prepareStatement("drop table if exists Alumnos").execute();
             c.prepareStatement("CREATE TABLE Alumnos (idAlumno	VARCHAR(50) NOT NULL UNIQUE,Nombre	VARCHAR(50) NOT NULL,Puerto	INTEGER,IP	VARCHAR(50),PRIMARY KEY(idAlumno))").execute();
@@ -42,7 +42,7 @@ public class alumnoDao {
     		rs.close();
     	}
         ps.close();
-        conn.close();
+        c.close();
     }
 
     // Con este método vamos a poder obtener todos los alumnos de la tabla Alumnos.
@@ -51,7 +51,7 @@ public class alumnoDao {
         List<alumno> allAlumnos = new ArrayList<alumno>();
 
         try {
-        	abrirConexion(c);
+        	abrirConexion();
         	// Esta es la query de sql
             PreparedStatement ps = c.prepareStatement("select * from Alumnos");
 
@@ -79,8 +79,7 @@ public class alumnoDao {
     	int puerto = 0;
     	
         try {
-        	abrirConexion(c);
-        	// Esta es la query de sql
+        	abrirConexion();        	// Esta es la query de sql
         	String query = "SELECT * from Alumnos WHERE idAlumno = " + idAlumno;
             PreparedStatement ps = c.prepareStatement(query);
             	
@@ -102,7 +101,7 @@ public class alumnoDao {
     // Con este método insertamos el objeto alumno recibido en la tabla de nuestra bbdd Alumnos.
     public void save(alumno alumno) {
         try {
-        	abrirConexion(c);
+        	abrirConexion();
         	// Esta es la query de sql
             PreparedStatement ps = c.prepareStatement("insert into Alumnos(idAlumno, nombre , puerto, ip) VALUES(?,?,?,?)");
             ps.setString(1, alumno.getIdAlumno());

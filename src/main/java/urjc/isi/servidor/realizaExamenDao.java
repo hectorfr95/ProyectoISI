@@ -10,10 +10,10 @@ public class realizaExamenDao {
 	private static Connection c;
 
     // Este método abre la conexion con la bbdd
-    public void abrirConexion(Connection conn) throws SQLException {
+    public void abrirConexion() throws SQLException {
     	
-        conn = DriverManager.getConnection("jdbc:sqlite:proyecto.db");
-        conn.setAutoCommit(false);
+        c = DriverManager.getConnection("jdbc:sqlite:proyecto.db");
+        c.setAutoCommit(false);
     }
     
 	// Con este método creamos la conexión con la bbdd.
@@ -22,7 +22,7 @@ public class realizaExamenDao {
 	
         try {
             if(c!=null) return;
-            abrirConexion(c);
+            abrirConexion();
 
             c.prepareStatement("drop table if exists RealizaExamen").execute();
             c.prepareStatement("CREATE TABLE RealizaExamen (idExamen INTEGER NOT NULL,idAlumno varchar(50) NOT NULL,Path varchar(50),FOREIGN KEY(idExamen) REFERENCES Examenes(IdExamen),FOREIGN KEY(idAlumno) REFERENCES Alumnos(idAlumno),PRIMARY KEY(idExamen,idAlumno))").execute();
@@ -49,7 +49,7 @@ public class realizaExamenDao {
         List<finalexamen> allFinalExamen = new ArrayList<finalexamen>();
 
         try {
-        	abrirConexion(c);
+        	abrirConexion();
         	// Query sql
             PreparedStatement ps = c.prepareStatement("select idExamen, RealizaExamen.idAlumno, ip, puerto from RealizaExamen left join Alumnos on RealizaExamen.idAlumno=Alumnos.idAlumno WHERE idExamen="+idExamen_);
 
@@ -74,7 +74,7 @@ public class realizaExamenDao {
         List<realizaExamen> allRealiza = new ArrayList<realizaExamen>();
 
         try {
-        	abrirConexion(c);
+        	abrirConexion();
         	// Query sql
             PreparedStatement ps = c.prepareStatement("select * from RealizaExamen");
 
@@ -100,7 +100,7 @@ public class realizaExamenDao {
     	List<String> idAlumnos = new ArrayList<String>();
     	
         try {
-        	abrirConexion(c);
+        	abrirConexion();
         	// Query sql
         	String query = "SELECT * from RealizaExamen WHERE idExamen = " + idExamen;
             PreparedStatement ps = c.prepareStatement(query);
@@ -122,7 +122,7 @@ public class realizaExamenDao {
     	List<String> Paths = new ArrayList<String>();
     	
         try {
-        	abrirConexion(c);
+        	abrirConexion();
         	// Query sql
             PreparedStatement ps = c.prepareStatement("select * from RealizaExamen where idExamen = " + idExamen);
             ResultSet rs = ps.executeQuery();
@@ -140,7 +140,7 @@ public class realizaExamenDao {
     // Método de comprobacion del grupo servidor
     public void verificacion_zip(String id_alumno, int id_examen) {
         try {
-        	abrirConexion(c);
+        	abrirConexion();
         	// Query sql
             PreparedStatement ps = c.prepareStatement("UPDATE RealizaExamen SET Path = '1' WHERE [idExamen] = "+id_examen+" AND [idAlumno] = '"+id_alumno+"'");
             ps.execute();
@@ -155,7 +155,7 @@ public class realizaExamenDao {
     // Con este método insertamos el objeto realizaExamen recibido en la tabla de nuestra bbdd RealizaExamenes.
     public void save(realizaExamen realizaExamen) {
         try {
-        	abrirConexion(c);
+        	abrirConexion();
         	// Query sql
             PreparedStatement ps = c.prepareStatement("insert into RealizaExamen(idExamen, idAlumno, Path) VALUES(?,?, ?)");
             ps.setInt(1, realizaExamen.getIdExamen());
