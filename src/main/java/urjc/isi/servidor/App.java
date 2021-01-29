@@ -180,6 +180,8 @@ public class App
 			List<examen> allExamenes = new ArrayList<examen>();
 			allExamenes = examenDao.all();
 			
+			
+			//hay que cambiar la parte de localhost por https://servidor-hectorfr95.herokuapp.com/ en el html
 			String result ="<h1> Examen de la asignatura <strong style='color:red'>"+ asignatura + "</strong> creado con <u>exito</u></h1>"					 
 						+"<h2>Se ha generado el examen en la url <a href='http://localhost:4567/"+id_examen+"'>"+id_examen+"</a></h2>"
 						+"<h3>Examenes de la base de datos:<h3>";
@@ -257,7 +259,7 @@ public class App
 		
 		String asignatura = examenDao.getAsignatura(id_examen);
 		
-		
+		//hay que cambiar la parte de localhost por https://servidor-hectorfr95.herokuapp.com/ en el html
 		String result = "<h1>Examen iniciado con id <strong style='color:red'>"+id_examen+ "</strong> de la asignatura <strong style='color:red'>"+asignatura+"</strong></h1>"
 				+"<form action='http://localhost:4567/"+id_examen+"/finalizar' method='post'>"
 				+ "<input type=\"submit\" value=\"Finalizar examen\">"
