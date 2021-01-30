@@ -119,7 +119,7 @@ public class examenDao {
     }
 
 	//Método que cambia el valor para dar el examen por finalizado.
-	public int finalizar_examen(int idExamen) {
+	public void finalizar_examen(int idExamen) {
         try {
         	abrirConexion();
         	// Query sql
