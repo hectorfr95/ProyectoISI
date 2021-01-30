@@ -1,49 +1,74 @@
-package urjc.isi.servidor;
-
-import java.sql.Date;
+ppackage urjc.isi.servidor;
 
 
 public class examen {
 	
 	private int idExamen;
-	private Date Fecha;
+	private String Fecha;
 	private String Asignatura;
-	
-	
-	public examen(int idExamen, Date fecha, String asignatura) {
-		
+	private String Path;
+	private int finalExamen;
+
+	public examen(int idExamen, String Fecha, String Asignatura, String Path) {
 		this.idExamen = idExamen;
-		this.Fecha = fecha;
-		this.Asignatura = asignatura;
+		this.Fecha = Fecha;
+		this.Asignatura = Asignatura;
+		this.Path = Path;
+		this.finalExamen = 0;
 	}
-	
+
 	public int getIdExamen() {
 		return idExamen;
 	}
+
 	public void setIdExamen(int idExamen) {
 		this.idExamen = idExamen;
 	}
-	public Date getFecha() {
+
+	public String getFecha() {
 		return Fecha;
 	}
-	public void setFecha(Date fecha) {
+
+	public void setFecha(String fecha) {
 		Fecha = fecha;
 	}
+
 	public String getAsignatura() {
 		return Asignatura;
 	}
+
 	public void setAsignatura(String asignatura) {
 		Asignatura = asignatura;
 	}
+
+	public String getPath() {
+		return Path;
+	}
+
+	public void setPath(String path) {
+		Path = path;
+	}
+
+	public int getFinalExamen() {
+		return finalExamen;
+	}
+
+	public void setFinalExamen(int finalExamen) {
+		this.finalExamen = finalExamen;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((Asignatura == null) ? 0 : Asignatura.hashCode());
 		result = prime * result + ((Fecha == null) ? 0 : Fecha.hashCode());
+		result = prime * result + ((Path == null) ? 0 : Path.hashCode());
+		result = prime * result + finalExamen;
 		result = prime * result + idExamen;
 		return result;
 	}
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -63,10 +88,16 @@ public class examen {
 				return false;
 		} else if (!Fecha.equals(other.Fecha))
 			return false;
+		if (Path == null) {
+			if (other.Path != null)
+				return false;
+		} else if (!Path.equals(other.Path))
+			return false;
+		if (finalExamen != other.finalExamen)
+			return false;
 		if (idExamen != other.idExamen)
 			return false;
 		return true;
 	}
-
 	
 }
