@@ -1,5 +1,6 @@
 package urjc.isi.myapp;
 
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertNotNull;
@@ -32,13 +33,17 @@ import org.junit.Before;
 
 public class Tests {
 	Git git; 
+	File directory;
+	File zip;
 	@Before
 	public void setup() {
 		git = Main.createRepo();
 		Main.setGit(git);
 		Main.setName("Pepe");
+		Main.setMail("Pepe@gmail.com");
 		Main.setDni("02223478L");
 		Main.setIdEx("4211");
+	
 		
 	}
 	@Test
@@ -53,7 +58,7 @@ public class Tests {
 	@Test
 	public void testCreateDirectory()
 			throws IOException, GitAPIException {
-		File directory = new File("../examen/.git/");
+			directory = new File("../examen/.git/");
 		
 		
 			assertEquals(directory.exists(), true);
@@ -62,12 +67,15 @@ public class Tests {
 	@Test
 	public void testCreateZip()
 			throws IOException{
-		File directory =Main.compressRepo();
+		zip =Main.compressRepo();
+		File test = new File("../" + Main.getIdEx() + "_" + Main.getDni() + ".zip");
 		
-		
-		assertEquals(directory.exists(), true);
+		assertEquals(zip.exists(), true);
+		assertEquals(zip, test);
 		
 	}
+	
+	
 	@Test
 	public void testDoCommit() throws IOException, GitAPIException {
 		String name = null;
@@ -76,23 +84,29 @@ public class Tests {
 		Main.doCommit("Soy el primer commit");
 		Iterable <RevCommit> log = null;
 		log=git.log().all().call();
-		for (RevCommit rev : log) {
-		name = rev.getAuthorIdent().getName();
-		email = rev.getAuthorIdent().getEmailAddress();
-		message = rev.getFullMessage();
+		for (RevCommit rev : log){
+			name = rev.getAuthorIdent().getName();
+			email = rev.getAuthorIdent().getEmailAddress();
+			message = rev.getFullMessage();
 		}
 		assertEquals(Main.getName(), name);
-		assertEquals(Main.getName() + "@gmail.com", email);
+		assertEquals(Main.getMail(), email);
 		assertEquals("Soy el primer commit", message);
 
 		
 	}
+	
+/*	@Test
+	public void testFinEx() throws IOException, Exception{
+		Main.finEx();
+		
+		
+	}*/
 	/*@Test
 	public void testCommits() throws IOException, GitAPIException, InterruptedException {
-		Main.setRateCommit(10);
+		
 		Main.setAlarm();
-		Thread.sleep(10000);
-		Main.getTimer().cancel();
+		
 		Iterable <RevCommit> log = null;
 		log=git.log().all().call();
 		int counter = 0;

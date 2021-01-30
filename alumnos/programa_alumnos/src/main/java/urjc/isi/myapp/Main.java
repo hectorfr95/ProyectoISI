@@ -91,6 +91,9 @@ public class Main {
     public static void setName(String s) {
     	nombre = s;
     }
+    public static void setMail(String s) {
+    	mail = s;
+    }
     public static void setDni(String s) {
     	dni = s;
     }
@@ -102,6 +105,9 @@ public class Main {
     }
     public static String getName() {
     	return nombre;
+    }
+    public static String getMail() {
+    	return mail;
     }
     public static String getDni() {
     	return dni;
@@ -119,7 +125,7 @@ public class Main {
     public static void waitAl(Form f) {
     	while(f.getName() == null || f.getDni() == null 
     			|| f.getIdEx() == null || f.getMail() == null){
-    		System.out.println("");
+    		;
         	/*System.out.println("Name : "
 					+ f.getName() + "\n"
 					+ "DNI : "
