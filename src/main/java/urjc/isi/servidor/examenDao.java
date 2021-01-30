@@ -25,7 +25,7 @@ public class examenDao {
             abrirConexion();
 
             c.prepareStatement("drop table if exists Examenes").execute();
-            c.prepareStatement("CREATE TABLE Examenes (IdExamen	INTEGER NOT NULL UNIQUE, Fecha DATE NOT NULL, Asignatura VARCHAR(50) NOT NULL, PRIMARY KEY(IdExamen), finalExamen INTEGER NOT NULL)").execute();
+            c.prepareStatement("CREATE TABLE Examenes (IdExamen	INTEGER NOT NULL UNIQUE, Fecha DATE NOT NULL, Asignatura VARCHAR(50) NOT NULL, finalExamen INTEGER, PRIMARY KEY(IdExamen))").execute();
 
             c.commit();
             c.close();
@@ -120,11 +120,27 @@ public class examenDao {
 
 	//Método que cambia el valor para dar el examen por finalizado.
 	public void finalizar_examen(int idExamen) {
+        int valor = 1;
+        
         try {
         	abrirConexion();
         	// Query sql
-			String query = "UPDATE Examenes SET finalExamen = '1' WHERE idExamen = " + idExamen;
-
+        	String query = "select * from Examenes WHERE idExamen=" + idExamen;
+            PreparedStatement ps = c.prepareStatement(query);
+            ResultSet rs = ps.executeQuery();
+            int idex = rs.getInt("idExamen");
+            Date fecha = rs.getDate("Fecha");
+            String asig = rs.getString("Asignatura");
+            
+			query = "UPDATE Examenes SET idExamen=?, Fecha=?, Asignatura=?, finalExamen=? WHERE idExamen=" + idExamen;
+			ps = c.prepareStatement(query);
+            ps.setInt(1, idex);
+            ps.setDate(2, fecha);
+            ps.setString(3, asig);
+			ps.setInt(4, valor);
+			int retorno = ps.executeUpdate();
+        
+            c.commit();
             cerrarConexion(ps, rs);
 
         } catch (SQLException e) {
@@ -134,18 +150,15 @@ public class examenDao {
 
 	//Método que devuelve el campo finalExamen
 	public int comprobar_final(int idExamen){
-		int esfin;
+		int esfin = 0;
     	try {
     		abrirConexion();
         	// Query sql
         	String query = "select * from Examenes WHERE idExamen=" + idExamen;
             PreparedStatement ps = c.prepareStatement(query);
             ResultSet rs = ps.executeQuery();
-
-            while(rs.next()) {
-
-            	esfin = rs.getInt("finalExamen");
-            }
+            
+            esfin = rs.getInt("finalExamen");
             cerrarConexion(ps, rs);
 
         } catch (SQLException e) {
@@ -182,11 +195,11 @@ public class examenDao {
         try {
         	abrirConexion();
         	// Query sql
-            PreparedStatement ps = c.prepareStatement("insert into Examenes(idExamen, Fecha , Asignatura) VALUES(?,?,?)");
+            PreparedStatement ps = c.prepareStatement("insert into Examenes(idExamen, Fecha , Asignatura, finalExamen) VALUES(?,?,?,?)");
             ps.setInt(1, examen.getIdExamen());
             ps.setDate(2, examen.getFecha());
             ps.setString(3, examen.getAsignatura());
-			ps.setString(4, examen.getFinalExamen());
+			ps.setInt(4, examen.getFinalExamen());
             System.out.println("sql.Examen ID: "+  examen.getIdExamen());
             System.out.println("sql.Asignatura: "+  examen.getAsignatura());
             System.out.println("sql.Date insert: "+  examen.getFecha());

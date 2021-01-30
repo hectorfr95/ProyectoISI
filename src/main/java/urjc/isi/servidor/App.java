@@ -194,7 +194,7 @@ public class App
 			long lnMilisegundos = fecha.getTime();
 			java.sql.Date sqlDate = new java.sql.Date(lnMilisegundos);
 			
-			examen examenObject = new examen(id_examen, sqlDate, asignatura);
+			examen examenObject = new examen(id_examen, sqlDate, asignatura, 0);
 			examenDao.save(examenObject); //Inserción del examen en la BD		
 			
 			System.out.println("*******************************************************************");

@@ -1,21 +1,21 @@
-ppackage urjc.isi.servidor;
+package urjc.isi.servidor;
 
+import java.sql.Date;
 
 public class examen {
 	
 	private int idExamen;
-	private String Fecha;
+	private Date Fecha;
 	private String Asignatura;
-	private String Path;
 	private int finalExamen;
 
-	public examen(int idExamen, String Fecha, String Asignatura, String Path) {
+	public examen(int idExamen, Date fecha, String Asignatura, int finalExamen) {
 		this.idExamen = idExamen;
-		this.Fecha = Fecha;
+		this.Fecha = fecha;
 		this.Asignatura = Asignatura;
-		this.Path = Path;
-		this.finalExamen = 0;
+		this.finalExamen = finalExamen;
 	}
+
 
 	public int getIdExamen() {
 		return idExamen;
@@ -25,11 +25,11 @@ public class examen {
 		this.idExamen = idExamen;
 	}
 
-	public String getFecha() {
+	public Date getFecha() {
 		return Fecha;
 	}
-
-	public void setFecha(String fecha) {
+	
+	public void setFecha(Date fecha) {
 		Fecha = fecha;
 	}
 
@@ -39,14 +39,6 @@ public class examen {
 
 	public void setAsignatura(String asignatura) {
 		Asignatura = asignatura;
-	}
-
-	public String getPath() {
-		return Path;
-	}
-
-	public void setPath(String path) {
-		Path = path;
 	}
 
 	public int getFinalExamen() {
@@ -63,7 +55,6 @@ public class examen {
 		int result = 1;
 		result = prime * result + ((Asignatura == null) ? 0 : Asignatura.hashCode());
 		result = prime * result + ((Fecha == null) ? 0 : Fecha.hashCode());
-		result = prime * result + ((Path == null) ? 0 : Path.hashCode());
 		result = prime * result + finalExamen;
 		result = prime * result + idExamen;
 		return result;
@@ -87,11 +78,6 @@ public class examen {
 			if (other.Fecha != null)
 				return false;
 		} else if (!Fecha.equals(other.Fecha))
-			return false;
-		if (Path == null) {
-			if (other.Path != null)
-				return false;
-		} else if (!Path.equals(other.Path))
 			return false;
 		if (finalExamen != other.finalExamen)
 			return false;
