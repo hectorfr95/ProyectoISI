@@ -201,7 +201,7 @@ public class App
 			System.out.println("POST recibido para iniciar examen de la asignatura "+asignatura+" con ID: "+id_examen);
 			System.out.println("*******************************************************************");
 			
-			res.redirect("http://servidor-proyecto1.herokuapp.com/"+id_examen);
+			res.redirect("http://servidor-hectorfr95.herokuapp.com/"+id_examen);
 			return null;
 		});
 		
