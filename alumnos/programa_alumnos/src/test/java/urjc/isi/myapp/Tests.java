@@ -35,10 +35,10 @@ public class Tests {
 	@Before
 	public void setup() {
 		git = Main.createRepo();
-		Main.setgit(git);
+		Main.setGit(git);
 		Main.setName("Pepe");
-		Main.setDNI("02223478L");
-		Main.setidEx("4211");
+		Main.setDni("02223478L");
+		Main.setIdEx("4211");
 		
 	}
 	@Test

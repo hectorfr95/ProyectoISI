@@ -91,22 +91,22 @@ public class Main {
     public static void setName(String s) {
     	nombre = s;
     }
-    public static void setDNI(String s) {
+    public static void setDni(String s) {
     	dni = s;
     }
-    public static void setidEx(String s) {
+    public static void setIdEx(String s) {
     	idEx = s;
     }
-    public static void setgit(Git g) {
+    public static void setGit(Git g) {
     	git = g;
     }
     public static String getName() {
     	return nombre;
     }
-    public static String getDNI() {
+    public static String getDni() {
     	return dni;
     }
-    public static String getidEx() {
+    public static String getIdEx() {
     	return idEx;
     }
     public static Git getGit() {
