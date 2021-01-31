@@ -99,52 +99,52 @@ public class App
 	  public static Object settings(String key) {
 	    return settings.get(key);
 	  }
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 	private static httprequest requestToClient = new httprequest();
-	
+
 	public static void main(String[] args) throws
 	ClassNotFoundException, SQLException, URISyntaxException {
-		
+
 		port(getHerokuAssignedPort());
 		File uploadDir = new File("upload/");
 		uploadDir.mkdir(); // create the upload directory if it doesn't exist
@@ -153,64 +153,64 @@ public class App
 		examenDao examenDao = new examenDao();
 		realizaExamenDao realizaExamenDao = new realizaExamenDao();
 		alumnoDao alumnoDao = new alumnoDao();
-		
 
 		redirect.get("/", "/profesor");
 		get("/favicon.ico", (req, res) -> {
 			return null;
 		});
+
 		get("/views/css/style.css", (req, res) -> {
-			return render("views/css/style.css", settings);			
+			return render("views/css/style.css", settings);
 		});
-		
+
 		get("/profesor", (req, res) -> {
 			String result;
 			List<examen> allExamenes = new ArrayList<examen>();
 			allExamenes = examenDao.all();
 			if(allExamenes.size()==0)
 			{
-				result = "<p style='text-align: center; font-weight: bold;'>No hay Examenes registrados</p>"; 
+				result = "<p style='text-align: center; font-weight: bold;'>No hay Examenes registrados</p>";
 			}
 			else {
 				result = "<p style='text-align: center; font-weight: bold;font-size: 20px;'>Examenes en la BD:</p>";
-				
-			
+
+
 			for (int i=0;i<allExamenes.size();i++) {
-			      
+
 				result = result + "&nbsp &nbsp <strong>"+(i+1)+" - <u>ID:</u></strong> "+allExamenes.get(i).getIdExamen()+" <u style='font-weight: bold;'>ASIGNATURA:</u> "+allExamenes.get(i).getAsignatura()+"<br>";
 			    }
 			}
 			set("bloque_bd", result);
 			return render("views/index.html", settings);
 		});
-		
-		
-		post("/profesor", (req, res) -> { 
-			
+
+
+		post("/profesor", (req, res) -> {
+
 			int id_examen = (int) (Math.random()*1000000000 +1); // Numero aleatorio que se asignará al examen
-			
+
 			String asignatura = req.queryParams("asignatura"); // Sacamos la query string del campo asignatura
 			Date fecha = new Date();
 			long lnMilisegundos = fecha.getTime();
 			java.sql.Date sqlDate = new java.sql.Date(lnMilisegundos);
-			
+
 			examen examenObject = new examen(id_examen, sqlDate, asignatura, 0);
-			examenDao.save(examenObject); //Inserción del examen en la BD		
-			
+			examenDao.save(examenObject); //Inserción del examen en la BD
+
 			System.out.println("*******************************************************************");
 			System.out.println("POST recibido para iniciar examen de la asignatura "+asignatura+" con ID: "+id_examen);
 			System.out.println("*******************************************************************");
-			
+
 			res.redirect("http://servidor-hectorfr95.herokuapp.com/"+id_examen);
 			return null;
 		});
-		
-		
-		
-		
-			
-	post("/examen", (req, res) -> {		
-		
+
+
+
+
+
+	post("/examen", (req, res) -> {
+
         req.attribute("org.eclipse.jetty.multipartConfig", new MultipartConfigElement("/temp"));
         String dni = req.raw().getParameter("dni");
         String nombre = req.raw().getParameter("nombre");
@@ -220,10 +220,11 @@ public class App
         System.out.println("*******************************************************************");
         File aux = new File("upload/"+id_ex);
         aux.mkdir();
-        
+
         Path tempFile = Files.createTempFile(aux.toPath(), nombre+"_"+dni+"_"+id_ex+"_", ".zip");
         try (InputStream input = req.raw().getPart("file").getInputStream()) { // getPart needs to use same "name" as input field in form
-            Files.copy(input, tempFile, StandardCopyOption.REPLACE_EXISTING);
+
+        	Files.copy(input, tempFile, StandardCopyOption.REPLACE_EXISTING);
             Files.move(tempFile, tempFile.resolveSibling(nombre+"_"+dni+"_"+id_ex+".zip"),
                     StandardCopyOption.REPLACE_EXISTING);
             realizaExamenDao.verificacion_zip(dni, id_ex);
@@ -231,27 +232,27 @@ public class App
 
         return "EXITO";
 	});
-	
-	
+
+
 
 	post("/alumno", (req, res) -> {
-		
+
 		String dni = req.queryParams("dni");
 		String nombre = req.queryParams("nombre");
 		int id_ex = Integer.parseInt(req.queryParams("idex"));
-		
+
 	    String ip = req.ip(); //IP de la petición
 		int port = req.port(); //PUERTO de la petición
-		
+
 		alumno alumnoObject = new alumno(dni,nombre, port, ip);
 		alumnoDao.save(alumnoObject);
 		realizaExamen realizaExamenObject = new realizaExamen(id_ex,dni, null);
 		realizaExamenDao.save(realizaExamenObject);
-		
+
 		System.out.println("*******************************************************************");
 		System.out.println("POST recibido del alumno: "+nombre+" para el examen: "+id_ex+" con IP: "+ip+":"+port);
 		System.out.println("*******************************************************************");
-		
+
 		return "EXITO";
 	});
 
@@ -265,17 +266,38 @@ public class App
         }
 		//COMPROBAR SI EL RECURSO :RANDOM SE ENCUENTRA EN LA BD, SI NO ES ASI, DEVOLVER 404 NOT FOUND
 		try {
-			if(examenDao.comprobar_examen(id_examen)==0)			
+			if(examenDao.comprobar_examen(id_examen)==0)
 				return render("views/404.html", settings);
-			
+
 		}catch (NumberFormatException e) {
 			return render("views/404.html", settings);
         }
 
-		
+
+
+		List<finalexamen> allFinalExamen = new ArrayList<finalexamen>();
+		allFinalExamen = realizaExamenDao.alumnos_examen(Integer.parseInt(req.params(":random")));
+		String result1 = "";
+		if(allFinalExamen.size()==0)
+		{
+			result1 = "<p style='text-align: center; font-weight: bold;'>No hay Alumnos registrados todavia.</p>";
+		}
+		else {
+			result1 = "<p style='text-align: center; font-weight: bold;font-size: 20px;'>Alumnos registrados en este examen:</p>";
+
+
+		for (int i=0;i<allFinalExamen.size();i++) {
+
+			result1 = result1 + "&nbsp &nbsp <strong>"+(i+1)+" - <u>Nombre:</u></strong> "+allFinalExamen.get(i).getNombreAlumno()+" <u style='font-weight: bold;'>ID:</u> "+allFinalExamen.get(i).getIdAlumno()+"<br>";
+		    }
+		}
+
+
+
 		String asignatura = examenDao.getAsignatura(id_examen);
-		String result = "Examen iniciado con id <strong style='color:red'> "+ id_examen + "</strong><br><br> <strong style='color:red'> "+asignatura+ "</strong>";
+		String result = "Examen iniciado con id <strong style='color:red'> "+ id_examen + "</strong><br><br> <strong style='color:red;'> "+asignatura+ "</strong>";
 		set("titulo", result);
+		set("alumnos_bd", result1);
 		set("id", req.params(":random"));
 		return render("views/random.html", settings);
 	});
@@ -285,45 +307,49 @@ public class App
 			id_examen = Integer.parseInt(req.params(":random"));
 		//COMPROBAR SI EL RECURSO :RANDOM SE ENCUENTRA EN LA BD, SI NO ES ASI, DEVOLVER 404 NOT FOUND
 		}catch (NumberFormatException e) {
-			halt(404, "404 NOT FOUND");
+			return render("views/404.html", settings);
         }
-		
-			if(examenDao.comprobar_examen(id_examen)==0)			
-				halt(404, "404 NOT FOUND");
-		
-		
-		List<finalexamen> allFinalExamen = new ArrayList<finalexamen>();
-		allFinalExamen = realizaExamenDao.alumnos_examen(Integer.parseInt(req.params(":random")));
-		
-		for (int i=0;i<allFinalExamen.size();i++) {
-			String ip_alumno=allFinalExamen.get(i).getIp();
-			int puerto_alumno=allFinalExamen.get(i).getPuerto();
-			requestToClient.sendGetAlumno(ip_alumno, puerto_alumno);
-			}
-		
-		
-		
+
+			if(examenDao.comprobar_examen(id_examen)==0)
+				return render("views/404.html", settings);
+
+
+		examenDao.finalizar_examen(id_examen);
+
+
+
 		//informe = ejecutar_algoritmo(id_examen)
 		//BUCLE QUE RECORRA LOS ALUMNOS DEL ID DE EXAMEN HACIENDO GET A CADA UNO
-		
+
 		String result = "<h1>Examen con id "+req.params(":random")+" finalizado!</h1>"
 				+"<h2>Espera unos minutos hasta que se genere el informe de copias en la URL <a href='"+id_examen+"'>"+id_examen+"</a>.</h2>";
 
 		return result;
 	});
+	
+	
 	get("/fin/:random", (req, res) -> {
-		int id_examen = Integer.parseInt(req.params(":random"));
+		int id_examen;
+		int es_fin=0;
+		try {
+			id_examen = Integer.parseInt(req.params(":random"));
+			if(examenDao.comprobar_final(id_examen)==1)
+				es_fin = 1;
+		}catch (NumberFormatException e) {
+			return render("views/404.html", settings);
+        }
+		
 		System.out.println("*******************************************************************");
 		System.out.println("get recibido con: "+id_examen);
-		//hacer aqui la consulta a la base de datos: 
-		//devolver 0 si no se ha acabado el examen, devolver 1 si se ha acabado
-		//ahora ya no haría falta guardar el puerto e ip
-		return "0";
+		
+		
+		
+		return es_fin;
 	});
-	
+	get("*", (req, res) -> {
+		return render("views/404.html", settings);
+	});
 	}
-	
-	
 
 	static int getHerokuAssignedPort() {
 		ProcessBuilder processBuilder = new ProcessBuilder();
@@ -331,5 +357,5 @@ public class App
 		    return Integer.parseInt(processBuilder.environment().get("PORT"));
 		}
 		return 4567; // return default port if heroku-port isn't set (i.e. on localhost)
-	    }	
+	    }
 }

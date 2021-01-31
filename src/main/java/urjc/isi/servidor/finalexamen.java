@@ -3,12 +3,14 @@ public class finalexamen {
 	
 	private int idExamen;
 	private String idAlumno;
+	private String nombreAlumno;
 	private String ip;
 	private int puerto;
 	
-	public finalexamen(int idExamen, String idAlumno, String ip, int puerto) {
+	public finalexamen(int idExamen, String idAlumno, String nombreAlumno, String ip, int puerto) {
 		this.idExamen = idExamen;
 		this.idAlumno = idAlumno;
+		this.nombreAlumno = nombreAlumno;
 		this.ip = ip;
 		this.puerto = puerto;
 	}
@@ -20,6 +22,14 @@ public class finalexamen {
 
 	public void setIdExamen(int idExamen) {
 		this.idExamen = idExamen;
+	}
+	
+	public String getNombreAlumno() {
+		return nombreAlumno;
+	}
+
+	public void setNombreAlumno(String nombreAlumno) {
+		this.nombreAlumno = nombreAlumno;
 	}
 	
 	public String getIdAlumno() {

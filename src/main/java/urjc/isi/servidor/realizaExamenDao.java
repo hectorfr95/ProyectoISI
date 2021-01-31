@@ -49,26 +49,28 @@ public class realizaExamenDao {
         List<finalexamen> allFinalExamen = new ArrayList<finalexamen>();
 
         try {
-        	abrirConexion();
-        	// Query sql
-            PreparedStatement ps = c.prepareStatement("select idExamen, RealizaExamen.idAlumno, ip, puerto from RealizaExamen left join Alumnos on RealizaExamen.idAlumno=Alumnos.idAlumno WHERE idExamen="+idExamen_);
+        	c = DriverManager.getConnection("jdbc:sqlite:proyecto.db");
+            c.setAutoCommit(false);
+            PreparedStatement ps = c.prepareStatement("select idExamen, RealizaExamen.idAlumno,Alumnos.Nombre, ip, puerto from RealizaExamen left join Alumnos on RealizaExamen.idAlumno=Alumnos.idAlumno WHERE idExamen="+idExamen_);
 
             ResultSet rs = ps.executeQuery();
             while(rs.next()) {
                 int idex = rs.getInt("idExamen");
                 String idAlumno = rs.getString("idAlumno");
+                String nombreAlumno = rs.getString("Nombre");
                 String ip = rs.getString("IP");
                 int puerto = rs.getInt("Puerto");
-                allFinalExamen.add(new finalexamen(idex, idAlumno,ip, puerto));
+                allFinalExamen.add(new finalexamen(idExamen_, idAlumno, nombreAlumno, ip, puerto));
             }
-            cerrarConexion(ps, rs);
+            rs.close();
+            ps.close();
+            c.close();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         } finally {
             return allFinalExamen;
         }
     }
-   // select idExamen, RealizaExamen.idAlumno, ip, puerto from RealizaExamen left join Alumnos on RealizaExamen.idAlumno=Alumnos.idAlumno
     public List<realizaExamen> all() {
 
         List<realizaExamen> allRealiza = new ArrayList<realizaExamen>();

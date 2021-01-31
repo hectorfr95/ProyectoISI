@@ -26,6 +26,15 @@ background-color: white;
   padding: 40px 20px;
   border-radius: 20px 20px 20px 20px;
 }
+#alumnos_bd{
+border-radius: 10%;
+  border: solid 3px black;
+  box-shadow: 10px 10px darkgrey;
+background-color: white;
+  padding: 40px 20px;
+  border-radius: 20px 20px 20px 20px;
+  text-align:center;
+}
 
 input {
   text-align: center;
