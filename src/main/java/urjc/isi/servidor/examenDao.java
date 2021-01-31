@@ -134,12 +134,11 @@ public class examenDao {
             
 			query = "UPDATE Examenes SET idExamen=?, Fecha=?, Asignatura=?, finalExamen=? WHERE idExamen=" + idExamen;
 			ps = c.prepareStatement(query);
-            ps.setInt(1, idex);
+            ps.setInt(1, idExamen);
             ps.setDate(2, fecha);
             ps.setString(3, asig);
 			ps.setInt(4, valor);
 			int retorno = ps.executeUpdate();
-        
             c.commit();
             cerrarConexion(ps, rs);
 

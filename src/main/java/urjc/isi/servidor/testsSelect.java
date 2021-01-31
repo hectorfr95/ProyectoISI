@@ -31,6 +31,9 @@ public class testsSelect {
 	 * 		C2: Comprobar si esta un examen en la lista
 	 * 		B2.1: Entrada id correcto. 
 	 *		B2.2: Entrada id incorrecto.
+	 *		C3: Comprobar si un examen ha terminado
+	 *		B3.1: No ha terminado.
+	 *		B3.2: Si ha terminado. (se analiza también el metodo finalizar_examen
 	 * Realizaexamen.dao
 	 * 		C1: Seleción de un path de realizaExamen segun su id (solo uno)
 	 * 		B1.1: Entrada id correcto
@@ -89,8 +92,8 @@ public class testsSelect {
 			Date fecha = new Date();
 	    	long lnMilisegundos = fecha.getTime();
 	    	java.sql.Date sqlDate = new java.sql.Date(lnMilisegundos);
-			examen examen_juanito = new examen(1010, sqlDate, "ISI") ;
-			examen examen_dani = new examen(1802, sqlDate, "ISI") ;
+			examen examen_juanito = new examen(1010, sqlDate, "ISI",0) ;
+			examen examen_dani = new examen(1802, sqlDate, "ISI",0) ;
 			examenDao_test.save(examen_juanito);
 			examenDao_test.save(examen_dani);
 			List<examen> results = Arrays.asList(examen_juanito, examen_dani);
@@ -106,6 +109,16 @@ public class testsSelect {
 	        // C2.B2.2
 	        examen_1 =  examenDao_test.comprobar_examen(1234);
 	        assertEquals(examen_1, 0);
+	        
+	        // C3 B3.1
+	        int finalizar_examen = examenDao_test.comprobar_final(1010);
+	        assertEquals(finalizar_examen, 0);
+	        
+	        //C3 B3.2
+	        examenDao_test.finalizar_examen(1010);
+	        finalizar_examen = examenDao_test.comprobar_final(1010);
+	        assertEquals(finalizar_examen, 1);
+	        
 		} catch (URISyntaxException e) {
 			e.printStackTrace();
 		}
