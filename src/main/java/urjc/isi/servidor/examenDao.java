@@ -128,7 +128,6 @@ public class examenDao {
         	String query = "select * from Examenes WHERE idExamen=" + idExamen;
             PreparedStatement ps = c.prepareStatement(query);
             ResultSet rs = ps.executeQuery();
-            int idex = rs.getInt("idExamen");
             Date fecha = rs.getDate("Fecha");
             String asig = rs.getString("Asignatura");
             
