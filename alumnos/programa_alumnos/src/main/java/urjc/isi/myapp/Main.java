@@ -125,7 +125,7 @@ public class Main {
     public static void waitAl(Form f) {
     	while(f.getName() == null || f.getDni() == null 
     			|| f.getIdEx() == null || f.getMail() == null){
-    		;
+    		System.out.println("");
         	/*System.out.println("Name : "
 					+ f.getName() + "\n"
 					+ "DNI : "
