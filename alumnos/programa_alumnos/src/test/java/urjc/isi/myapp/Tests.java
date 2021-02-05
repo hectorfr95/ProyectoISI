@@ -27,7 +27,11 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.junit.Test;
+
+import com.github.tomakehurst.wiremock.junit.WireMockRule;
+
 import org.junit.Before;
+import org.junit.Rule;
 
 
 
@@ -43,9 +47,8 @@ public class Tests {
 		Main.setMail("Pepe@gmail.com");
 		Main.setDni("02223478L");
 		Main.setIdEx("4211");
-	
-		
 	}
+	
 	@Test
 	public void testCreateRepository()
 			throws IOException, GitAPIException {

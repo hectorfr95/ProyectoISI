@@ -49,7 +49,7 @@ public class HttpRequests {
         try (CloseableHttpClient httpClient = HttpClients.createDefault();
         	CloseableHttpResponse response = httpClient.execute(request)) {
         	cod = Integer.parseInt(EntityUtils.toString(response.getEntity()));
-        	//System.out.println("en alumno"+cod);
+        	//System.out.println("------>En alumno "+ response.getStatusLine()); devuelve 200 ok
         	httpClient.close();
         	return cod;
         }
