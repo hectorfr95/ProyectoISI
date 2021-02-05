@@ -7,7 +7,7 @@
 
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="/views/css/style.css">
-
+	<link rel="icon" type="image/png" href="/favicon.png">
     <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
@@ -17,11 +17,11 @@
 
 
 <body>
-	<div class="container" style="margin-top: 200px;>
-		<div class="row align-items-center justify-content-center" id="titulo">	
-			<div class="col">	
+	<div class="container" style="margin-top: 200px;">
+		<div class="row align-items-center justify-content-center" id="titulo">
+			<div class="col">
 				<h1 style="text-align: center">${titulo}</h1>
-				<form action='/\${id}/finalizar' method='post'>
+				<form action='/\${id}/finalizar' method='get'>
 				<br><br>
 				<div class="row">
 				<div class="col-auto mr-auto">
@@ -33,17 +33,17 @@
 				</div>
 				</div>
 				</form>
-				
-				
+
+
 			</div>
-		</div>	
+		</div>
 		<br><br>
-		<div class="row justify-content-center">		
+		<div class="row justify-content-center">
 			<div class="col-auto" id="alumnos_bd">
 			${alumnos_bd}
 			</div>
-		</div>			
+		</div>
 	</div>
-	
+
 </body>
 </html>

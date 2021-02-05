@@ -30,7 +30,11 @@ import java.io.InputStreamReader;
 import java.net.URISyntaxException;
 import static spark.Spark.*;
 import spark.*;
-
+import javax.servlet.ServletContext;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.util.Map;
 import java.util.HashMap;
@@ -45,6 +49,8 @@ import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 import spark.*;
+
+import javax.imageio.ImageIO;
 import javax.servlet.*;
 import javax.servlet.http.*;
 import java.io.*;
@@ -132,7 +138,13 @@ public class App
 
 
 
-
+	  static void copy(InputStream source, OutputStream target) throws IOException {
+		    byte[] buf = new byte[8192];
+		    int length;
+		    while ((length = source.read(buf)) > 0) {
+		        target.write(buf, 0, length);
+		    }
+		}
 
 
 
@@ -155,10 +167,47 @@ public class App
 		alumnoDao alumnoDao = new alumnoDao();
 
 		redirect.get("/", "/profesor");
-		get("/favicon.ico", (req, res) -> {
-			return null;
+		post("/prueba", (req, res) -> {
+			
+			
+			String id_examen = req.queryParams("idex");
+			        
+			        
+			        res.raw().setContentType("application/zip");
+			        res.header("Content-Disposition", "attachment; filename=\"raulin_53842198a_"+id_examen+".zip\"");
+			        File file = new File("upload/"+id_examen+"/raulin_53842198a_"+id_examen+".zip"); 
+					 FileInputStream input = new FileInputStream(file);
+					 ServletOutputStream out = res.raw().getOutputStream();
+					 
+					 			//contents = IOUtils.toString(input); 
+					            //System.out.println(contents);
+					 byte[] outputByte = new byte[4096];
+					//copy binary contect to output stream
+					while(input.read(outputByte, 0, 4096) != -1)
+					{
+					    out.write(outputByte, 0, 4096);
+					}
+					input.close();
+					out.flush();
+					out.close();
+			return out;
 		});
-
+		get("/favicon.png", (req, res) -> {
+			res.raw().setContentType("image/png");
+	        File file = new File("favicon.png"); 
+			 FileInputStream input = new FileInputStream(file);
+			 ServletOutputStream out = res.raw().getOutputStream();			 			
+			 byte[] outputByte = new byte[4096];
+			while(input.read(outputByte, 0, 4096) != -1)
+			{
+			    out.write(outputByte, 0, 4096);
+			}
+			input.close();
+			out.flush();
+			out.close();
+	return out;
+});
+		
 		get("/views/css/style.css", (req, res) -> {
 			return render("views/css/style.css", settings);
 		});
@@ -183,8 +232,41 @@ public class App
 			set("bloque_bd", result);
 			return render("views/index.html", settings);
 		});
+	
+		
+	
 
-
+		get("/aux", (req, res) -> {
+			
+			String sCarpAct = System.getProperty("user.dir");
+			File carpeta = new File(sCarpAct+"/upload");
+			String[] listado = carpeta.list();
+			if (listado == null || listado.length == 0) {
+			    System.out.println("No hay elementos dentro de la carpeta actual");
+			    return "ERROR";
+			}
+			else {
+			    for (int i=0; i< listado.length; i++) {
+			        System.out.println("Encontrada esta carpeta: "+listado[i]);
+			        File carpeta_aux = new File(sCarpAct+"/upload/"+listado[i]);
+					String[] listado_aux = carpeta_aux.list();
+					if (listado_aux == null || listado_aux.length == 0) {
+					    System.out.println("		No hay elementos dentro de la carpeta actual");
+					    return "ERROR";
+					}
+					else {
+					    for (int j=0; j< listado_aux.length; j++) {
+					        System.out.println("		Encontrado este archivo: "+listado_aux[i]);
+					        
+					    }
+					}
+			    }
+			}
+			return "HOLA";
+		});
+		
+		
+		
 		post("/profesor", (req, res) -> {
 
 			int id_examen = (int) (Math.random()*1000000000 +1); // Numero aleatorio que se asignará al examen
@@ -201,7 +283,7 @@ public class App
 			System.out.println("POST recibido para iniciar examen de la asignatura "+asignatura+" con ID: "+id_examen);
 			System.out.println("*******************************************************************");
 
-			res.redirect("http://servidor-hectorfr95.herokuapp.com/"+id_examen);
+			res.redirect("http://"+req.host()+"/"+id_examen);
 			return null;
 		});
 
@@ -301,7 +383,7 @@ public class App
 		set("id", req.params(":random"));
 		return render("views/random.html", settings);
 	});
-	post("/:random/finalizar", (req, res) -> {
+	get("/:random/finalizar", (req, res) -> {
 		int id_examen=0;
 		try {
 			id_examen = Integer.parseInt(req.params(":random"));
@@ -313,21 +395,75 @@ public class App
 			if(examenDao.comprobar_examen(id_examen)==0)
 				return render("views/404.html", settings);
 
-
+		
+		
 		examenDao.finalizar_examen(id_examen);
 
 
+		List<finalexamen> allFinalExamen = new ArrayList<finalexamen>();
+		allFinalExamen = realizaExamenDao.alumnos_examen(Integer.parseInt(req.params(":random")));
+		String result1 = "";
+		
+		for (int i=0;i<allFinalExamen.size();i++) {
 
-		//informe = ejecutar_algoritmo(id_examen)
-		//BUCLE QUE RECORRA LOS ALUMNOS DEL ID DE EXAMEN HACIENDO GET A CADA UNO
-
-		String result = "<h1>Examen con id "+req.params(":random")+" finalizado!</h1>"
-				+"<h2>Espera unos minutos hasta que se genere el informe de copias en la URL <a href='"+id_examen+"'>"+id_examen+"</a>.</h2>";
-
-		return result;
+			result1 = result1 + "<div class=\"col-auto\" id=\"index\" style=\"text-align: center;\"><strong>Alumno:</strong> "+allFinalExamen.get(i).getNombreAlumno()+" <strong>DNI:</strong> "+allFinalExamen.get(i).getIdAlumno()+"<br>";
+		    if(allFinalExamen.get(i).getPath()==null)
+		    	result1 = result1 + "<i class=\"bi bi-x-circle-fill\" style=\"color: red;\"></i> <strong>ZIP no registrado...</strong>";
+		    else
+		    {
+		    	result1 = result1 + "<i class=\"bi bi-check-circle-fill\" style=\"color: green;\"></i> <strong>ZIP guardado!</strong>";
+		    	result1 = result1 + "<br><i style=\"color: blue;\" class=\"bi bi-file-earmark-arrow-down-fill\"> </i><a style=\"color: blue; text-decoration: underline;\" href=\"/"+id_examen+"/"+allFinalExamen.get(i).getNombreAlumno()+"/"+allFinalExamen.get(i).getIdAlumno()+"\">" +allFinalExamen.get(i).getNombreAlumno()+"_"+allFinalExamen.get(i).getIdAlumno()+"_"+id_examen+".zip"+"</a>";
+		    }
+		    
+		    result1 = result1 + "</div>";
+		}
+		
+		
+		int todos_fin=1;
+		for (int i=0;i<allFinalExamen.size();i++) {
+			
+			
+			if(allFinalExamen.get(i).getPath()==null)
+			{
+				todos_fin=0;
+				break;
+			}			
+		}
+		
+		String boton_disable;
+		if(todos_fin==0)
+			boton_disable = "<a href=\"\" class=\"btn btn-danger disabled\" role=\"button\" aria-disabled=\"true\">Algoritmo deshabilitado</a>";
+		else
+			boton_disable = "<a href=\"/"+id_examen+"/algoritmo\" class=\"btn btn-danger\" role=\"button\" >Algoritmo</a>";
+		
+		set("boton_disabled", boton_disable);
+		set("result1", result1);
+		set("id_examen", String.valueOf(id_examen));
+		
+		return render("views/finalizado.html", settings);
 	});
 	
 	
+	
+	
+	
+	
+	get("/:random/algoritmo", (req, res) -> {
+		
+		
+		int id_examen = Integer.parseInt(req.params(":random"));
+		//String respuesta = ejecutaralgoritmo("/ulouad/"+id_examen);
+		
+		
+		return "PAGINA DEL ALGORITMO";
+	});
+	
+	
+	
+	
+	
+
+
 	get("/fin/:random", (req, res) -> {
 		int id_examen;
 		int es_fin=0;
@@ -338,13 +474,37 @@ public class App
 		}catch (NumberFormatException e) {
 			return render("views/404.html", settings);
         }
-		
+
 		System.out.println("*******************************************************************");
 		System.out.println("get recibido con: "+id_examen);
-		
-		
-		
+
+
+
 		return es_fin;
+	});
+	get("/:random/:name/:dni", (req, res) -> {
+		
+		String id_examen = req.params(":random");
+		String nombre = req.params(":name");
+		String dni = req.params(":dni");
+		 res.raw().setContentType("application/zip");
+	        res.header("Content-Disposition", "attachment; filename=\""+nombre+"_"+dni+"_"+id_examen+".zip\"");
+	        File file = new File("upload/"+id_examen+"/"+nombre+"_"+dni+"_"+id_examen+".zip"); 
+			 FileInputStream input = new FileInputStream(file);
+			 ServletOutputStream out = res.raw().getOutputStream();
+			 
+			 			//contents = IOUtils.toString(input); 
+			            //System.out.println(contents);
+			 byte[] outputByte = new byte[4096];
+			//copy binary contect to output stream
+			while(input.read(outputByte, 0, 4096) != -1)
+			{
+			    out.write(outputByte, 0, 4096);
+			}
+			input.close();
+			out.flush();
+			out.close();
+		return null;
 	});
 	get("*", (req, res) -> {
 		return render("views/404.html", settings);

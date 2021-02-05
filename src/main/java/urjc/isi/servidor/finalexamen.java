@@ -4,15 +4,13 @@ public class finalexamen {
 	private int idExamen;
 	private String idAlumno;
 	private String nombreAlumno;
-	private String ip;
-	private int puerto;
+	private String path;
 	
-	public finalexamen(int idExamen, String idAlumno, String nombreAlumno, String ip, int puerto) {
+	public finalexamen(int idExamen, String idAlumno, String nombreAlumno, String path) {
 		this.idExamen = idExamen;
 		this.idAlumno = idAlumno;
 		this.nombreAlumno = nombreAlumno;
-		this.ip = ip;
-		this.puerto = puerto;
+		this.path = path;
 	}
 	
 	
@@ -40,21 +38,15 @@ public class finalexamen {
 		this.idAlumno = idAlumno;
 	}
 	
-	public String getIp() {
-		return ip;
-	}
-
-	public void setIp(String ip) {
-		this.ip = ip;
+	public String getPath() {
+		return path;
 	}
 	
-	public int getPuerto() {
-		return puerto;
+	public void setPath(String path) {
+		this.path = path;
 	}
 
-	public void setPuerto(int puerto) {
-		this.puerto = puerto;
-	}
+	
 
 //	@Override
 //	public int hashCode() {

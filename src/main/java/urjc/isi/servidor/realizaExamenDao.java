@@ -51,16 +51,15 @@ public class realizaExamenDao {
         try {
         	c = DriverManager.getConnection("jdbc:sqlite:proyecto.db");
             c.setAutoCommit(false);
-            PreparedStatement ps = c.prepareStatement("select idExamen, RealizaExamen.idAlumno,Alumnos.Nombre, ip, puerto from RealizaExamen left join Alumnos on RealizaExamen.idAlumno=Alumnos.idAlumno WHERE idExamen="+idExamen_);
+            PreparedStatement ps = c.prepareStatement("select idExamen, RealizaExamen.idAlumno,Alumnos.Nombre, RealizaExamen.path from RealizaExamen left join Alumnos on RealizaExamen.idAlumno=Alumnos.idAlumno WHERE idExamen="+idExamen_);
 
             ResultSet rs = ps.executeQuery();
             while(rs.next()) {
                 int idex = rs.getInt("idExamen");
                 String idAlumno = rs.getString("idAlumno");
                 String nombreAlumno = rs.getString("Nombre");
-                String ip = rs.getString("IP");
-                int puerto = rs.getInt("Puerto");
-                allFinalExamen.add(new finalexamen(idExamen_, idAlumno, nombreAlumno, ip, puerto));
+                String path_x = rs.getString("path");
+                allFinalExamen.add(new finalexamen(idExamen_, idAlumno, nombreAlumno, path_x));
             }
             rs.close();
             ps.close();
