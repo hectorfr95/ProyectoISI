@@ -15,37 +15,35 @@ import static com.github.tomakehurst.wiremock.client.WireMock.*;
 
 public class HttpTests {
 	
-	private int port = 8080;
-	private static HttpRequests requestToServer;
-
-	@Before
-	public void setup() {
-		//wireMockRule.start();
-		requestToServer = new HttpRequests("http://localhost:" + port);
-		System.out.println("OK");
-	}
+    WireMockServer wireMockServer;
+    private static HttpRequests requestToServer;
+    
+    @Rule
+    public WireMockRule wireMockRule = new WireMockRule(8080);
 	
-	@ClassRule
-	@Rule
-	public static WireMockRule wireMockRule = new WireMockRule(8080);
-	
-	@Test
-	public void exactUrlOnly() throws Exception {
-		try{
-			stubFor(get(urlEqualTo("/fin/4529"))
+    @Test
+    public void testStatusCodePositive() throws Exception {
+    	try {
+			stubFor(get(urlEqualTo("/fin/.*"))
 				.willReturn(aResponse()
 						.withBody("1")
 						.withStatus(200)));
-			assertEquals(1, requestToServer.sendGet("4529"));
-			verify(getRequestedFor(urlEqualTo("/fin/4529")));
+			assertEquals(1, requestToServer.sendGet(".*"));
+			verify(getRequestedFor(urlEqualTo("/fin/.*")));
 		}catch (Exception e) {
 			e.printStackTrace();
 		}
-	}
-
-	@After
-	public void teardown() {
-		wireMockRule.stop();
-	}
-	
+    }
+    
+    @Test
+    public void testStatusCodeNegative() throws Exception {
+    	try {
+    		configureFor("localhost", 8080);
+			stubFor(get(urlEqualTo("/noexiste/123"))
+				.willReturn(aResponse()
+						.withStatus(404)));
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+    }
 }

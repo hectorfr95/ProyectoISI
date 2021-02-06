@@ -24,13 +24,14 @@
       <groupId>org.mockito</groupId>
       <artifactId>mockito-core</artifactId>
       <version>2.12.0</version>
-    </dependency>
-    <dependency>
-	    <groupId>com.github.tomakehurst</groupId>
-	    <artifactId>wiremock-jre8</artifactId>
-	    <version>2.27.2</version>
-	    <scope>test</scope>
 	</dependency>
+    <dependency>
+        <groupId>com.github.tomakehurst</groupId>
+        <artifactId>wiremock-standalone</artifactId>
+        <version>2.6.0</version>
+        <scope>test</scope>
+    </dependency>
+
     
     <dependency>
       <groupId>org.xerial</groupId>
