@@ -28,7 +28,7 @@ public class HttpTests {
 				.willReturn(aResponse()
 						.withBody("1")
 						.withStatus(200)));
-			assertEquals(1, requestToServer.sendGet(".*"));
+			assertEquals(200, requestToServer.sendGet(".*"));
 			verify(getRequestedFor(urlEqualTo("/fin/.*")));
 		}catch (Exception e) {
 			e.printStackTrace();
@@ -42,6 +42,21 @@ public class HttpTests {
 			stubFor(get(urlEqualTo("/noexiste/123"))
 				.willReturn(aResponse()
 						.withStatus(404)));
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+    }
+    
+    @Test
+    public void testStatusCodePositivePost() throws Exception {
+    	try {
+			stubFor(post(urlEqualTo("/alumno"))
+				.willReturn(aResponse()
+						.withStatus(200)));
+	
+			
+			assertEquals(200, requestToServer.sendPostAlumno("Pepe", "087954R", ".*", "8080"));
+			verify(getRequestedFor(urlEqualTo("/alumno")));
 		}catch (Exception e) {
 			e.printStackTrace();
 		}
