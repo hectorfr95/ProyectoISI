@@ -150,7 +150,10 @@ public class App
 				if(examenDao.comprobar_examen(id_examen)==0)
 					return -1;
 				else
+				{
+					
 					return id_examen;
+				}
 		}
 
 
@@ -159,7 +162,6 @@ public class App
 
 
 
-	private static httprequest requestToClient = new httprequest();
 
 	public static void main(String[] args) throws
 	ClassNotFoundException, SQLException, URISyntaxException {
@@ -177,16 +179,16 @@ public class App
 		
 		
 		//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-		redirect.get("/", "/profesor");
+		redirect.get("/", "/profesor"); //Redireccion del recurso '/' a '/profesor'
 		//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////		
 		get("/views/css/style.css", (req, res) -> {
-			return render("views/css/style.css", settings);
+			return render("views/css/style.css", settings); // Retornamos el contenido del archivo css
 		});
 		//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////		
-		get("/favicon.png", (req, res) -> {
-			res.raw().setContentType("image/png");
+		get("/favicon.png", (req, res) -> { //Recurso favicon
+			res.raw().setContentType("image/png");//Tipo del recurso que se va a enviar
 	        File file = new File("favicon.png"); 
-			 FileInputStream input = new FileInputStream(file);
+			 FileInputStream input = new FileInputStream(file);//Data del fichero
 			 ServletOutputStream out = res.raw().getOutputStream();			 			
 			 byte[] outputByte = new byte[4096];
 			 while(input.read(outputByte, 0, 4096) != -1)
@@ -197,17 +199,17 @@ public class App
 			out.flush();
 			out.close();
 			return out;
-});
+		});
 		//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-		get("/profesor", (req, res) -> {
+		get("/profesor", (req, res) -> { // Pagina principal 
 			String result;
 			List<examen> allExamenes = new ArrayList<examen>();
-			allExamenes = examenDao.all();
+			allExamenes = examenDao.all(); // Examenes registrados en la BD
 			
 			
 			
 			
-			
+			//HTML
 			if(allExamenes.size()==0)
 			{
 				result = "<p style='text-align: center; font-weight: bold;'>No hay Examenes registrados</p>";
@@ -221,11 +223,15 @@ public class App
 				result = result + "&nbsp &nbsp <strong>"+(i+1)+" - <u>ID:</u></strong> "+allExamenes.get(i).getIdExamen()+" <u style='font-weight: bold;'>ASIGNATURA:</u> "+allExamenes.get(i).getAsignatura()+"<br>";
 			    }
 			}
-			set("bloque_bd", result);
-			return render("views/index.html", settings);
+			//
+			
+			
+			
+			set("bloque_bd", result);//Se introduce 'result' en el campo ${bloque_bd} de index.html
+			return render("views/index.html", settings);//Retornamos index.html
 		});
 		//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-		post("/profesor", (req, res) -> {
+		post("/profesor", (req, res) -> {// Recurso para cargar los datos del examen en la BD y despues redireccionar a /:random
 
 			int id_examen = (int) (Math.random()*1000000000 +1); // Numero aleatorio que se asignará al examen
 
@@ -245,32 +251,9 @@ public class App
 			return null;
 		});
 		//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-		post("/examen", (req, res) -> {
+		post("/alumno", (req, res) -> { // Recurso con los datos del alumno cuando empieza el examen
 
-	        req.attribute("org.eclipse.jetty.multipartConfig", new MultipartConfigElement("/temp"));
-	        String dni = req.raw().getParameter("dni");
-	        String nombre = req.raw().getParameter("nombre");
-	        int id_ex = Integer.parseInt(req.raw().getParameter("idex"));
-	        System.out.println("*******************************************************************");
-	        System.out.println("POST recibido del alumno: "+nombre+" para finalizar el examen: "+id_ex);
-	        System.out.println("*******************************************************************");
-	        File aux = new File("upload/"+id_ex);
-	        aux.mkdir();
-	
-	        Path tempFile = Files.createTempFile(aux.toPath(), nombre+"_"+dni+"_"+id_ex+"_", ".zip");
-	        try (InputStream input = req.raw().getPart("file").getInputStream()) 
-	        { 	
-	        	Files.copy(input, tempFile, StandardCopyOption.REPLACE_EXISTING);
-	            Files.move(tempFile, tempFile.resolveSibling(nombre+"_"+dni+"_"+id_ex+".zip"), StandardCopyOption.REPLACE_EXISTING);
-	            realizaExamenDao.verificacion_zip(dni, id_ex);
-	        }
-
-	        return "EXITO";
-	});
-		//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-		post("/alumno", (req, res) -> {
-
-			String dni = req.queryParams("dni");
+			String dni = req.queryParams("dni");// 
 			String nombre = req.queryParams("nombre");
 			int id_ex = Integer.parseInt(req.queryParams("idex"));
 	
@@ -287,19 +270,51 @@ public class App
 			System.out.println("*******************************************************************");
 	
 			return "EXITO";
+	});		
+		//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+		post("/examen", (req, res) -> { //Recurso que solicitara el alumno con sus datos y el ZIP generado en el examen
+
+	        req.attribute("org.eclipse.jetty.multipartConfig", new MultipartConfigElement("/temp"));
+	        String dni = req.raw().getParameter("dni");
+	        String nombre = req.raw().getParameter("nombre");
+	        int id_ex = Integer.parseInt(req.raw().getParameter("idex"));
+	        System.out.println("*******************************************************************");
+	        System.out.println("POST recibido del alumno: "+nombre+" para finalizar el examen: "+id_ex);
+	        System.out.println("*******************************************************************");
+	        
+	        File aux = new File("upload/"+id_ex);//Anadimos una carpeta al directorio upload con el id del examen
+	        aux.mkdir();
+	
+	        Path tempFile = Files.createTempFile(aux.toPath(), nombre+"_"+dni+"_"+id_ex+"_", ".zip");//Creamos un archivo temporal
+	        try (InputStream input = req.raw().getPart("file").getInputStream()) //Sacamos los datos del archivo que nos envian
+	        { 	
+	        	Files.copy(input, tempFile, StandardCopyOption.REPLACE_EXISTING);//Copiamos los datos en el archivo temporal
+	            Files.move(tempFile, tempFile.resolveSibling(nombre+"_"+dni+"_"+id_ex+".zip"), StandardCopyOption.REPLACE_EXISTING);//Se renombra el archivo
+	            realizaExamenDao.verificacion_zip(dni, id_ex);
+	        }
+
+	        return "EXITO";
 	});
 		//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		get("/:random", (req, res) -> {
+			
 			int id_examen = comprobar_examen(req.params(":random"), examenDao);
 			if(id_examen==-1)
 			{
 				res.status(404);
+				set("recurso", req.uri());
 				return render("views/404.html", settings);
 			}
+			if(examenDao.comprobar_final(id_examen)==1)
+			{
+				res.status(403);
+				set("recurso", req.uri());
+				return render("views/403.html", settings);
+			}
+			
 			
 	
-	
-	
+			// HTML
 			List<finalexamen> allFinalExamen = new ArrayList<finalexamen>();
 			allFinalExamen = realizaExamenDao.alumnos_examen(Integer.parseInt(req.params(":random")));
 			String result1 = "";
@@ -316,7 +331,7 @@ public class App
 				result1 = result1 + "&nbsp &nbsp <strong>"+(i+1)+" - <u>Nombre:</u></strong> "+allFinalExamen.get(i).getNombreAlumno()+" <u style='font-weight: bold;'>ID:</u> "+allFinalExamen.get(i).getIdAlumno()+"<br>";
 			    }
 			}
-	
+			//
 	
 	
 			String asignatura = examenDao.getAsignatura(id_examen);
@@ -332,9 +347,10 @@ public class App
 			if(id_examen==-1)
 			{
 				res.status(404);
+				set("recurso", req.uri());
 				return render("views/404.html", settings);
 			}
-	
+			// Probar si ha finalizado el examen. -> 403 error
 			
 			
 			examenDao.finalizar_examen(id_examen);
@@ -346,7 +362,7 @@ public class App
 			
 			for (int i=0;i<allFinalExamen.size();i++) {
 	
-				result1 = result1 + "<div class=\"col-auto\" id=\"index\" style=\"text-align: center;\"><strong>Alumno:</strong> "+allFinalExamen.get(i).getNombreAlumno()+" <strong>DNI:</strong> "+allFinalExamen.get(i).getIdAlumno()+"<br>";
+				result1 = result1 + "<div class=\"col-auto\" id=\"index\" style=\"text-align: center; margin-bottom: 20px;\"><strong>Alumno:</strong> "+allFinalExamen.get(i).getNombreAlumno()+" <strong>DNI:</strong> "+allFinalExamen.get(i).getIdAlumno()+"<br>";
 			    if(allFinalExamen.get(i).getPath()==null)
 			    	result1 = result1 + "<i class=\"bi bi-x-circle-fill\" style=\"color: red;\"></i> <strong>ZIP no registrado...</strong>";
 			    else
@@ -379,7 +395,7 @@ public class App
 			}
 			else if(allFinalExamen.size()==0)
 			{
-				error_msg="<div class=\"col-auto offset-1\"><text style='color: red; font-weight: bold;font-size: 13px;margin-left: 25px;'>&nbsp &nbspExamen sin alumnos registrados</text></div>";
+				error_msg="<div class=\"col-auto\"><p style='color: red; font-weight: bold;font-size: 13px;'>Examen sin alumnos registrados</p></div>";
 				boton_disable = "<a href=\"\" class=\"btn btn-danger disabled\" role=\"button\" aria-disabled=\"true\">Algoritmo deshabilitado</a>";
 			}
 			else
@@ -400,6 +416,7 @@ public class App
 			if(id_examen==-1)
 			{
 				res.status(404);
+				set("recurso", req.uri());
 				return render("views/404.html", settings);
 			}
 			
@@ -415,6 +432,7 @@ public class App
 			if(id_examen==-1)
 			{
 				res.status(404);
+				set("recurso", req.uri());
 				return render("views/404.html", settings);
 			}
 			
@@ -434,6 +452,7 @@ public class App
 		if(id_examen==-1)
 		{
 			res.status(404);
+			set("recurso", req.uri());
 			return render("views/404.html", settings);
 		}
 			
@@ -509,6 +528,7 @@ public class App
 	
 	get("*", (req, res) -> {
 		res.status(404);
+		set("recurso", req.uri());
 		return render("views/404.html", settings);
 	});
 	}

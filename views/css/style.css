@@ -49,15 +49,26 @@ input {
 
 
 
+.nav-item:hover{
+}
+.nav-item{
+  margin-left: 50px;
+}
+.nav_item2, .nav_item3{
+  font-size: 20px;
+}
+.nav_item2:hover, .nav_item3:hover{
+  color:purple;
+  text-decoration: none !important;
 
+}
+#boton_colapse:after{
+  content: "No mostrar";
+}
 
-
-
-
-
-
-
-
+#boton_colapse.collapsed:after {
+content: "Mostrar";
+}
 
 
 
