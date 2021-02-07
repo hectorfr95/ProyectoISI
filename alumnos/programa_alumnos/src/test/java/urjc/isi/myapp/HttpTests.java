@@ -12,14 +12,16 @@ import com.github.tomakehurst.wiremock.WireMockServer;
 import com.github.tomakehurst.wiremock.junit.WireMockRule;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
+import org.apache.http.client.methods.CloseableHttpResponse;
 
 public class HttpTests {
 	
     WireMockServer wireMockServer;
-    private static HttpRequests requestToServer;
+    private static HttpRequests requestToServer = new HttpRequests("http://localhost:8080");
     
     @Rule
     public WireMockRule wireMockRule = new WireMockRule(8080);
+    
 	
     @Test
     public void testStatusCodePositive() throws Exception {
@@ -28,7 +30,7 @@ public class HttpTests {
 				.willReturn(aResponse()
 						.withBody("1")
 						.withStatus(200)));
-			assertEquals(200, requestToServer.sendGet(".*"));
+			assertEquals(1, requestToServer.sendGet(".*"));
 			verify(getRequestedFor(urlEqualTo("/fin/.*")));
 		}catch (Exception e) {
 			e.printStackTrace();
@@ -38,14 +40,31 @@ public class HttpTests {
     @Test
     public void testStatusCodeNegative() throws Exception {
     	try {
-    		configureFor("localhost", 8080);
-			stubFor(get(urlEqualTo("/noexiste/123"))
+			stubFor(get(urlEqualTo("/fin/.*"))
 				.willReturn(aResponse()
-						.withStatus(404)));
+						.withBody("0")
+						.withStatus(200)));
+			assertEquals(0, requestToServer.sendGet(".*"));
+			verify(getRequestedFor(urlEqualTo("/fin/.*")));
 		}catch (Exception e) {
 			e.printStackTrace();
 		}
     }
+    
+    // ????
+    
+//    @Test
+//    public void testStatusNotExist() throws Exception {
+//    	try {
+//			stubFor(get(urlEqualTo("/noexiste/123"))
+//				.willReturn(aResponse()
+//						.withStatus(404)));
+//		}catch (Exception e) {
+//			e.printStackTrace();
+//		}
+//    }
+    
+    static CloseableHttpResponse response;
     
     @Test
     public void testStatusCodePositivePost() throws Exception {
@@ -53,10 +72,9 @@ public class HttpTests {
 			stubFor(post(urlEqualTo("/alumno"))
 				.willReturn(aResponse()
 						.withStatus(200)));
-	
-			
-			assertEquals(200, requestToServer.sendPostAlumno("Pepe", "087954R", ".*", "8080"));
-			verify(getRequestedFor(urlEqualTo("/alumno")));
+			response = requestToServer.sendPostAlumno("Pepe", "087954R", ".*", "8080");
+			assertEquals(200, response.getStatusLine().getStatusCode());
+			//verify(getRequestedFor(urlEqualTo("/alumno")));
 		}catch (Exception e) {
 			e.printStackTrace();
 		}

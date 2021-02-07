@@ -57,10 +57,10 @@ public class HttpRequests {
 
     }
 
-    public int sendPostAlumno(String nombre, String dni, String idex, String puerto) throws Exception {
+    public CloseableHttpResponse sendPostAlumno(String nombre, String dni, String idex, String puerto) throws Exception {
     	System.out.println(nombre+dni+idex);
-        HttpPost post = new HttpPost(url+"/alumno");// aqui habria que poner https://servidor-hectorfr95.herokuapp.com/alumno
-        int cod;
+        HttpPost post = new HttpPost(url+ "/alumno");// aqui habria que poner https://servidor-hectorfr95.herokuapp.com/alumno
+        
         
         // add request parameter, form parameters
         List<NameValuePair> urlParameters = new ArrayList<>();
@@ -73,12 +73,9 @@ public class HttpRequests {
 
         try (CloseableHttpClient httpClient = HttpClients.createDefault();
              CloseableHttpResponse response = httpClient.execute(post)) {
-        	 cod = Integer.parseInt(EntityUtils.toString(response.getEntity()));
-
-            System.out.println(EntityUtils.toString(response.getEntity()));
             
             httpClient.close();
-            return cod;
+            return response;
         }
         
 
