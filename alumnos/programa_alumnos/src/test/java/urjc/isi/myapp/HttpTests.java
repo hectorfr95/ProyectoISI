@@ -79,4 +79,18 @@ public class HttpTests {
 			e.printStackTrace();
 		}
     }
+    
+    @Test
+    public void testStatusCodeNegativePost() throws Exception {
+    	try {
+			stubFor(post(urlEqualTo("/alumno"))
+				.willReturn(aResponse()
+						.withStatus(404)));
+			response = requestToServer.sendPostAlumno("Pepe", "087954R", ".*", "8080");
+			assertEquals(404, response.getStatusLine().getStatusCode());
+			//verify(getRequestedFor(urlEqualTo("/alumno")));
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+    }
 }
