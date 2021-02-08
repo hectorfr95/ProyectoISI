@@ -39,16 +39,12 @@ import java.text.DateFormat;
 // donde se ejecute este programa, de nombre /examen
 
 public class Main {
-    //nombre y apellidos del alumno que está ejecutando este programa
-	private static String nombre;
-  	//DNI del alumno que está ejecutando este programa
-    private static String dni;
+    //objeto alumno:
+	static Alumno alumno;
     //ID examen
     private static String idEx;
     //Puerto del alumno
-    private static int puerto;
-    //mail dl alumno, necesario solo para rellenar un campo en los commits
-    private static String mail;
+	private static int puerto = 4568;
     
     //objeto con el que haré los commits
     private static Git git;
@@ -71,30 +67,14 @@ public class Main {
   //tiempo entre consulta y consulta en minutos
     private static int rateRequest = 1;
     
-    public static void setName(String s) {
-    	nombre = s;
-    }
-    public static void setMail(String s) {
-    	mail = s;
-    }
-    public static void setDni(String s) {
-    	dni = s;
-    }
+   
     public static void setIdEx(String s) {
     	idEx = s;
     }
     public static void setGit(Git g) {
     	git = g;
     }
-    public static String getName() {
-    	return nombre;
-    }
-    public static String getMail() {
-    	return mail;
-    }
-    public static String getDni() {
-    	return dni;
-    }
+    
     public static String getIdEx() {
     	return idEx;
     }
@@ -122,7 +102,7 @@ public class Main {
     	try {
 	    	//hago un commit de todo
 	    	git.add().addFilepattern(".").call();
-	    	git.commit().setMessage(comen).setAuthor(nombre, mail).call();
+	    	git.commit().setMessage(comen).setAuthor(alumno.getName(), alumno.getMail()).call();
     	}catch(GitAPIException e) {
     		System.out.println("An error occurred.");
 	        e.printStackTrace();
@@ -254,10 +234,11 @@ public class Main {
     public static void sendInfoAl() throws Exception{
     	//POST con informacion del alumno
     	try {
-    		requestToServer.sendPostAlumno(nombre, dni, idEx, Integer.toString(puerto));
+    		requestToServer.sendPostAlumno(alumno.getName(), alumno.getDni(), idEx, Integer.toString(puerto));
     		System.out.println("***********************************************");
         	System.out.println("Notifico al servidor de que el alumno con nombre: " 
-    							+ nombre + " ,dni: "+dni + ", idex: "+idEx + " se ha conectado correctamente");
+    							+ alumno.getName() + " ,dni: "+alumno.getDni() + ", idex: "+idEx 
+    							+ " se ha conectado correctamente");
         	System.out.println("***********************************************");
         } finally {
         	requestToServer.close();
@@ -266,7 +247,7 @@ public class Main {
     
     public static File compressRepo() throws FileNotFoundException, IOException{
     	String sourceFile = "../examen/";
-        FileOutputStream fos = new FileOutputStream("../"+idEx+"_"+dni+".zip");
+        FileOutputStream fos = new FileOutputStream("../"+idEx+"_"+alumno.getDni()+".zip");
         ZipOutputStream zipOut = new ZipOutputStream(fos);
         File fileToZip = new File(sourceFile);
     	
@@ -275,7 +256,7 @@ public class Main {
         fos.close();
         
         //POST enviar .ZIP
-        File file = new File("../"+idEx+"_"+dni+".zip");
+        File file = new File("../"+idEx+"_"+alumno.getDni()+".zip");
         return file;
     	
     }
@@ -287,9 +268,10 @@ public class Main {
     	
     	//Comprimir .git a zip 
         try {
-    		requestToServer.sendPostExamen(compressRepo(), nombre, dni, idEx);
+    		requestToServer.sendPostExamen(compressRepo(), alumno.getName(), alumno.getDni(), idEx);
     		System.out.println("***********************************************");
-        	System.out.println("Envio al server el zip del alumno: " + nombre + dni + idEx);
+        	System.out.println("Envio al server el zip del alumno: " + alumno.getName() 
+        							+ alumno.getDni() + idEx);
         	System.out.println("***********************************************");
         } finally {
         	requestToServer.close();
@@ -302,18 +284,15 @@ public class Main {
     }
     
     
-    public static void main(String[] args) throws ClassNotFoundException, Exception {
-    	port(getHerokuAssignedPort());
-    	
+    public static void main(String[] args) throws ClassNotFoundException, Exception {    	
     	//formulario para que el alumno inserte sus datos
     	Form f = new Form();
     	waitAl(f);
     	
-    	nombre = f.getName();
-    	dni = f.getDni();
+    	alumno = new Alumno(f.getName(), f.getDni(), f.getMail());
     	idEx = f.getIdEx();
-    	mail = f.getMail();
     	
+    	System.out.println(puerto);
     	//mando info inicial del alumno
     	sendInfoAl();
     	
@@ -323,7 +302,7 @@ public class Main {
     	System.out.println("***********************************************");
     	
     	//hacemos el primer commit nada más que el alumno se ha registrado
-    	doCommit("primer commit, alumno: "+nombre+" dni: "+dni);
+    	doCommit("primer commit, alumno: "+alumno.getName()+" dni: "+alumno.getDni());
 		
     	//configuro el timer de los commits
     	setAlarm();
@@ -331,13 +310,6 @@ public class Main {
     	//configuro el timer de consultas periodicas al server
     	setPeriodicRequests();
 
-    }
-    static int getHerokuAssignedPort() {
-    	ProcessBuilder processBuilder = new ProcessBuilder();
-		if (processBuilder.environment().get("PORT") != null) {
-		    return Integer.parseInt(processBuilder.environment().get("PORT"));
-		}
-		return 4568; // return default port if heroku-port isn't set (i.e. on localhost)
     }
 
 

@@ -43,9 +43,7 @@ public class Tests {
 	public void setup() {
 		git = Main.createRepo();
 		Main.setGit(git);
-		Main.setName("Pepe");
-		Main.setMail("Pepe@gmail.com");
-		Main.setDni("02223478L");
+		Main.alumno = new Alumno("Pepe", "02223478L", "Pepe@gmail.com");
 		Main.setIdEx("4211");
 	}
 	
@@ -71,7 +69,7 @@ public class Tests {
 	public void testCreateZip()
 			throws IOException{
 		zip =Main.compressRepo();
-		File test = new File("../" + Main.getIdEx() + "_" + Main.getDni() + ".zip");
+		File test = new File("../" + Main.getIdEx() + "_" + Main.alumno.getDni() + ".zip");
 		
 		assertEquals(zip.exists(), true);
 		assertEquals(zip, test);
@@ -92,8 +90,8 @@ public class Tests {
 			email = rev.getAuthorIdent().getEmailAddress();
 			message = rev.getFullMessage();
 		}
-		assertEquals(Main.getName(), name);
-		assertEquals(Main.getMail(), email);
+		assertEquals(Main.alumno.getName(), name);
+		assertEquals(Main.alumno.getMail(), email);
 		assertEquals("Soy el primer commit", message);
 
 		
