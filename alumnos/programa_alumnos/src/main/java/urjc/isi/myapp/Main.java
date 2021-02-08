@@ -1,15 +1,6 @@
 package urjc.isi.myapp;
 
 import static spark.Spark.*;
-import spark.Request;
-import spark.Response;
-
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.sql.PreparedStatement;
 
 import java.util.StringTokenizer;
 import java.util.zip.ZipEntry;
@@ -25,7 +16,6 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 
 import org.eclipse.jgit.api.Git;
-import org.eclipse.jgit.api.Status;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.lib.Constants;
 import org.eclipse.jgit.lib.ObjectId;
@@ -45,19 +35,12 @@ import java.text.SimpleDateFormat;
 import java.text.DateFormat;
 
 
+// Programa que ejecuta commits periodicos sobre una carpeta que se crea en el directorio
+// donde se ejecute este programa, de nombre /examen
 
-
-// This code is quite dirty. Use it just as a hello world example 
-// to learn how to use JDBC and SparkJava to upload a file, store 
-// it in a DB, and do a SQL SELECT query
 public class Main {
-    
-    // Connection to the SQLite database. Used by insert and select methods.
-    // Initialized in main
-    private static Connection connection;
-    
     //nombre y apellidos del alumno que está ejecutando este programa
-    private static String nombre;
+	private static String nombre;
   	//DNI del alumno que está ejecutando este programa
     private static String dni;
     //ID examen
@@ -163,8 +146,8 @@ public class Main {
         file.delete();
     }
     
+    //el repo se crea en una carpeta /examen en el lugar donde se encuentra el prog
     public static Git createRepo() {
-    
     	Path repoPath = Paths.get("../examen/");
         InitCommand init = Git.init();
         deleteRepo(new File("../examen/"));
@@ -192,12 +175,12 @@ public class Main {
     	}
     	for (RevCommit rev : logs) {
             //System.out.print(Instant.ofEpochSecond(rev.getCommitTime()));
-            System.out.print(": ");
-            System.out.print(rev.getFullMessage());
+    		System.out.println("-------------------------");
+    		System.out.println("Commit id: "+rev.getId().getName());
+            System.out.print("Comentario: "+rev.getFullMessage());
             System.out.println();
-            System.out.println(rev.getId().getName());
-            System.out.println(rev.getAuthorIdent().getName());
-            System.out.println(rev.getAuthorIdent().getEmailAddress());
+            System.out.println("Nombre: "+rev.getAuthorIdent().getName());
+            System.out.println("Email: "+ rev.getAuthorIdent().getEmailAddress());
             System.out.println("-------------------------");
           }
     	
@@ -206,7 +189,7 @@ public class Main {
     public static String currentDay() {
     	DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
     	Date date = new Date();
-    	return dateFormat.format(date); //2016/11/16 12:08:43
+    	return dateFormat.format(date);
     }
     
     public static void setAlarm() {
@@ -215,8 +198,6 @@ public class Main {
 		  	public void run() {
 	      		 System.out.println("Executed...");
 	      		 doCommit( "commit a las:"+ currentDay());
-		      		//checkCommits(git);
-		      		//timer.cancel();
 		     }
   		 },1000*60*rateCommit, 1000*60*rateCommit);
     }
@@ -225,12 +206,16 @@ public class Main {
     	periodicRequests.scheduleAtFixedRate(new TimerTask(){
 		    @Override
 		  	public void run() {
-	      		System.out.println("------envio peticion al server.");
+		    	System.out.println("***********************************************");
+	        	System.out.println("Consulta al servidor para comprobar si se ha terminado el ex");
 	      		try {	
 	      			if(requestToServer.sendGet(idEx) == 1) {
+	      				System.out.println("Se ha terminado el examen");
+	      				System.out.println("***********************************************");
 	      				finEx();
 	      			}else {
-	      				System.out.println("ha llegado un 0");
+	      				System.out.println("No se ha terminado el examen");
+	      				System.out.println("***********************************************");
 	      			}
 	      		}catch(Exception e) {
 	      			System.out.println("An error occurred.");
@@ -266,19 +251,21 @@ public class Main {
         fis.close();
     }
     
-    public static void sendInfoAl(String puerto) throws Exception{
+    public static void sendInfoAl() throws Exception{
     	//POST con informacion del alumno
-    	
     	try {
-    		System.out.println("Send Http POST request");
-    		requestToServer.sendPostAlumno(nombre, dni, idEx, puerto);
+    		requestToServer.sendPostAlumno(nombre, dni, idEx, Integer.toString(puerto));
+    		System.out.println("***********************************************");
+        	System.out.println("Notifico al servidor de que el alumno con nombre: " 
+    							+ nombre + " ,dni: "+dni + ", idex: "+idEx + " se ha conectado correctamente");
+        	System.out.println("***********************************************");
         } finally {
         	requestToServer.close();
         }
     }
     
     public static File compressRepo() throws FileNotFoundException, IOException{
-    	String sourceFile = "../examen/.git/";
+    	String sourceFile = "../examen/";
         FileOutputStream fos = new FileOutputStream("../"+idEx+"_"+dni+".zip");
         ZipOutputStream zipOut = new ZipOutputStream(fos);
         File fileToZip = new File(sourceFile);
@@ -293,56 +280,56 @@ public class Main {
     	
     }
     
-    public static void finEx(/*Request request, Response response*/) throws Exception{
+    public static void finEx() throws Exception{
     	timer.cancel();
     	periodicRequests.cancel();
     	doCommit("ultimo commit del examen");
+    	
     	//Comprimir .git a zip 
         try {
-    		System.out.println("Send Http POST request");
     		requestToServer.sendPostExamen(compressRepo(), nombre, dni, idEx);
+    		System.out.println("***********************************************");
+        	System.out.println("Envio al server el zip del alumno: " + nombre + dni + idEx);
+        	System.out.println("***********************************************");
         } finally {
         	requestToServer.close();
         }
-      System.exit(0);
-       // return "";
+        //imprimir todos los commits realizados en el examen
+        checkCommits();
+        
+        //terminar el programa
+        System.exit(0);
     }
     
     
-    public static void main(String[] args) throws ClassNotFoundException, SQLException, Exception {
+    public static void main(String[] args) throws ClassNotFoundException, Exception {
     	port(getHerokuAssignedPort());
     	
     	//formulario para que el alumno inserte sus datos
     	Form f = new Form();
-    	System.out.println("Antes del formulario");
     	waitAl(f);
+    	
     	nombre = f.getName();
     	dni = f.getDni();
     	idEx = f.getIdEx();
     	mail = f.getMail();
     	
-    	String puertoStr = Integer.toString(puerto);
-    	
-    	System.out.println("Notifico al servidor de que el alumno con nombre " 
-				+ nombre + dni + idEx + " se ha conectado correctamente");
-    	
     	//mando info inicial del alumno
-    	sendInfoAl(puertoStr);
+    	sendInfoAl();
     	
     	git = createRepo();
+    	System.out.println("***********************************************");
     	System.out.println("creo repositorio"+git);
+    	System.out.println("***********************************************");
+    	
+    	//hacemos el primer commit nada más que el alumno se ha registrado
     	doCommit("primer commit, alumno: "+nombre+" dni: "+dni);
-    	//llamo al siguiente metodo para comprobr que los commits se hacen correctamente
-    	checkCommits();
 		
     	//configuro el timer de los commits
     	setAlarm();
     	
     	//configuro el timer de consultas periodicas al server
     	setPeriodicRequests();
-    	
-    	//Recibir GET, probar con hector
-    	//get("/fin", Main::finEx);
 
     }
     static int getHerokuAssignedPort() {

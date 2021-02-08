@@ -58,7 +58,6 @@ public class HttpRequests {
     }
 
     public CloseableHttpResponse sendPostAlumno(String nombre, String dni, String idex, String puerto) throws Exception {
-    	System.out.println(nombre+dni+idex);
         HttpPost post = new HttpPost(url+ "/alumno");// aqui habria que poner https://servidor-hectorfr95.herokuapp.com/alumno
         
         
