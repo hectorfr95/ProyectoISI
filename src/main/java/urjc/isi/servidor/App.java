@@ -234,7 +234,9 @@ public class App
 		post("/profesor", (req, res) -> {// Recurso para cargar los datos del examen en la BD y despues redireccionar a /:random
 
 			int id_examen = (int) (Math.random()*1000000000 +1); // Numero aleatorio que se asignará al examen
-
+			while(examenDao.comprobar_examen(id_examen)==1)
+				id_examen = (int) (Math.random()*1000000000 +1);
+				
 			String asignatura = req.queryParams("asignatura"); // Sacamos la query string del campo asignatura
 			Date fecha = new Date();
 			long lnMilisegundos = fecha.getTime();
