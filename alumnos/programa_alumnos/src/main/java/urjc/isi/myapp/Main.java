@@ -93,6 +93,18 @@ public class Main {
     	return rateCommit;
     }
     
+    public static Timer getTimerReq() {
+    	return periodicRequests;
+    }
+    
+    public static HttpRequests getReqToServer() {
+    	return  requestToServer;
+    }
+    
+    public static void setReqToServer(String link) {
+    	requestToServer = new HttpRequests(link);
+    }
+    
     
     //metodo que espera a que el alumno acabe de rellenar el formulario
     public static void waitAl(Form f) {
@@ -186,8 +198,10 @@ public class Main {
 	    timer.scheduleAtFixedRate(new TimerTask(){
 		    @Override
 		  	public void run() {
-	      		 System.out.println("Executed...");
-	      		 doCommit( "commit a las:"+ currentDay());
+		    	System.out.println("***********************************************");
+	      		System.out.println("Hago commit...");
+	      		System.out.println("***********************************************");
+	      		doCommit( "commit a las:"+ currentDay());
 		     }
   		 },1000*60*rateCommit, 1000*60*rateCommit);
     }
@@ -302,7 +316,6 @@ public class Main {
     	alumno = new Alumno(f.getName(), f.getDni(), f.getMail());
     	idEx = f.getIdEx();
     	
-    	System.out.println(puerto);
     	//mando info inicial del alumno
     	sendInfoAl();
     	

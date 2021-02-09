@@ -28,6 +28,7 @@ public class HttpRequests {
 
 	public final CloseableHttpClient httpClient = HttpClients.createDefault();
 	public String url;
+	public int contador;	// Variable para Test
 	
 	public void close() throws IOException {
         httpClient.close();
@@ -41,6 +42,7 @@ public class HttpRequests {
 
         HttpGet request = new HttpGet(url+"/fin/"+idEx);
         int cod ;
+        contador ++; 
 
         // add request headers
         //request.addHeader("custom-key", "mkyong");
