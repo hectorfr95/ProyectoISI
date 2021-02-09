@@ -30,6 +30,8 @@ import org.junit.Test;
 
 import com.github.tomakehurst.wiremock.junit.WireMockRule;
 
+import wiremock.com.google.common.collect.Iterables;
+
 import org.junit.Before;
 import org.junit.Rule;
 
@@ -103,21 +105,20 @@ public class Tests {
 		
 		
 	}*/
-	/*@Test
+	
+	@Test
 	public void testCommits() throws IOException, GitAPIException, InterruptedException {
 		
+		Main.setCommitRate(1);
 		Main.setAlarm();
 		
-		Iterable <RevCommit> log = null;
-		log=git.log().all().call();
-		int counter = 0;
-		for (RevCommit i : log) {
-		    counter++;
-		}
-		assertEquals(counter, 1);
+		Thread.sleep(150000);
 		
-	}*/
-	
-
+		int counter = Iterables.size(git.log().call());
+		
+		Main.getTimer().cancel();
+		assertEquals(counter, 2);
+		
+	}
 
 }

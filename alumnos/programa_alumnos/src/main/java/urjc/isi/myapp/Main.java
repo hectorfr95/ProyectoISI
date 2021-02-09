@@ -84,6 +84,16 @@ public class Main {
     public static Timer getTimer() {
     	return timer;
     }
+    
+    public static void setCommitRate(int rate) {
+    	rateCommit = rate;
+    }
+    
+    public static int getCommitRate() {
+    	return rateCommit;
+    }
+    
+    
     //metodo que espera a que el alumno acabe de rellenar el formulario
     public static void waitAl(Form f) {
     	while(f.getName() == null || f.getDni() == null 

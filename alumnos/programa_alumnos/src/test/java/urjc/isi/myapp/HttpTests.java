@@ -51,19 +51,6 @@ public class HttpTests {
 		}
     }
     
-    // ????
-    
-//    @Test
-//    public void testStatusNotExist() throws Exception {
-//    	try {
-//			stubFor(get(urlEqualTo("/noexiste/123"))
-//				.willReturn(aResponse()
-//						.withStatus(404)));
-//		}catch (Exception e) {
-//			e.printStackTrace();
-//		}
-//    }
-    
     static CloseableHttpResponse response;
     
     @Test
