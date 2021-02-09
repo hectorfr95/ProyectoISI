@@ -4,17 +4,17 @@
   <meta charset="ISO-8859-1">
   <title>Proyecto ISI</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
   <link rel="stylesheet" type="text/css" href="/views/css/style.css">
   <link rel="icon" type="image/png" href="/favicon.png">
+  <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@600;900&display=swap" rel="stylesheet">
+  <script src="https://kit.fontawesome.com/4b9ba14b0f.js" crossorigin="anonymous"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
 </head>
-
 <body>
-  <nav class="navbar navbar-expand navbar-dark bg-dark">
+  <nav class="navbar fixed-top navbar-expand navbar-dark bg-dark">
     <a class="navbar-brand" href="/" style="font-weight: bold;"><i class="bi bi-code-slash" style="font-size: 35px; bottom"></i> ProyectoISI</a>
     <ul class="navbar-nav ml-auto">
       <li class="nav-item">
@@ -25,7 +25,7 @@
       </li>
     </ul>
   </nav>
-	<div class="container" id="titulo" style="margin-top: 100px;">
+	<div class="container" id="titulo" style="margin-top: 10%;">
 		<div class="row justify-content-center">
 			<div class="col">
 				<h1 style="text-align: center">${titulo}</h1>
@@ -35,11 +35,11 @@
 		<div class="row justify-content-around">
   	   <div class="col-auto">
          <form action='/\${id}/finalizar' method='get'>
-  			 <input class="btn btn-outline-danger" type="submit" value="Finalizar Examen">
+  			 <input class="btn btn-outline-danger" type="submit" value="Finalizar Examen" style="font-weight: bold;">
          </form>
        </div>
 	      <div class="col-auto">
-          <a href="" class="btn btn-outline-primary" role="button" aria-pressed="true">Actualizar</a>
+          <a href="" class="btn btn-outline-primary" role="button" aria-pressed="true" style="font-weight: bold;">Actualizar</a>
 		    </div>
 	   </div>
    </div>

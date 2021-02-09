@@ -362,13 +362,13 @@ public class App
 			
 			for (int i=0;i<allFinalExamen.size();i++) {
 	
-				result1 = result1 + "<div class=\"col-auto\" id=\"index\" style=\"text-align: center; margin-bottom: 20px;\"><strong>Alumno:</strong> "+allFinalExamen.get(i).getNombreAlumno()+" <strong>DNI:</strong> "+allFinalExamen.get(i).getIdAlumno()+"<br>";
+				result1 = result1 + "<div class=\"col-3\" id=\"index\" style=\"margin-left: 10px; margin-top: 15px;\"><strong>Alumno:</strong> "+allFinalExamen.get(i).getNombreAlumno()+" <br><strong>DNI:</strong> "+allFinalExamen.get(i).getIdAlumno()+"<br>";
 			    if(allFinalExamen.get(i).getPath()==null)
 			    	result1 = result1 + "<i class=\"bi bi-x-circle-fill\" style=\"color: red;\"></i> <strong>ZIP no registrado...</strong>";
 			    else
 			    {
 			    	result1 = result1 + "<i class=\"bi bi-check-circle-fill\" style=\"color: green;\"></i> <strong>ZIP guardado!</strong>";
-			    	result1 = result1 + "<br><i style=\"color: blue;\" class=\"bi bi-file-earmark-arrow-down-fill\"> </i><a style=\"color: blue; text-decoration: underline;\" href=\"/"+id_examen+"/"+allFinalExamen.get(i).getNombreAlumno()+"/"+allFinalExamen.get(i).getIdAlumno()+"\">" +allFinalExamen.get(i).getNombreAlumno()+"_"+allFinalExamen.get(i).getIdAlumno()+"_"+id_examen+".zip"+"</a>";
+			    	result1 = result1 + "<br><a style=\"color: blue; text-decoration: underline;\" href=\"/"+id_examen+"/"+allFinalExamen.get(i).getNombreAlumno()+"/"+allFinalExamen.get(i).getIdAlumno()+"\">"+"<i style=\"color: blue;\" class=\"bi bi-file-earmark-arrow-down-fill\"> </i>" +allFinalExamen.get(i).getNombreAlumno()+"_"+allFinalExamen.get(i).getIdAlumno()+"_"+id_examen+".zip"+"</a>";
 			    }
 			    
 			    result1 = result1 + "</div>";
@@ -411,7 +411,7 @@ public class App
 			return render("views/finalizado.html", settings);
 	});
 		//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-		get("/:random/algoritmo", (req, res) -> {
+		get("/:random/informe", (req, res) -> {
 			int id_examen = comprobar_examen(req.params(":random"), examenDao);
 			if(id_examen==-1)
 			{
@@ -423,7 +423,7 @@ public class App
 			//String respuesta = ejecutaralgoritmo("/ulouad/"+id_examen);
 			
 			
-			return "PAGINA DEL ALGORITMO";
+			return render("views/informe.html", settings);
 	});
 		//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		get("/fin/:random", (req, res) -> {
@@ -447,7 +447,10 @@ public class App
 			return es_fin;
 	});
 		//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////		
-	get("/:random/:name/:dni", (req, res) -> {
+	
+		
+		
+		get("/:random/:name/:dni", (req, res) -> {
 		int id_examen = comprobar_examen(req.params(":random"), examenDao);
 		if(id_examen==-1)
 		{
