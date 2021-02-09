@@ -1,4 +1,4 @@
-package Proyecto2.Principla2;
+package urjc.isi.algoritmoCopia;
 
 
 import java.io.IOException;
@@ -36,7 +36,7 @@ import org.eclipse.jgit.diff.RawTextComparator;
 public class Principal /*extends Repository */{
 	
 	//private static final String ARCHIVO_ZIP = "https://wordpress.org/latest.zip";
-	private static final String PATH_LOCAL = "/home/alumno/Escritorio/prueba";
+	private static final String PATH_LOCAL = "C:\\Users\\javie\\Documents\\URJC\\4\\ISI\\algoritmoCopia\\GIT";
 	//private static final String DIRECTORIO = "/home/alumno/Escritorio/prueba/gits";
 	
 	public static void CrearDirectorio (String args){
@@ -253,6 +253,7 @@ public class Principal /*extends Repository */{
 	    }
 	    return out.toString();
 	}
+	
 
 	public static void Ejecutar(String path) throws Exception{
     	System.setOut(new PrintStream(new FileOutputStream("output.txt")));
@@ -292,15 +293,19 @@ public class Principal /*extends Repository */{
             String fichero2 = null;
             Object[] lista = ficheros.toArray();
             for(int q =1; q< ficheros.size();q++) {
-            	fichero1 = (String)lista[q-1];
-    			fichero2 = (String)lista[q];
-    			System.out.println(fichero1);
-    			System.out.println(fichero2);
-    			File lee1 = new File(fichero1);
-    			File lee2 = new File(fichero2);
-    			Ultimocommit(lee1,lee2);
-    			Ultimocommitpal(lee1,lee2);
-        		getDiff(fichero1, fichero2);
+            	for(int n=1; n<ficheros.size();n++) {
+            		System.out.println("Comparacion de fichero:");
+            		fichero1 = (String)lista[q-1];
+        			fichero2 = (String)lista[n];
+        			System.out.println(fichero1);
+        			System.out.println(fichero2);
+        			File lee1 = new File(fichero1);
+        			File lee2 = new File(fichero2);
+        			Ultimocommit(lee1,lee2);
+        			Ultimocommitpal(lee1,lee2);
+            		getDiff(fichero1, fichero2);
+            	}
+            	System.out.println("---------------------------------------");
         	}
 		}
 	
