@@ -36,7 +36,7 @@ import org.eclipse.jgit.diff.RawTextComparator;
 public class Principal /*extends Repository */{
 	
 	//private static final String ARCHIVO_ZIP = "https://wordpress.org/latest.zip";
-	//private static final String PATH_LOCAL = "/home/alumno/Escritorio/prueba";
+	private static final String PATH_LOCAL = "C:\\Users\\javie\\Documents\\URJC\\4\\ISI\\algoritmoCopia\\GIT";
 	//private static final String DIRECTORIO = "/home/alumno/Escritorio/prueba/gits";
 	
 	public static void CrearDirectorio (String args){
@@ -80,7 +80,7 @@ public class Principal /*extends Repository */{
 			
 			arr_res = res.toArray(new String[0]);
             } else {
-                System.err.println("Â¡Path NO vÃ¡lido!");
+                System.err.println("¡Path NO válido!");
 			}
 			
             return arr_res;
@@ -253,9 +253,10 @@ public class Principal /*extends Repository */{
 	    }
 	    return out.toString();
 	}
+	
 
-	public static void Ejecutar(String path) throws Exception{
-    	System.setOut(new PrintStream(new FileOutputStream("output.txt")));
+	public void Ejecutar(String path, int id_examen) throws Exception{
+    	System.setOut(new PrintStream(new FileOutputStream("upload/"+id_examen+"/"+"output.txt")));
 		String DIRECTORIO = path.concat("/gits");
  
     	String [] list_fich = null;
@@ -267,6 +268,7 @@ public class Principal /*extends Repository */{
                 String ARCHIVO_ZIP = files[i];
                 String cadena = NombreAleatorio();
                 String CARPETA = DIRECTORIO.concat("/" + cadena);
+                //System.out.println("carpeta: "+CARPETA);
                 CrearDirectorio(CARPETA);
                 Descomprimir(ARCHIVO_ZIP,CARPETA);
             }
@@ -277,36 +279,50 @@ public class Principal /*extends Repository */{
             String aux = null;
             File carp = new File(DIRECTORIO);
             list_fich = carp.list();
+           // System.out.println("AQUII:"+list_fich.length);
             for(int k = 0; k< list_fich.length;k++) {
+            	//System.out.println("DIR: "+DIRECTORIO);
             	list = DIRECTORIO.concat("/" + list_fich[k] + "/examen");
+            	//System.out.println("list:"+list);
             	File c  = new File(list);
             	l = c.list();
-            	for(int h = 0; h< l.length; h++) {
-            		if(!(l[h].equals(".git"))){
-            			aux = list.concat("/" + l[h]);
-            			ficheros.add(aux);
-            		}
+            	if(l==null)
+            		continue;
+            	else
+            	{
+            		for(int h = 0; h< l.length; h++) {
+                		
+                		if(!(l[h].equals(".git"))){
+                			
+                			aux = list.concat("/" + l[h]);
+                			ficheros.add(aux);
+                		}
+                		//System.out.println("TRAZAA"+ l[h]);
+                	}
             	}
+            	
             }
             String fichero1 = null;
             String fichero2 = null;
             Object[] lista = ficheros.toArray();
             for(int q =1; q< ficheros.size();q++) {
-            	fichero1 = (String)lista[q-1];
-    			fichero2 = (String)lista[q];
-    			System.out.println(fichero1);
-    			System.out.println(fichero2);
-    			File lee1 = new File(fichero1);
-    			File lee2 = new File(fichero2);
-    			Ultimocommit(lee1,lee2);
-    			Ultimocommitpal(lee1,lee2);
-        		getDiff(fichero1, fichero2);
+            	for(int n=1; n<ficheros.size();n++) {
+            		System.out.println("Comparacion de fichero:");
+            		fichero1 = (String)lista[q-1];
+        			fichero2 = (String)lista[n];
+        			System.out.println(fichero1);
+        			System.out.println(fichero2);
+        			File lee1 = new File(fichero1);
+        			File lee2 = new File(fichero2);
+        			Ultimocommit(lee1,lee2);
+        			Ultimocommitpal(lee1,lee2);
+            		getDiff(fichero1, fichero2);
+            	}
+            	System.out.println("---------------------------------------");
         	}
 		}
 	
 	}
-	/*
-    public static void main(String[] args) throws Exception{
-    	Ejecutar(PATH_LOCAL);
-    }*/
+	
+    
 }

@@ -413,7 +413,7 @@ public class App
 			return render("views/finalizado.html", settings);
 	});
 		//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-		get("/:random/informe", (req, res) -> {
+		get("/:random/algoritmo", (req, res) -> {
 			int id_examen = comprobar_examen(req.params(":random"), examenDao);
 			if(id_examen==-1)
 			{
@@ -422,9 +422,14 @@ public class App
 				return render("views/404.html", settings);
 			}
 			
-			//String respuesta = ejecutaralgoritmo("/ulouad/"+id_examen);
+			Principal exec = new Principal();
+			String aux = "upload/"+id_examen;
+			exec.Ejecutar(aux, id_examen);
 			
-			
+			String link = "<a style=\"color: red\" href=\"/"+id_examen+"/informe.txt"+"\"> Link ! </a>";
+			String content = render("upload/"+id_examen+"/output.txt", settings);
+			set("content", content);
+			set("link", link);
 			return render("views/informe.html", settings);
 	});
 		//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -451,7 +456,35 @@ public class App
 		//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////		
 	
 		
-		
+		get("/:random/informe.txt", (req, res) -> {
+			int id_examen = comprobar_examen(req.params(":random"), examenDao);
+			if(id_examen==-1)
+			{
+				res.status(404);
+				set("recurso", req.uri());
+				return render("views/404.html", settings);
+			}
+				
+			
+			 res.raw().setContentType("text/plain");
+		        res.header("Content-Disposition", "attachment; filename=\""+id_examen+"_informe"+".txt\"");
+		        File file = new File("upload/"+id_examen+"/"+"output.txt"); 
+				 FileInputStream input = new FileInputStream(file);
+				 ServletOutputStream out = res.raw().getOutputStream();
+				 
+				 			//contents = IOUtils.toString(input); 
+				            //System.out.println(contents);
+				 byte[] outputByte = new byte[4096];
+				//copy binary contect to output stream
+				while(input.read(outputByte, 0, 4096) != -1)
+				{
+				    out.write(outputByte, 0, 4096);
+				}
+				input.close();
+				out.flush();
+				out.close();
+			return null;
+		});
 		get("/:random/:name/:dni", (req, res) -> {
 		int id_examen = comprobar_examen(req.params(":random"), examenDao);
 		if(id_examen==-1)
@@ -537,6 +570,8 @@ public class App
 		return render("views/404.html", settings);
 	});
 	}
+
+	
 
 	static int getHerokuAssignedPort() {
 		ProcessBuilder processBuilder = new ProcessBuilder();
