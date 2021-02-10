@@ -264,7 +264,13 @@ public class App
 				
 				return "Fallo";
 			}
-	
+			if(examenDao.comprobar_final(id_ex)==1)
+			{
+				res.status(403);
+				set("recurso", req.uri());
+				return "Fallo";
+			}
+			
 		    String ip = req.ip(); //IP de la petición
 			int port = req.port(); //PUERTO de la petición
 	
@@ -427,10 +433,25 @@ public class App
 				set("recurso", req.uri());
 				return render("views/404.html", settings);
 			}
+			int flag=0;
+			File file = new File("upload/"+id_examen+"/"+"output.txt");
+			try {
+				FileInputStream input = new FileInputStream(file);
+				flag = 1;
+			    }
+			    catch (Exception exception) {
+			    	flag = 0;
+			    }
+			    
+
 			
-			Principal exec = new Principal();
-			String aux = "upload/"+id_examen;
-			exec.Ejecutar(aux, id_examen);
+			if(flag==0)
+			{
+				Principal exec = new Principal();
+				String aux = "upload/"+id_examen;
+				exec.Ejecutar(aux, id_examen);	
+			}
+			
 			
 			String link =   "/"+id_examen+"/informe.txt";
 			String content = render("upload/"+id_examen+"/output.txt", settings);
