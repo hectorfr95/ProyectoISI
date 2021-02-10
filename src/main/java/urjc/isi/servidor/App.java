@@ -432,7 +432,7 @@ public class App
 			String aux = "upload/"+id_examen;
 			exec.Ejecutar(aux, id_examen);
 			
-			String link =   "<a style=\"width: 100%;\" href=\"/"+id_examen+"/informe.txt\" class=\"btn btn-primary\" role=\"button\" aria-pressed=\"true\"><strong>Descargar informe <i class=\"fa fa-download\" aria-hidden=\"true\"></i></strong></a>";
+			String link =   "/"+id_examen+"/informe.txt";
 			String content = render("upload/"+id_examen+"/output.txt", settings);
 			set("content", content);
 			set("link", link);
