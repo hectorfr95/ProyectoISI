@@ -49,8 +49,7 @@ public class realizaExamenDao {
         List<finalexamen> allFinalExamen = new ArrayList<finalexamen>();
 
         try {
-        	c = DriverManager.getConnection("jdbc:sqlite:proyecto.db");
-            c.setAutoCommit(false);
+        	abrirConexion();
             PreparedStatement ps = c.prepareStatement("select idExamen, RealizaExamen.idAlumno,Alumnos.Nombre, RealizaExamen.path from RealizaExamen left join Alumnos on RealizaExamen.idAlumno=Alumnos.idAlumno WHERE idExamen="+idExamen_);
 
             ResultSet rs = ps.executeQuery();
@@ -61,9 +60,7 @@ public class realizaExamenDao {
                 String path_x = rs.getString("path");
                 allFinalExamen.add(new finalexamen(idExamen_, idAlumno, nombreAlumno, path_x));
             }
-            rs.close();
-            ps.close();
-            c.close();
+            cerrarConexion(ps, rs);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         } finally {
