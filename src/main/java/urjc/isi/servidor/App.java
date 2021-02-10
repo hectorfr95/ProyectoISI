@@ -257,7 +257,13 @@ public class App
 
 			String dni = req.queryParams("dni");// 
 			String nombre = req.queryParams("nombre");
-			int id_ex = Integer.parseInt(req.queryParams("idex"));
+			int id_ex = comprobar_examen(req.queryParams("idex"), examenDao);
+			if(id_ex==-1)
+			{
+				res.status(404);
+				
+				return "Fallo";
+			}
 	
 		    String ip = req.ip(); //IP de la petición
 			int port = req.port(); //PUERTO de la petición
@@ -426,7 +432,7 @@ public class App
 			String aux = "upload/"+id_examen;
 			exec.Ejecutar(aux, id_examen);
 			
-			String link = "<a style=\"color: red\" href=\"/"+id_examen+"/informe.txt"+"\"> Link ! </a>";
+			String link =   "<a style=\"width: 100%;\" href=\"/"+id_examen+"/informe.txt\" class=\"btn btn-primary\" role=\"button\" aria-pressed=\"true\"><strong>Descargar informe <i class=\"fa fa-download\" aria-hidden=\"true\"></i></strong></a>";
 			String content = render("upload/"+id_examen+"/output.txt", settings);
 			set("content", content);
 			set("link", link);
