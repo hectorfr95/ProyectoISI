@@ -203,7 +203,7 @@ public class Principal /*extends Repository */{
 				}
 			}
 			if(contador1==contador2){
-				System.out.println("Los ficheros son iguales");
+				System.out.println("El numero total de lineas son iguales");
 			}
 			
 			qlee1.close();
