@@ -268,7 +268,7 @@ public class Principal /*extends Repository */{
 	}
 
 	//Metodo Principal
-	public static void Ejecutar(String path, String Id) throws Exception{
+	public static void Ejecutar(String path, int Id) throws Exception{
     	System.setOut(new PrintStream(new FileOutputStream("upload/" + Id + "/output.txt")));
 		String DIRECTORIO = path.concat("/gits");
  
