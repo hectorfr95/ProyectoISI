@@ -36,7 +36,7 @@ import org.eclipse.jgit.diff.RawTextComparator;
 public class Principal /*extends Repository */{
 	
 	//private static final String ARCHIVO_ZIP = "https://wordpress.org/latest.zip";
-	private static final String PATH_LOCAL = "/home/alumno/Escritorio/prueba";
+	//private static final String PATH_LOCAL = "/home/alumno/Escritorio/prueba";
 	//private static final String DIRECTORIO = "/home/alumno/Escritorio/prueba/gits";
 	
 	public static void CrearDirectorio (String args){
@@ -334,7 +334,8 @@ public class Principal /*extends Repository */{
 	}
 	
 	//Metodo para probar en local
+	/*
     public static void main(String[] args) throws Exception{
     	Ejecutar(PATH_LOCAL);
-    }
+    }*/
 }
