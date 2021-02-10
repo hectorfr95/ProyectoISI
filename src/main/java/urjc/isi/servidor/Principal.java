@@ -36,7 +36,7 @@ import org.eclipse.jgit.diff.RawTextComparator;
 public class Principal /*extends Repository */{
 	
 	//private static final String ARCHIVO_ZIP = "https://wordpress.org/latest.zip";
-	private static final String PATH_LOCAL = "C:\\Users\\javie\\Documents\\URJC\\4\\ISI\\algoritmoCopia\\GIT";
+	private static final String PATH_LOCAL = "/home/alumno/Escritorio/prueba";
 	//private static final String DIRECTORIO = "/home/alumno/Escritorio/prueba/gits";
 	
 	public static void CrearDirectorio (String args){
@@ -65,6 +65,8 @@ public class Principal /*extends Repository */{
         }
 	}
 	*/
+	
+	//Genera un listado de los .zip pertenecientes al path dado
 	public static String[] ObtenerFich(String dir_path) {
 
 		String[] arr_res = null;
@@ -80,12 +82,13 @@ public class Principal /*extends Repository */{
 			
 			arr_res = res.toArray(new String[0]);
             } else {
-                System.err.println("Path NO valido");
+                System.err.println("¡Path NO válido!");
 			}
 			
             return arr_res;
         }
         
+	//Descomprime el ficherZip y lo guarda en el directorioSalida
     public static void Descomprimir(String ficheroZip, String directorioSalida) throws Exception {
 		
 		final int TAM_BUFFER = 4096;
@@ -124,6 +127,8 @@ public class Principal /*extends Repository */{
 		}
 	}
     
+    /*
+     * Recupera el fichero txt a traves de los commits
     public static void checkout(String path, String nombreFich) throws IOException, NoHeadException,GitAPIException {
 		  Path repoPath = Paths.get(path);
 		 
@@ -132,7 +137,10 @@ public class Principal /*extends Repository */{
 		  }
 		  
 		}
-	
+	*/
+    
+    //Genera un nombre aleatorio para nombrar las diferentes 
+    //carpetas donde se descomprime el contenido de los zips
 	public static String NombreAleatorio() {
 		char n;
 		
@@ -143,6 +151,8 @@ public class Principal /*extends Repository */{
 		return cadena;
 	}
 	
+	//Usado para devolver el nombre del fichero sin la extension para 
+	//mostrar que ficheros se comparan
 	private static String getFileNameWithoutExtension(File file) {
         String fileName = "";
  
@@ -158,6 +168,7 @@ public class Principal /*extends Repository */{
         return fileName;
     }
 	
+	//Compara linea por linea de dos ficheros y devuelve si son iguales o no
 	public static void Ultimocommit(File flee1, File flee2) throws IOException
 	{
 		try
@@ -192,10 +203,9 @@ public class Principal /*extends Repository */{
 				}
 			}
 			if(contador1==contador2){
-				System.out.println("probabilidad de copia por numero total de lineas\n");
-			}else{
-				System.out.println("NO probabilidad de copia por numero total de lineas\n");
+				System.out.println("Los ficheros son iguales");
 			}
+			
 			qlee1.close();
 			qlee2.close();
 		}finally{
@@ -203,6 +213,7 @@ public class Principal /*extends Repository */{
 		}
 	}
 	
+	//Compara palabra por palabra dos ficheros
 	private static void Ultimocommitpal(File slee1, File slee2) throws IOException {
 		String s1;
 		String s2;
@@ -230,12 +241,14 @@ public class Principal /*extends Repository */{
 			}
 		}
 		if(pal_igual!=0) {
-			System.out.println("Hay palabras igual\n" + pal_igual);
+			System.out.println("Hay palabras igual: " + pal_igual);
 		}else {
-			System.out.println("No hay palabras igual\n");
+			System.out.println("No hay palabras igual");
 		}
 	}
 	
+	//Equivalente al comando git diff --no-index fichero1.txt fichero2.txt
+	//Compara ficheros mediante JGit
 	public static String getDiff(String file1, String file2) {
 	    OutputStream out = new ByteArrayOutputStream();
 	    try {
@@ -253,10 +266,10 @@ public class Principal /*extends Repository */{
 	    }
 	    return out.toString();
 	}
-	
 
-	public void Ejecutar(String path, int id_examen) throws Exception{
-    	System.setOut(new PrintStream(new FileOutputStream("upload/"+id_examen+"/"+"output.txt")));
+	//Metodo Principal
+	public static void Ejecutar(String path) throws Exception{
+    	System.setOut(new PrintStream(new FileOutputStream("output.txt")));
 		String DIRECTORIO = path.concat("/gits");
  
     	String [] list_fich = null;
@@ -268,7 +281,6 @@ public class Principal /*extends Repository */{
                 String ARCHIVO_ZIP = files[i];
                 String cadena = NombreAleatorio();
                 String CARPETA = DIRECTORIO.concat("/" + cadena);
-                //System.out.println("carpeta: "+CARPETA);
                 CrearDirectorio(CARPETA);
                 Descomprimir(ARCHIVO_ZIP,CARPETA);
             }
@@ -279,50 +291,50 @@ public class Principal /*extends Repository */{
             String aux = null;
             File carp = new File(DIRECTORIO);
             list_fich = carp.list();
-           // System.out.println("AQUII:"+list_fich.length);
             for(int k = 0; k< list_fich.length;k++) {
-            	//System.out.println("DIR: "+DIRECTORIO);
             	list = DIRECTORIO.concat("/" + list_fich[k] + "/examen");
-            	//System.out.println("list:"+list);
             	File c  = new File(list);
             	l = c.list();
-            	if(l==null)
+            	if(l==null) {
             		continue;
-            	else
-            	{
+            	} else {
             		for(int h = 0; h< l.length; h++) {
-                		
                 		if(!(l[h].equals(".git"))){
-                			
                 			aux = list.concat("/" + l[h]);
                 			ficheros.add(aux);
                 		}
-                		//System.out.println("TRAZAA"+ l[h]);
                 	}
-            	}
-            	
+            	}	
             }
             String fichero1 = null;
             String fichero2 = null;
             Object[] lista = ficheros.toArray();
-            for(int q =1; q< ficheros.size();q++) {
-            	for(int n=1; n<ficheros.size();n++) {
-            		System.out.println("Comparacion de fichero:");
-            		fichero1 = (String)lista[q-1];
-        			fichero2 = (String)lista[n];
-        			System.out.println(fichero1);
-        			System.out.println(fichero2);
-        			File lee1 = new File(fichero1);
-        			File lee2 = new File(fichero2);
-        			Ultimocommit(lee1,lee2);
-        			Ultimocommitpal(lee1,lee2);
-            		getDiff(fichero1, fichero2);
+            String tokenizador1 = null;
+            String tokenizador2 = null;
+            for(int q = 0; q< ficheros.size();q++) {
+            	fichero1 = (String)lista[q];
+            	for(int n = q+1; n< ficheros.size();n++) {
+	    			fichero2 = (String)lista[n];
+	    			if(fichero1.equals(fichero2)) {
+	        			continue;
+	        		}
+	    			File lee1 = new File(fichero1);
+	    			File lee2 = new File(fichero2);
+	    			tokenizador1 = getFileNameWithoutExtension(lee1);
+	    			tokenizador2 = getFileNameWithoutExtension(lee2);
+	    			System.out.println("Comparacion de ficheros: " + tokenizador1 + " " + tokenizador2);
+	    			Ultimocommit(lee1,lee2);
+	    			Ultimocommitpal(lee1,lee2);
+	        		getDiff(fichero1, fichero2);
+	        		System.out.println("---------------------------------------");
             	}
-            	System.out.println("---------------------------------------");
-        	}
+            }
 		}
 	
 	}
 	
-    
+	//Metodo para probar en local
+    public static void main(String[] args) throws Exception{
+    	Ejecutar(PATH_LOCAL);
+    }
 }
