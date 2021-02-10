@@ -80,7 +80,7 @@ public class Principal /*extends Repository */{
 			
 			arr_res = res.toArray(new String[0]);
             } else {
-                System.err.println("¡Path NO válido!");
+                System.err.println("Path NO valido");
 			}
 			
             return arr_res;
