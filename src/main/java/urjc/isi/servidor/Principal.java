@@ -268,8 +268,8 @@ public class Principal /*extends Repository */{
 	}
 
 	//Metodo Principal
-	public static void Ejecutar(String path) throws Exception{
-    	System.setOut(new PrintStream(new FileOutputStream("output.txt")));
+	public static void Ejecutar(String path, String Id) throws Exception{
+    	System.setOut(new PrintStream(new FileOutputStream("upload/" + Id + "/output.txt")));
 		String DIRECTORIO = path.concat("/gits");
  
     	String [] list_fich = null;
@@ -333,8 +333,7 @@ public class Principal /*extends Repository */{
 	
 	}
 	
-	//Metodo para probar en local
-	/*
+	/*Metodo para probar en local
     public static void main(String[] args) throws Exception{
     	Ejecutar(PATH_LOCAL);
     }*/
