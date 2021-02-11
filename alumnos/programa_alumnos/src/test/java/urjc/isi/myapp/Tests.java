@@ -4,6 +4,7 @@ package urjc.isi.myapp;
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
 import static com.github.tomakehurst.wiremock.client.WireMock.get;
 import static com.github.tomakehurst.wiremock.client.WireMock.getRequestedFor;
+import static com.github.tomakehurst.wiremock.client.WireMock.postRequestedFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.post;
 import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
@@ -185,7 +186,7 @@ public class Tests {
 						.withStatus(200)));
 			response = requestToServer.sendPostAlumno("Pepe", "087954R", ".*", "8080");
 			assertEquals(200, response.getStatusLine().getStatusCode());
-			//verify(getRequestedFor(urlEqualTo("/alumno")));
+			verify(postRequestedFor(urlEqualTo("/alumno")));
 		}catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -199,7 +200,7 @@ public class Tests {
 						.withStatus(404)));
 			response = requestToServer.sendPostAlumno("Pepe", "087954R", ".*", "8080");
 			assertEquals(404, response.getStatusLine().getStatusCode());
-			//verify(getRequestedFor(urlEqualTo("/alumno")));
+			verify(postRequestedFor(urlEqualTo("/alumno")));
 		}catch (Exception e) {
 			e.printStackTrace();
 		}
