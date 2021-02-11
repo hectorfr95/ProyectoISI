@@ -60,7 +60,7 @@ public class Tests {
 	
 	
 	@Before
-	public void setup() {
+	public void setUp() {
 		git = Main.createRepo();
 		Main.setGit(git);
 		Main.alumno = new Alumno("Pepe", "02223478L", "Pepe@gmail.com");
