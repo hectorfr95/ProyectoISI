@@ -121,13 +121,6 @@ public class Tests {
 		
 	}
 	
-/*	@Test
-	public void testFinEx() throws IOException, Exception{
-		Main.finEx();
-		
-		
-	}*/
-	
 	@Test
 	public void testCommits() throws IOException, GitAPIException, InterruptedException {
 		
@@ -154,15 +147,8 @@ public class Tests {
 						.withStatus(200)));
 			assertEquals(1, requestToServer.sendGet(".*"));
 			verify(getRequestedFor(urlEqualTo("/fin/.*")));
-			
-			Main.setPeriodicRequests();
-			
-			
-			
 			File file = new File("../"+Main.getIdEx()+ "_"+Main.alumno.getDni()+".zip");
 			assertTrue(file.exists());
-						
-			
 			
 		}catch (Exception e) {
 			e.printStackTrace();
@@ -179,7 +165,7 @@ public class Tests {
 			assertEquals(0, requestToServer.sendGet(Main.getIdEx()));
 			verify(getRequestedFor(urlEqualTo("/fin/"+Main.getIdEx())));
 			
-			Main.getTimerReq();
+			Main.setPeriodicRequests();
 			Thread.sleep(150000);
 			Main.getTimerReq().cancel();
 			assertEquals(3, requestToServer.contador);
@@ -218,21 +204,5 @@ public class Tests {
 			e.printStackTrace();
 		}
     }
-    
-//    @Test
-//	public void testPeriodicGet() throws IOException, GitAPIException, InterruptedException {
-//		
-//		Main.setPeriodicRequests();
-//		
-//		
-//		Thread.sleep(150000);
-//		
-//		int counter = Iterables.size(git.log().call());
-//		
-//		Main.getTimer().cancel();
-//		assertEquals(counter, 2);
-//		
-//	}
-	
 
 }

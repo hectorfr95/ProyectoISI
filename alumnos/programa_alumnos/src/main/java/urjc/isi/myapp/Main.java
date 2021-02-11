@@ -53,10 +53,10 @@ public class Main {
     private static Timer timer = new Timer();
     
     //tiempo entre commit y commit en minutos
-    private static int rateCommit = 10;
+    private static int rateCommit = 2;
     
     //url a la que hacemos las peticiones:
-    private static String url = "http://localhost:4567";//"https://servidor-proyecto1.herokuapp.com";
+    private static String url = "http://servidor-hectorfr95.herokuapp.com";//"http://localhost:4567";//"https://servidor-proyecto1.herokuapp.com";
     
     //objeto para hacer peticiones
     private static HttpRequests requestToServer = new HttpRequests(url);
