@@ -389,11 +389,16 @@ public class App
 			// 3º Listo
 			
 			boolean ponerContador = true;
+<<<<<<< HEAD
 			int tiempo=1;
+=======
+			int tiempo=2;
+>>>>>>> 8e9fd91d26702e89ff1be90f88146693ea8a7e11
 			
 			/////////////// La variable tiempo seran los minutos que se requiere para el contador
 			/////////////// Este valor llegaria de el post que nos trae a esta pagina (post de /profesor, se ha dejado comentado en ese post)
 			if(ponerContador == true) {
+<<<<<<< HEAD
 				if(haFinalizado(tiempo)==true) {
 				
 				//String url="http://servidor-hectorfr95.herokuapp.com"+"/"+id_examen+"/finalizar";
@@ -408,6 +413,15 @@ public class App
 				  //window.location = "https://www.bufa.es";
 				//}
 				//setTimeout("redireccionarPagina()", 5000);
+=======
+				haFinalizado(tiempo);
+				String url="http://servidor-hectorfr95.herokuapp.com"+"/"+id_examen;
+				res.redirect(url);
+				return render("views/random.html", settings);
+				
+			}
+			
+>>>>>>> 8e9fd91d26702e89ff1be90f88146693ea8a7e11
 			///////////////////////
 			return render("views/random.html", settings);
 			
