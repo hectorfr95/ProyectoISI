@@ -120,6 +120,18 @@ public class App
 
 
 	  
+	  public static boolean haFinalizado(int tiempo) {
+		  
+		  int tiemposeg =tiempo*60;
+		  
+		  
+		  for(int i=0;i<tiemposeg;i++) {
+			  delaySegundo();
+			  
+		  }
+		  return true;
+		  
+	  }
 
 
 
@@ -128,8 +140,13 @@ public class App
 
 
 
-
-
+	   public static void  delaySegundo() {
+		   
+		   try {
+			   Thread.sleep(1000);
+			   
+		   }catch(InterruptedException e){}
+	   }
 
 
 
@@ -248,7 +265,13 @@ public class App
 			System.out.println("*******************************************************************");
 			System.out.println("POST recibido para iniciar examen de la asignatura "+asignatura+" con ID: "+id_examen);
 			System.out.println("*******************************************************************");
-
+			
+			//////////////////
+			////////////////// Aqui modificariamos el HTML para tener un cuadro de texto para indicar que el examen requiere
+			////////////////// de un contador, se indicaria con un entero los minutos de duracion del examen y esto se enviaria junto
+			////////////////// con la peticion post, para que la siguiente pagina obtenga dicho valor.
+			//////////////////
+			
 			res.redirect("http://"+req.host()+"/"+id_examen);
 			return null;
 		});
@@ -353,7 +376,41 @@ public class App
 			set("titulo", result);
 			set("alumnos_bd", result1);
 			set("id", req.params(":random"));
+			
+			/////////////////////////// FUNCION CONTADOR /////////////////////////
+			/////////////// Se tiene una variable booleana "ponerContador" que sera
+			/////////////// en este caso para ver si tenemos un examen a realizar
+			/////////////// el examen con un contador de tiempo o no. Hay examen con contador, entonces, ponerContador=true,
+			/////////////// si no se requiere el contador ponerContador=false
+			
+			/////////////// Instrucciones:
+			// 1º Poner la variable "ponerContador" a true
+			// 2º Poner en la variable "tiempo" los minutos del contador
+			// 3º Listo
+			
+			boolean ponerContador = true;
+			int tiempo=1;
+			
+			/////////////// La variable tiempo seran los minutos que se requiere para el contador
+			/////////////// Este valor llegaria de el post que nos trae a esta pagina (post de /profesor, se ha dejado comentado en ese post)
+			if(ponerContador == true) {
+				if(haFinalizado(tiempo)==true) {
+				
+				//String url="http://servidor-hectorfr95.herokuapp.com"+"/"+id_examen+"/finalizar";
+				//res.redirect(url);
+				examenDao.finalizar_examen(id_examen);
+				//redirect.get("/:random","/:random/finalizar");
+				return render("views/finalizado.html", settings);
+			}
+			}
+			//como se haria en javascript:
+			//function redireccionarPagina() {
+				  //window.location = "https://www.bufa.es";
+				//}
+				//setTimeout("redireccionarPagina()", 5000);
+			///////////////////////
 			return render("views/random.html", settings);
+			
 	});
 		//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////		
 		get("/:random/finalizar", (req, res) -> {
